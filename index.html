@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrail Coffee - 空の下で、ひと息の冒険を</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2C3E50',
+                        secondary: '#E67E22',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans">
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center">
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 bg-[url('assets/images/hero-bg.jpg')] bg-cover bg-center"></div>
+        <div class="relative z-10 text-center text-white px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4">Contrail Coffee</h1>
+            <p class="text-xl md:text-2xl mb-8">空の下で、ひと息の冒険を</p>
+            <div class="space-x-4">
+                <a href="#menu" class="bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-full transition">メニューを見る</a>
+                <a href="#access" class="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-full transition">場所を確認する</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 px-4 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8">Coffee and coffee</h2>
+            <p class="text-lg text-center mb-12">
+                香りと味にこだわるシングルオリジン豆を使用。<br>
+                日替わりのドリップメニューと、自家製焼き菓子をご用意しています。
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">営業時間</h3>
+                    <ul class="space-y-2">
+                        <li>平日：08:00〜16:00</li>
+                        <li>土日祝：09:00〜17:00</li>
+                        <li>定休日：火曜・水曜</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">メニュー</h3>
+                    <ul class="space-y-2">
+                        <li class="flex justify-between">
+                            <span>ハンドドリップコーヒー</span>
+                            <span>¥450</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>カフェラテ</span>
+                            <span>¥500</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>コールドブリュー</span>
+                            <span>¥500</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>自家製焼き菓子</span>
+                            <span>¥300〜</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Access Section -->
+    <section id="access" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8">アクセス</h2>
+            <div class="text-center mb-8">
+                <p class="text-xl">秩父鉄道「御花畑駅」 徒歩3分</p>
+            </div>
+            <div class="aspect-w-16 aspect-h-9 mb-8">
+                <!-- Google Map iframe will be added here -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3233.1234567890123!2d139.1234567890123!3d35.12345678901234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDA3JzI0LjQiTiAxMznCsDA3JzI0LjQiRQ!5e0!3m2!1sja!2sjp!4v1234567890123!5m2!1sja!2sjp"
+                    class="w-full h-full"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div class="text-center">
+                <a href="https://maps.google.com" class="inline-block bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full transition">
+                    Google Mapで開く
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold mb-4">Contrail Coffee</h3>
+                    <p class="text-sm">© 2024 Contrail Coffee. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-secondary transition">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-secondary transition">
+                        <i class="fab fa-twitter text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-sm">
+                <p>お問い合わせ: info@contrailcoffee.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Google Translate Widget -->
+    <div id="google_translate_element" class="fixed bottom-4 right-4"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'ja'},
+                'google_translate_element'
+            );
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html> 
