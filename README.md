@@ -12,7 +12,7 @@ A modern, responsive website for Contrail Coffee, a cozy coffee shop in Chichibu
 
 ## 📁 Project Structure
 
-```
+```plaintext
 /
 ├── index.html          # Main landing page
 ├── assets/
@@ -44,6 +44,7 @@ A modern, responsive website for Contrail Coffee, a cozy coffee shop in Chichibu
 ## 📸 Image Requirements
 
 Place the following images in `assets/images/`:
+
 - hero-bg.jpg (Hero section background)
 - Additional images for the gallery section
 
@@ -55,4 +56,4 @@ Place the following images in `assets/images/`:
 
 ## 📄 License
 
-MIT License 
+MIT License
