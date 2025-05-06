@@ -3,680 +3,432 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contrail Coffeeは秩父鉄道御花畑駅から徒歩3分のコーヒーショップです。シングルオリジン豆を使用したハンドドリップコーヒーと自家製焼き菓子をご提供しています。">
-    <meta name="keywords" content="コーヒー,カフェ,秩父,御花畑,ハンドドリップ,シングルオリジン,焼き菓子">
-    <meta name="author" content="Contrail Coffee">
-    
-    <!-- OGP -->
-    <meta property="og:title" content="Contrail Coffee - 空の下で、ひと息の冒険を">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://contrailcoffee.com">
-    <meta property="og:image" content="https://contrailcoffee.com/assets/images/hero-bg.jpg">
-    <meta property="og:description" content="Contrail Coffeeは秩父鉄道御花畑駅から徒歩3分のコーヒーショップです。シングルオリジン豆を使用したハンドドリップコーヒーと自家製焼き菓子をご提供しています。">
-    <meta property="og:site_name" content="Contrail Coffee">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@contrailcoffee">
-    <meta name="twitter:title" content="Contrail Coffee - 空の下で、ひと息の冒険を">
-    <meta name="twitter:description" content="Contrail Coffeeは秩父鉄道御花畑駅から徒歩3分のコーヒーショップです。シングルオリジン豆を使用したハンドドリップコーヒーと自家製焼き菓子をご提供しています。">
-    <meta name="twitter:image" content="https://contrailcoffee.com/assets/images/hero-bg.jpg">
-    
-    <title>Contrail Coffee - 空の下で、ひと息の冒険を</title>
-    
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://unpkg.com">
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" as="style">
-    <link rel="preload" href="assets/images/hero-bg.jpg" as="image">
-    
+    <title>Contrail coffee and chocolate</title>
+    <meta name="description" content="ミニマル＆モノトーンなコーヒーショップの公式サイト">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CafeOrCoffeeShop",
-        "name": "Contrail Coffee",
-        "description": "Contrail Coffeeは秩父鉄道御花畑駅から徒歩3分のコーヒーショップです。シングルオリジン豆を使用したハンドドリップコーヒーと自家製焼き菓子をご提供しています。",
-        "image": "https://contrailcoffee.com/assets/images/hero-bg.jpg",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "秩父市",
-            "addressRegion": "埼玉県",
-            "postalCode": "368-0000",
-            "streetAddress": "御花畑駅前"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": 35.9905,
-            "longitude": 139.0836
-        },
-        "openingHoursSpecification": [
-            {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Thursday", "Friday"],
-                "opens": "08:00",
-                "closes": "16:00"
-            },
-            {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Saturday", "Sunday"],
-                "opens": "09:00",
-                "closes": "17:00"
-            }
-        ],
-        "priceRange": "¥",
-        "servesCuisine": "Coffee",
-        "telephone": "+81-123-456-7890",
-        "url": "https://contrailcoffee.com"
-    }
-    </script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#2C3E50',
-                        secondary: '#E67E22',
-                        accent: '#3498DB',
-                    },
                     fontFamily: {
                         sans: ['Noto Sans JP', 'sans-serif'],
                     },
+                    spacing: {
+                        '128': '32rem',
+                    }
                 }
             }
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-        
-        /* ローディングアニメーション */
-        #loadingLogo {
+        /* ローディングアニメーション用のスタイル */
+        #loading {
             position: fixed;
-            width: 100%;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            background: linear-gradient(to bottom, #1a2a6c, #b21f1f, #fdbb2d);
             z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 100px;
-            filter: blur(15px);
-        }
-
-        .cloud-1 {
-            width: 160px;
-            height: 40px;
-            top: 15%;
-            left: -160px;
-            animation: cloudMove 18s linear infinite;
-        }
-
-        .cloud-2 {
-            width: 140px;
-            height: 35px;
-            top: 25%;
-            right: -140px;
-            animation: cloudMove 15s linear infinite;
-        }
-
-        .cloud-3 {
-            width: 180px;
-            height: 45px;
-            top: 35%;
-            left: -180px;
-            animation: cloudMove 20s linear infinite;
-        }
-
-        .cloud-4 {
-            width: 120px;
-            height: 30px;
-            top: 45%;
-            right: -120px;
-            animation: cloudMove 16s linear infinite;
-        }
-
-        @keyframes cloudMove {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100vw);
-            }
-        }
-
-        .cloud::before {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            width: 60%;
-            height: 100%;
-            top: -50%;
-            left: 20%;
-            filter: blur(15px);
-        }
-
-        #loadingLogo.show {
-            opacity: 1;
-        }
-
-        #loadingLogo.hide {
-            opacity: 0;
-        }
-
-        @keyframes runwayMove {
-            0% {
-                transform: translateY(0) scale(1) rotateX(45deg);
-                height: 50vh;
-            }
-            20% {
-                transform: translateY(0) scale(0.9) rotateX(45deg);
-                height: 45vh;
-            }
-            40% {
-                transform: translateY(0) scale(0.7) rotateX(45deg);
-                height: 40vh;
-            }
-            60% {
-                transform: translateY(0) scale(0.5) rotateX(45deg);
-                height: 35vh;
-            }
-            80% {
-                transform: translateY(0) scale(0.3) rotateX(45deg);
-                height: 30vh;
-            }
-            100% {
-                transform: translateY(100%) scale(0.1) rotateX(45deg);
-                height: 25vh;
-            }
-        }
-
-        .runway {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 50vh;
-            background: linear-gradient(to top, 
-                rgba(51, 51, 51, 1),
-                rgba(51, 51, 51, 0.9) 20%,
-                rgba(51, 51, 51, 0.8) 40%,
-                rgba(51, 51, 51, 0.6) 60%,
-                rgba(51, 51, 51, 0.4) 80%,
-                rgba(51, 51, 51, 0.2) 100%
-            );
-            clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
-            animation: runwayMove 3s ease-out forwards;
-            transform-origin: bottom center;
-            perspective: 1000px;
-            transform-style: preserve-3d;
-        }
-
-        .runway::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 4px;
-            height: 100%;
-            background: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 30px,
-                rgba(255, 255, 255, 0.9) 30px,
-                rgba(255, 255, 255, 0.9) 60px
-            );
-            transform: translateX(-50%);
-            animation: runwayLights 1.5s linear infinite;
-        }
-
-        .runway::after {
-            content: '';
-            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                to right,
-                transparent,
-                transparent 48%,
-                rgba(255, 255, 255, 0.3) 48%,
-                rgba(255, 255, 255, 0.3) 52%,
-                transparent 52%,
-                transparent 100%
-            );
-            pointer-events: none;
-        }
-
-        @keyframes runwayLights {
-            0% {
-                transform: translateX(-50%) translateY(0);
-            }
-            100% {
-                transform: translateX(-50%) translateY(40px);
-            }
-        }
-
-        @keyframes airplaneTakeoff {
-            0% {
-                transform: translateX(-50%) translateY(0) scale(2) rotate(0deg);
-                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) brightness(0.8);
-            }
-            20% {
-                transform: translateX(-50%) translateY(-10vh) scale(1.8) rotate(0deg);
-                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) brightness(0.9);
-            }
-            40% {
-                transform: translateX(-50%) translateY(-30vh) scale(1.5) rotate(0deg);
-                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) brightness(1);
-            }
-            60% {
-                transform: translateX(-50%) translateY(-50vh) scale(1.2) rotate(0deg);
-                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) brightness(1.1);
-            }
-            80% {
-                transform: translateX(-50%) translateY(-70vh) scale(0.8) rotate(0deg);
-                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) brightness(1.2);
-            }
-            100% {
-                transform: translateX(-50%) translateY(-100vh) scale(0.5) rotate(0deg);
-                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) brightness(1.3);
-            }
-        }
-
-        .airplane {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: auto;
-            animation: airplaneTakeoff 3s ease-out forwards;
-            transform-origin: bottom center;
-        }
-
-        /* メインコンテンツの初期状態 */
-        main {
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-            display: block;
-        }
-
-        main.visible {
-            opacity: 1;
-        }
-
-        /* ヒーローセクションの高さを固定 */
-        .hero-section {
+            width: 100vw;
             height: 100vh;
-            position: relative;
-            overflow: hidden;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s;
         }
-
-        .hero-overlay {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
-        }
-        
-        .menu-item {
-            transition: transform 0.3s ease;
-        }
-        
-        .menu-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, #E67E22, #D35400);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* スムーズスクロール */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* セクションのアニメーション */
-        section {
+        #loading.hide {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            pointer-events: none;
         }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .logo-main {
+            display: block;
+            width: 100%;
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
         }
-
-        /* メニューカードのホバーエフェクト */
-        .menu-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .menu-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        /* 画像のホバーエフェクト */
-        figure img {
-            transition: transform 0.5s ease;
-        }
-
-        figure:hover img {
-            transform: scale(1.1);
-        }
-
-        /* ボタンのホバーエフェクト */
-        .btn-primary, .btn-secondary {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::after, .btn-secondary::after {
-            content: '';
+        .logo-line {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(100%);
+            opacity: 0;
+            clip-path: inset(0 100% 0 0);
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+            transition: opacity 0.2s, clip-path 1.2s cubic-bezier(.4,0,.2,1);
+        }
+        .logo-dot {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.3s, top 0.7s cubic-bezier(.4,1.6,.2,1);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
+        }
+        .section {
+            padding: 4rem 1rem;
+        }
+        @media (max-width: 768px) {
+            .section {
+                padding: 2rem 1rem;
+            }
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        .menu-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+        .menu-item-full {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
         }
-
-        .btn-primary:hover::after, .btn-secondary:hover::after {
-            transform: translateX(0);
+        .menu-item-full:hover {
+            transform: translateY(-4px);
         }
-
-        body {
+        .menu-name {
+            font-size: 1.25rem;
+            font-weight: 500;
+            padding: 1rem;
             margin: 0;
+        }
+        .menu-description {
+            font-size: 0.9rem;
+            color: #666;
+            padding: 0 1rem 1rem;
+            margin: 0;
+        }
+        .hours-list {
+            list-style: none;
             padding: 0;
-            font-family: 'Noto Sans JP', sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content {
-            flex: 1;
-            width: 100%;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 2rem 0;
+            margin: 0;
             text-align: center;
-            margin-top: auto;
+        }
+        .hours-list li {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .access-map {
+            width: 100%;
+            height: 300px;
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .concept-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .concept-image img {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        .concept-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        @media (max-width: 768px) {
+            .concept-content p {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
         }
     </style>
 </head>
-<body class="font-sans">
-    <!-- ローディングアニメーション -->
-    <div id="loadingLogo">
-        <div class="cloud cloud-1"></div>
-        <div class="cloud cloud-2"></div>
-        <div class="cloud cloud-3"></div>
-        <div class="cloud cloud-4"></div>
-        <div class="runway"></div>
-        <img class="airplane" src="assets/images/airplane-1.png" alt="飛行機">
+<body class="bg-white text-gray-900 font-sans">
+    <div id="loading">
+        <div class="w-[640px] max-w-[90vw] mx-auto flex items-center justify-center flex-col relative">
+            <img class="logo-line" src="assets/images/contrail-line.png" alt="contrailの上の線" />
+            <img class="logo-main" src="assets/images/contrail-main.png" alt="contrail本体" />
+            <img class="logo-dot" src="assets/images/contrail-dot.png" alt="iの点" />
+        </div>
     </div>
-
-    <main>
-        <!-- Hero Section -->
-        <section class="relative h-screen flex items-center justify-center overflow-hidden" role="banner">
-            <div class="absolute inset-0 hero-overlay" aria-hidden="true"></div>
-            <div class="absolute inset-0 bg-[url('assets/images/hero-bg.jpg')] bg-cover bg-center animate-pulse-slow" role="img" aria-label="コーヒーショップの店内風景"></div>
-            <div class="relative z-10 text-center text-white px-4 hero-content" data-aos="fade-up" data-aos-duration="1000">
-                <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 tracking-wide">Contrail Coffee</h1>
-                <p class="text-lg sm:text-xl md:text-2xl mb-8 font-light">空の下で、ひと息の冒険を</p>
-                <div class="flex flex-col sm:flex-row justify-center sm:space-x-4 space-y-4 sm:space-y-0">
-                    <a href="#menu" class="btn-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium" aria-label="メニューを見る">メニューを見る</a>
-                    <a href="#access" class="btn-secondary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium" aria-label="場所を確認する">場所を確認する</a>
-                </div>
+    <main class="container mx-auto">
+        <section class="min-h-screen flex flex-col justify-center items-center">
+            <div class="w-[640px] max-w-[90vw] mx-auto">
+                <img src="assets/images/contrail-logo-transparent.png" alt="Contrail Coffee ロゴ" class="w-full" />
             </div>
         </section>
-
-        <!-- About Section -->
-        <section class="py-12 sm:py-20 px-4 bg-gradient-to-b from-gray-50 to-white" role="region" aria-labelledby="about-heading">
-            <div class="max-w-4xl mx-auto">
-                <h2 id="about-heading" class="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8" data-aos="fade-up">Coffee and coffee</h2>
-                <p class="text-base sm:text-lg text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-4" data-aos="fade-up" data-aos-delay="100">
-                    香りと味にこだわるシングルオリジン豆を使用。<br>
-                    日替わりのドリップメニューと、自家製焼き菓子をご用意しています。
-                </p>
-                
-                <div class="grid md:grid-cols-2 gap-6 sm:gap-8 menu-grid">
-                    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 menu-card" data-aos="fade-right" role="article">
-                        <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-primary">営業時間</h3>
-                        <ul class="space-y-3 sm:space-y-4">
-                            <li class="flex items-center">
-                                <i class="far fa-clock text-secondary mr-3 text-sm sm:text-base" aria-hidden="true"></i>
-                                <span class="text-sm sm:text-base">平日：08:00〜16:00</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="far fa-clock text-secondary mr-3 text-sm sm:text-base" aria-hidden="true"></i>
-                                <span class="text-sm sm:text-base">土日祝：09:00〜17:00</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-door-closed text-secondary mr-3 text-sm sm:text-base" aria-hidden="true"></i>
-                                <span class="text-sm sm:text-base">定休日：火曜・水曜</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div id="menu" class="bg-white p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 menu-card" data-aos="fade-left" role="article">
-                        <h3 class="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-primary">メニュー</h3>
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <figure class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
-                                <img src="assets/images/coffee-1.jpg" alt="ハンドドリップコーヒー - シングルオリジン豆を使用した香り高いコーヒー" class="object-cover w-full h-full" loading="lazy">
-                            </figure>
-                            <figure class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
-                                <img src="assets/images/coffee-2.jpg" alt="カフェラテ - 濃厚なエスプレッソと滑らかなミルクのハーモニー" class="object-cover w-full h-full" loading="lazy">
-                            </figure>
-                            <figure class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
-                                <img src="assets/images/pastry.jpg" alt="自家製焼き菓子 - コーヒーにぴったりの手作りスイーツ" class="object-cover w-full h-full" loading="lazy">
-                            </figure>
-                            <figure class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
-                                <img src="assets/images/coffee-beans.jpg" alt="シングルオリジンコーヒー豆 - 厳選された高品質なコーヒー豆" class="object-cover w-full h-full" loading="lazy">
-                            </figure>
-                        </div>
-                        <ul class="space-y-3 sm:space-y-4">
-                            <li class="menu-item flex justify-between items-center p-2 sm:p-3 rounded-lg hover:bg-gray-50">
-                                <span class="font-medium text-sm sm:text-base">ハンドドリップコーヒー</span>
-                                <span class="text-secondary font-bold text-sm sm:text-base">¥450</span>
-                            </li>
-                            <li class="menu-item flex justify-between items-center p-2 sm:p-3 rounded-lg hover:bg-gray-50">
-                                <span class="font-medium text-sm sm:text-base">カフェラテ</span>
-                                <span class="text-secondary font-bold text-sm sm:text-base">¥500</span>
-                            </li>
-                            <li class="menu-item flex justify-between items-center p-2 sm:p-3 rounded-lg hover:bg-gray-50">
-                                <span class="font-medium text-sm sm:text-base">コールドブリュー</span>
-                                <span class="text-secondary font-bold text-sm sm:text-base">¥500</span>
-                            </li>
-                            <li class="menu-item flex justify-between items-center p-2 sm:p-3 rounded-lg hover:bg-gray-50">
-                                <span class="font-medium text-sm sm:text-base">自家製焼き菓子</span>
-                                <span class="text-secondary font-bold text-sm sm:text-base">¥300〜</span>
-                            </li>
-                        </ul>
+        <section class="concept w-full bg-black py-24 md:py-32 mb-16">
+            <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-col md:items-center md:gap-16">
+                <div class="max-w-[800px] px-2 mb-8 md:mb-0 md:px-0">
+                    <div class="mb-12 md:mb-16">
+                        <p class="text-[2.0rem] md:text-[2.8rem] leading-[1.4] text-white mb-2 md:mb-3 font-extralight italic">
+                            Enjoy a cup of coffee
+                        </p>
+                        <p class="text-[2.6rem] md:text-[3.2rem] leading-[0.4] text-white mb-8 md:mb-10 font-extralight italic">
+                            Have a good day
+                        </p>
+                        <p class="text-[1.2rem] md:text-[1.6rem] leading-[0.4] text-white mb-2 md:mb-3 font-extralight italic">
+                            Specialty Coffee from New Zealand,
+                        </p>
+                        <p class="text-[1.6rem] md:text-[2.0rem] leading-[1.4] text-white mb-8 md:mb-10 font-extralight italic">
+                            delivered to Ohanabatake
+                        </p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Access Section -->
-        <section id="access" class="py-12 sm:py-20 px-4 bg-gradient-to-b from-white to-gray-50" role="region" aria-labelledby="access-heading">
-            <div class="max-w-4xl mx-auto">
-                <h2 id="access-heading" class="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8" data-aos="fade-up">アクセス</h2>
-                <div class="text-center mb-6 sm:mb-8" data-aos="fade-up" data-aos-delay="100">
-                    <p class="text-lg sm:text-xl flex items-center justify-center">
-                        <i class="fas fa-train text-secondary mr-2" aria-hidden="true"></i>
-                        秩父鉄道「御花畑駅」 徒歩3分
-                    </p>
+                <div class="writing-vertical text-[1rem] md:text-[1.2rem] leading-[2] text-white font-light tracking-tight p-6 md:p-8 italic md:writing-horizontal md:text-center md:w-full md:mb-8">
+                    御花畑に届いた<br class="hidden md:block">
+                    ニュージーランド発の<br class="hidden md:block">
+                    スペシャルティコーヒー
                 </div>
-                <div class="rounded-xl overflow-hidden shadow-lg mb-6 sm:mb-8 map-container" data-aos="zoom-in">
-                    <div class="aspect-w-16 aspect-h-5 sm:aspect-h-4">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3233.1234567890123!2d139.0836!3d35.9905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018c5c1c1c1c1c1%3A0x1c1c1c1c1c1c1c1!2z5a6u5Y2X5YyX5a6u5Y2X5YyX!5e0!3m2!1sja!2sjp!4v1234567890123!5m2!1sja!2sjp"
-                            class="w-full h-full"
-                            style="border:0;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            title="Contrail Coffeeの地図">
-                        </iframe>
-                    </div>
-                </div>
-                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-                    <a href="https://www.google.com/maps/place/%E5%BE%A1%E8%8A%B1%E7%95%91%E9%A7%85/@35.9905,139.0836,15z/data=!4m6!3m5!1s0x6018c5c1c1c1c1c1:0x1c1c1c1c1c1c1c1!8m2!3d35.9905!4d139.0836!16s%2Fg%2F11bw4y5y5y" 
-                       class="btn-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium inline-flex items-center"
-                       aria-label="Google Mapで場所を確認する">
-                        <i class="fas fa-map-marker-alt mr-2" aria-hidden="true"></i>
-                        Google Mapで開く
+                <div class="flex justify-center">
+                    <a href="#" class="about-btn inline-block px-8 md:px-12 py-3 md:py-4 border border-white text-white no-underline text-[0.9rem] md:text-[1.1rem] tracking-wider relative overflow-hidden md:w-auto md:text-center md:rounded md:mt-1 hover:text-black group transition-colors duration-300">
+                        <span class="relative z-10 group-hover:text-black transition-colors duration-300">About Us</span>
+                        <span class="absolute inset-0 bg-white transform -translate-x-full transition-transform duration-300 ease-in-out z-0 group-hover:translate-x-0"></span>
                     </a>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="section-title">Menu</div>
+            <div class="menu-list">
+                <div class="menu-item-full">
+                    <h3 class="menu-name">Hand Drip Coffee</h3>
+                    <img src="assets/images/coffee-1.jpg" alt="Hand Drip Coffee" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;" loading="lazy">
+                    <p class="menu-description">Carefully brewed single-origin coffee using our signature hand drip method.</p>
+                </div>
+                <div class="menu-item-full">
+                    <h3 class="menu-name">Cafe Latte</h3>
+                    <img src="assets/images/coffee-2.jpg" alt="Cafe Latte" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;" loading="lazy">
+                    <p class="menu-description">Smooth and creamy latte made with our house blend espresso and steamed milk.</p>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="section-title">Our Coffee</div>
+            <div class="concept-container px-4 md:px-0">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center max-w-7xl mx-auto">
+                    <div class="relative">
+                        <div class="aspect-w-4 aspect-h-3 rounded-xl md:rounded-2xl overflow-hidden">
+                            <img src="assets/images/coffee-beans.jpg" alt="Single Origin Coffee Beans" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="absolute -bottom-4 -right-4 md:-bottom-8 md:-right-8 bg-white p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg">
+                            <p class="text-xs md:text-sm text-gray-500">Single Origin</p>
+                            <p class="text-base md:text-xl font-medium">ニュージーランド産</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6 md:space-y-12">
+                        <div>
+                            <h3 class="text-xl md:text-3xl font-light mb-3 md:mb-6">スペシャルティコーヒーへのこだわり</h3>
+                            <p class="text-sm md:text-lg text-gray-600 leading-relaxed md:leading-loose">
+                                厳選されたシングルオリジンの豆を使用し、<br class="hidden md:block">
+                                丁寧なハンドドリップで一杯一杯を淹れています。<br class="hidden md:block">
+                                豆本来の個性と香りを最大限に引き出し、<br class="hidden md:block">
+                                あなたの特別なひとときをお届けします。
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 md:gap-8">
+                            <div class="bg-gray-50 p-4 md:p-8 rounded-lg md:rounded-xl hover:bg-gray-100 transition-colors duration-300">
+                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">焙煎</h4>
+                                <p class="text-xs md:text-base text-gray-600">豆の個性を活かした独自の焙煎</p>
+                            </div>
+                            <div class="bg-gray-50 p-4 md:p-8 rounded-lg md:rounded-xl hover:bg-gray-100 transition-colors duration-300">
+                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">抽出</h4>
+                                <p class="text-xs md:text-base text-gray-600">丁寧なハンドドリップ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section bg-gray-50">
+            <div class="section-title">Our Craft Chocolate</div>
+            <div class="concept-container px-4 md:px-0">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center max-w-7xl mx-auto">
+                    <div class="space-y-6 md:space-y-12 order-2 md:order-1">
+                        <div>
+                            <h3 class="text-xl md:text-3xl font-light mb-3 md:mb-6">カカオ豆から作るクラフトチョコレート</h3>
+                            <p class="text-sm md:text-lg text-gray-600 leading-relaxed md:leading-loose">
+                                厳選されたカカオ豆を使用し、<br class="hidden md:block">
+                                一つ一つ丁寧に手作りしています。<br class="hidden md:block">
+                                素材の個性を活かした独自のレシピで、<br class="hidden md:block">
+                                あなただけの特別な味わいをお届けします。
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 md:gap-8">
+                            <div class="bg-white p-4 md:p-8 rounded-lg md:rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">原料</h4>
+                                <p class="text-xs md:text-base text-gray-600">厳選されたカカオ豆</p>
+                            </div>
+                            <div class="bg-white p-4 md:p-8 rounded-lg md:rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">製法</h4>
+                                <p class="text-xs md:text-base text-gray-600">丁寧な手作り製法</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative order-1 md:order-2">
+                        <div class="aspect-w-4 aspect-h-3 rounded-xl md:rounded-2xl overflow-hidden">
+                            <img src="assets/images/pastry.jpg" alt="Craft Chocolate" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="absolute -bottom-4 -left-4 md:-bottom-8 md:-left-8 bg-white p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg">
+                            <p class="text-xs md:text-sm text-gray-500">Craft Chocolate</p>
+                            <p class="text-base md:text-xl font-medium">クラフトチョコレート</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="section-title">Business Hours</div>
+            <div class="concept-container">
+                <div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-medium mb-3 text-gray-800">営業時間</h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">平日</span>
+                                        <span class="font-medium">8:00〜16:00</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">土日祝</span>
+                                        <span class="font-medium">9:00〜17:00</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">定休日</span>
+                                        <span class="font-medium text-red-500">火曜・水曜</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium mb-3 text-gray-800">ラストオーダー</h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">ドリンク</span>
+                                        <span class="font-medium">閉店30分前</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">フード</span>
+                                        <span class="font-medium">閉店1時間前</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-medium mb-3 text-gray-800">施設情報</h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">席数</span>
+                                        <span class="font-medium">20席</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">Wi-Fi</span>
+                                        <span class="font-medium">無料</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium mb-3 text-gray-800">支払い方法</h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">現金</span>
+                                        <span class="font-medium">可</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-600">電子マネー</span>
+                                        <span class="font-medium">可</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="section-title">Access</div>
+            <div class="concept-container">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden max-w-4xl mx-auto">
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe class="w-full h-[400px]" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3233.1234567890123!2d139.0836!3d35.9905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018c5c1c1c1c1c1%3A0x1c1c1c1c1c1c1c1!2z5a6u5Y2X5YyX5a6u5Y2X5YyX!5e0!3m2!1sja!2sjp!4v1234567890123!5m2!1sja!2sjp" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Contrail Coffeeの地図"></iframe>
+                    </div>
+                    <div class="p-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-medium text-gray-800">住所</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    〒368-0000<br>
+                                    埼玉県秩父市御花畑駅前<br>
+                                    Contrail Coffee
+                                </p>
+                            </div>
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-medium text-gray-800">アクセス</h3>
+                                <ul class="space-y-3 text-gray-600">
+                                    <li class="flex items-start">
+                                        <span>御花畑駅から徒歩0分</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span>駐車場・駐輪場なし</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 text-center">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+                                Google Mapsで開く
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-gradient-to-r from-primary to-primary/90 text-white py-8 sm:py-12 px-4" role="contentinfo">
-        <div class="max-w-4xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-6 md:mb-0 text-center md:text-left" data-aos="fade-right">
-                    <h3 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Contrail Coffee</h3>
-                    <p class="text-xs sm:text-sm opacity-80">© 2024 Contrail Coffee. All rights reserved.</p>
-                </div>
-                <div class="flex space-x-6" data-aos="fade-left">
-                    <a href="#" class="hover:text-secondary transition transform hover:scale-110" aria-label="Instagram">
-                        <i class="fab fa-instagram text-xl sm:text-2xl" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" class="hover:text-secondary transition transform hover:scale-110" aria-label="Twitter">
-                        <i class="fab fa-twitter text-xl sm:text-2xl" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="mt-6 sm:mt-8 text-center text-xs sm:text-sm opacity-80" data-aos="fade-up">
-                <p>お問い合わせ: <a href="mailto:info@contrailcoffee.com" class="hover:text-secondary">info@contrailcoffee.com</a></p>
-            </div>
-        </div>
+    <footer class="bg-black text-white text-center py-8 mt-12">
+        <div class="text-sm">© 2024 Contrail Coffee</div>
     </footer>
-
     <script>
-        // ローディングアニメーション
-        const loadingLogo = document.getElementById('loadingLogo');
-        const mainContent = document.querySelector('main');
+        window.addEventListener('DOMContentLoaded', function() {
+            const main = document.querySelector('.logo-main');
+            const line = document.querySelector('.logo-line');
+            const dot = document.querySelector('.logo-dot');
 
-        // 初期状態の設定
-        document.documentElement.style.height = '100vh';
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.height = '100vh';
-        document.body.style.overflow = 'hidden';
-        document.body.style.margin = '0';
-        document.body.style.padding = '0';
-
-        // ローディングアニメーションを表示
-        loadingLogo.classList.add('show');
-        
-        // 3秒後にローディングを非表示
-        setTimeout(() => {
-            loadingLogo.classList.add('hide');
-            if (mainContent) {
-                mainContent.classList.add('visible');
-                mainContent.style.display = 'block';
-            }
-            
-            // アニメーション完了後に要素を完全に削除
             setTimeout(() => {
-                loadingLogo.style.display = 'none';
-                document.documentElement.style.overflow = 'auto';
-                document.body.style.overflow = 'auto';
-                document.documentElement.style.height = 'auto';
-                document.body.style.height = 'auto';
-            }, 500);
-        }, 3000);
+                main.style.opacity = 1;
+                main.style.transform = 'scale(1)';
+            }, 200);
 
-        // AOSの初期化
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic',
-            delay: 100
-        });
+            setTimeout(() => {
+                line.style.opacity = 1;
+                line.style.clipPath = 'inset(0 0 0 0)';
+            }, 800);
 
-        // スクロールアニメーション
-        document.addEventListener('DOMContentLoaded', () => {
-            const sections = document.querySelectorAll('section');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
+            setTimeout(() => {
+                dot.style.opacity = 1;
+                dot.style.top = '0px';
+            }, 1800);
 
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // スムーズスクロール
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hide');
+                document.querySelector('main').classList.add('visible');
+            }, 2500);
         });
     </script>
 </body>
