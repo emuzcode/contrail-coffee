@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contrail coffee and chocolate</title>
     <meta name="description" content="ミニマル＆モノトーンなコーヒーショップの公式サイト">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono:wght@400;700&display=swap">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Noto Sans JP', 'sans-serif'],
+                        sans: ['Space Mono', 'monospace'],
+                        mono: ['Space Mono', 'monospace'],
                     },
                     spacing: {
                         '128': '32rem',
@@ -157,6 +158,9 @@
                 line-height: 1.6;
             }
         }
+        .japanese-text {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900 font-sans">
@@ -175,23 +179,23 @@
         </section>
         <section class="concept w-full bg-black py-24 md:py-32 mb-16">
             <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-col md:items-center md:gap-16">
-                <div class="max-w-[800px] px-2 mb-8 md:mb-0 md:px-0">
-                    <div class="mb-12 md:mb-16">
-                        <p class="text-[2.0rem] md:text-[2.8rem] leading-[1.4] text-white mb-2 md:mb-3 font-extralight italic">
+                <div class="max-w-[800px] px-2 mb-2 md:mb-0 md:px-0">
+                    <div class="mb-4 md:mb-2">
+                        <p class="text-2xl leading-1 text-white font-extralight text-justify">
                             Enjoy a cup of coffee
                         </p>
-                        <p class="text-[2.6rem] md:text-[3.2rem] leading-[0.4] text-white mb-8 md:mb-10 font-extralight italic">
+                        <p class="text-4xl leading-1 text-white font-extralight text-justify">
                             Have a good day
                         </p>
-                        <p class="text-[1.2rem] md:text-[1.6rem] leading-[0.4] text-white mb-2 md:mb-3 font-extralight italic">
+                        <p class="text-base leading-1 text-white font-extralight text-justify mt-4">
                             Specialty Coffee from New Zealand,
                         </p>
-                        <p class="text-[1.6rem] md:text-[2.0rem] leading-[1.4] text-white mb-8 md:mb-10 font-extralight italic">
+                        <p class="text-xl leading-1 text-white font-extralight text-justify">
                             delivered to Ohanabatake
                         </p>
                     </div>
                 </div>
-                <div class="writing-vertical text-[1rem] md:text-[1.2rem] leading-[2] text-white font-light tracking-tight p-6 md:p-8 italic md:writing-horizontal md:text-center md:w-full md:mb-8">
+                <div class="writing-vertical text-[1rem] md:text-[1.2rem] leading-[2] text-white font-light tracking-tight p-6 md:p-8 italic md:writing-horizontal md:text-center md:w-full mb-8">
                     御花畑に届いた<br>
                     ニュージーランド発の<br>
                     スペシャルティコーヒー
