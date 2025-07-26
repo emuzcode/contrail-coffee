@@ -202,9 +202,13 @@
           background-attachment: scroll;
           /* 固定サイズでリサイズ処理を軽減 */
           background-size: cover;
+          background-position: center center;
           /* スクロール最適化 */
           -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
+          /* LINEアプリ対応: ビューポート変更時のちらつき防止 */
+          -webkit-overflow-scrolling: touch;
+          overflow: hidden;
         }
         
         /* コンセプトセクション全体の最適化 */
@@ -213,6 +217,26 @@
           will-change: transform;
           /* 合成レイヤーに移動 */
           transform: translateZ(0);
+          /* ビューポート変更時の再描画を最小化 */
+          -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
+      }
+      
+      /* LINEアプリ内でのビューポート安定化 */
+      @media (max-width: 640px) {
+        .concept-bg {
+          /* 固定サイズでビューポート変更の影響を最小化 */
+          background-size: 100% auto;
+          background-repeat: no-repeat;
+          background-position: center top;
+          /* ハードウェアアクセラレーション強化 */
+          -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+          -webkit-perspective: 1000px;
+          perspective: 1000px;
         }
       }
   </style>
@@ -668,7 +692,7 @@
           date.setDate(startDate.getDate() + i);
 
           const dayElement = document.createElement('div');
-          dayElement.className = 'calendar-day text-center py-2 sm:py-3 text-base sm:text-lg font-medium cursor-pointer rounded-lg transition-all duration-300 min-h-[48px] sm:min-h-[40px] flex flex-col items-center justify-center touch-manipulation';
+          dayElement.className = 'calendar-day text-center py-2 sm:py-3 text-base sm:text-lg font-medium cursor-pointer rounded-lg transition-all duration-300 min-h-[52px] sm:min-h-[44px] flex flex-col items-center justify-center touch-manipulation';
           dayElement.textContent = date.getDate();
 
           const isCurrentMonth = date.getMonth() === month;
@@ -679,13 +703,13 @@
             dayElement.className += ' text-gray-300';
             dayElement.textContent = date.getDate();
           } else if (isBusinessOpen) {
-            dayElement.className += ' bg-gray-900 text-white font-bold hover:bg-gray-800 shadow-md hover:shadow-lg hover:scale-105';
+            dayElement.className += ' bg-gray-800 text-white font-medium hover:bg-gray-700 shadow-sm hover:shadow hover:scale-105';
             dayElement.title = '営業日';
-            dayElement.textContent = date.getDate();
+            dayElement.innerHTML = `${date.getDate()}<div class="text-xs leading-none mt-0.5 opacity-80">●</div>`;
           } else {
-            dayElement.className += ' bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:scale-105';
+            dayElement.className += ' bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200 hover:scale-105';
             dayElement.title = '休業日';
-            dayElement.textContent = date.getDate();
+            dayElement.innerHTML = `${date.getDate()}<div class="text-xs leading-none mt-0.5 opacity-60">-</div>`;
           }
 
           calendarDays.appendChild(dayElement);
@@ -706,6 +730,41 @@
       renderCalendar();
     }
 
+    // LINEアプリ内でのビューポート変更対策
+    function stabilizeViewport() {
+      let lastViewportHeight = window.innerHeight;
+      let resizeTimeout;
+      
+      function handleResize() {
+        const currentHeight = window.innerHeight;
+        const heightDiff = Math.abs(currentHeight - lastViewportHeight);
+        
+        // 小さな変更（LINE検索バーなど）は無視
+        if (heightDiff < 50) {
+          return;
+        }
+        
+        // 大きな変更の場合のみ背景を再描画
+        const conceptBg = document.querySelector('.concept-bg');
+        if (conceptBg) {
+          conceptBg.style.transform = 'translate3d(0, 0, 0)';
+          // 強制的にGPUレイヤーを更新
+          conceptBg.style.willChange = 'transform';
+          setTimeout(() => {
+            conceptBg.style.willChange = 'auto';
+          }, 100);
+        }
+        
+        lastViewportHeight = currentHeight;
+      }
+      
+      // リサイズイベントをデバウンス
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(handleResize, 100);
+      });
+    }
+
     // DOM準備完了後にカレンダーを初期化
     function startCalendar() {
       setTimeout(() => {
@@ -715,8 +774,10 @@
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', startCalendar);
+      document.addEventListener('DOMContentLoaded', stabilizeViewport);
     } else {
       startCalendar();
+      stabilizeViewport();
     }
 
 
