@@ -587,10 +587,14 @@
 
 
 
-      // カレンダー機能
-      initializeCalendar();
     });
 
+
+
+    // バージョン確認用 - v2.0
+    window.contrailCalendarVersion = "2.0";
+
+    // カレンダー機能を先に定義
     function initializeCalendar() {
       const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
       let currentDate = new Date();
@@ -649,17 +653,22 @@
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
 
-        document.getElementById('monthYear').textContent = `${year}年${monthNames[month]}`;
+        const monthYearElement = document.getElementById('monthYear');
+        if (monthYearElement) {
+          monthYearElement.textContent = `${year}年${monthNames[month]}`;
+        }
 
         const calendarDays = document.getElementById('calendarDays');
+        if (!calendarDays) {
+          return;
+        }
         calendarDays.innerHTML = '';
-
         for (let i = 0; i < 42; i++) {
           const date = new Date(startDate);
           date.setDate(startDate.getDate() + i);
 
           const dayElement = document.createElement('div');
-          dayElement.className = 'calendar-day text-center py-2 sm:py-2 text-sm cursor-pointer rounded-lg transition-all duration-300 min-h-[48px] sm:min-h-[40px] flex flex-col items-center justify-center touch-manipulation';
+          dayElement.className = 'calendar-day text-center py-2 sm:py-3 text-base sm:text-lg font-medium cursor-pointer rounded-lg transition-all duration-300 min-h-[48px] sm:min-h-[40px] flex flex-col items-center justify-center touch-manipulation';
           dayElement.textContent = date.getDate();
 
           const isCurrentMonth = date.getMonth() === month;
@@ -668,18 +677,20 @@
 
           if (!isCurrentMonth) {
             dayElement.className += ' text-gray-300';
+            dayElement.textContent = date.getDate();
           } else if (isBusinessOpen) {
-            dayElement.className += ' bg-gray-800 text-white font-medium hover:bg-gray-700 shadow-sm hover:shadow hover:scale-105';
+            dayElement.className += ' bg-gray-900 text-white font-bold hover:bg-gray-800 shadow-md hover:shadow-lg hover:scale-105';
             dayElement.title = '営業日';
-            dayElement.innerHTML = `${date.getDate()}<div class="text-xs leading-none">●</div>`;
+            dayElement.textContent = date.getDate();
           } else {
-            dayElement.className += ' bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200 hover:scale-105';
+            dayElement.className += ' bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:scale-105';
             dayElement.title = '休業日';
-            dayElement.innerHTML = `${date.getDate()}<div class="text-xs leading-none">-</div>`;
+            dayElement.textContent = date.getDate();
           }
 
           calendarDays.appendChild(dayElement);
         }
+
       }
 
       document.getElementById('prevMonth').addEventListener('click', () => {
@@ -693,6 +704,19 @@
       });
 
       renderCalendar();
+    }
+
+    // DOM準備完了後にカレンダーを初期化
+    function startCalendar() {
+      setTimeout(() => {
+        initializeCalendar();
+      }, 200);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startCalendar);
+    } else {
+      startCalendar();
     }
 
 
