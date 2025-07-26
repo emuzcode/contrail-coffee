@@ -1,439 +1,707 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contrail coffee and chocolate</title>
-    <meta name="description" content="ミニマル＆モノトーンなコーヒーショップの公式サイト">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono:wght@400;700&display=swap">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Space Mono', 'monospace'],
-                        mono: ['Space Mono', 'monospace'],
-                    },
-                    spacing: {
-                        '128': '32rem',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* ローディングアニメーション用のスタイル */
-        #loading {
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s;
-        }
-        #loading.hide {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .logo-main {
-            display: block;
-            width: 100%;
-            opacity: 0;
-            transform: scale(0.92);
-            transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
-        }
-        .logo-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            opacity: 0;
-            clip-path: inset(0 100% 0 0);
-            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
-            transition: opacity 0.2s, clip-path 1.2s cubic-bezier(.4,0,.2,1);
-        }
-        .logo-dot {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            width: 100%;
-            opacity: 0;
-            transition: opacity 0.3s, top 0.7s cubic-bezier(.4,1.6,.2,1);
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
-        }
-        .section {
-            padding: 4rem 1rem;
-        }
-        @media (max-width: 768px) {
-            .section {
-                padding: 2rem 1rem;
-            }
-        }
-        .section-title {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-        }
-        .menu-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 0 1rem;
-        }
-        .menu-item-full {
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-        .menu-item-full:hover {
-            transform: translateY(-4px);
-        }
-        .menu-name {
-            font-size: 1.25rem;
-            font-weight: 500;
-            padding: 1rem;
-            margin: 0;
-        }
-        .menu-description {
-            font-size: 0.9rem;
-            color: #666;
-            padding: 0 1rem 1rem;
-            margin: 0;
-        }
-        .hours-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: center;
-        }
-        .hours-list li {
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-        .access-map {
-            width: 100%;
-            height: 300px;
-            border: none;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-        }
-        .concept-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-        .concept-image img {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            display: block;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        }
-        .concept-content p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #333;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-        @media (max-width: 768px) {
-            .concept-content p {
-                font-size: 1rem;
-                line-height: 1.6;
-            }
-        }
-        .japanese-text {
-            font-family: 'Noto Sans JP', sans-serif;
-        }
-    </style>
+  <!-- Meta Information -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noarchive">
+  <title>Contrail Coffee & Chocolate</title>
+  <meta name="description" content="2026年、本格オープン予定。Contrail は「澄んだ余白に、香りが残るひととき。」をコンセプトに、秩父・東町に誕生するコーヒーとチョコレートの小さな喫茶店です。プレオープン期間中は、不定期営業にて、ニュージーランド発のスペシャルティコーヒーとクラフトチョコレートをゆったりとお楽しみいただけます。営業日につきましては営業日カレンダーをご確認のうえ、ぜひ静かな空と余韻を味わいにお越しください。">
+  <meta name="keywords" content="Contrail, コントレイル, コーヒー, チョコレート, コーヒーショップ, コーヒーストア, コーヒー専門店, コーヒー豆, コーヒー粉, コーヒー粉ブレンド, コーヒー粉ブレンド, カフェ, 秩父, 東町">
+  <meta name="author" content="Contrail">
+  <meta name="copyright" content="2025 Contrail">
+  <meta name="category" content="コーヒー, チョコレート, カフェ, 喫茶店">
+  <meta name="language" content="ja">
+  <meta name="revisit-after" content="1 days">
+  <meta name="google" content="notranslate">
+  <meta name="google-site-verification" content="google-site-verification=google-site-verification">
+  <link rel="canonical" href="https://www.contrail.life">
+
+  <!-- OGP (Open Graph Protocol) -->
+  <meta property="og:title" content="Contrail">
+  <meta property="og:description" content="2026年、本格オープン予定。Contrail は「澄んだ余白に、香りが残るひととき。」をコンセプトに、秩父・東町に誕生するコーヒーとチョコレートの小さな喫茶店です。プレオープン期間中は、不定期営業にて、ニュージーランド発のスペシャルティコーヒーとクラフトチョコレートをゆったりとお楽しみいただけます。営業日につきましては営業日カレンダーをご確認のうえ、ぜひ静かな空と余韻を味わいにお越しください。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.contrail.life">
+  <meta property="og:image" content="https://www.contrail.life/assets/images/contrail-logo-transparent.png">
+  <meta property="og:site_name" content="Contrail">
+  <meta property="og:locale" content="ja_JP">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contrail">
+  <meta name="twitter:description" content="2026年、本格オープン予定。Contrail は「澄んだ余白に、香りが残るひととき。」をコンセプトに、秩父・東町に誕生するコーヒーとチョコレートの小さな喫茶店です。プレオープン期間中は、不定期営業にて、ニュージーランド発のスペシャルティコーヒーとクラフトチョコレートをゆったりとお楽しみいただけます。営業日につきましては営業日カレンダーをご確認のうえ、ぜひ静かな空と余韻を味わいにお越しください。">
+  <meta name="twitter:image" content="https://www.contrail.life/assets/images/contrail-logo-transparent.png">
+  <meta name="twitter:site" content="@contrail_coffee">
+
+  <!-- Favicon & Icons -->
+  <link rel="icon" type="image/png" href="assets/images/contrail-logo-transparent.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/contrail-logo-transparent.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/contrail-logo-transparent.png">
+  <link rel="apple-touch-icon" href="assets/images/contrail-logo-transparent.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/contrail-logo-transparent.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/images/contrail-logo-transparent.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/images/contrail-logo-transparent.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/images/contrail-logo-transparent.png">
+  <meta name="msapplication-TileImage" content="assets/images/contrail-logo-transparent.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Contrail">
+
+
+  <!-- Resource Preloading for Performance -->
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="preload" href="assets/images/contrail-line.png" as="image">
+  <link rel="preload" href="assets/images/contrail-main.png" as="image">
+  <link rel="preload" href="assets/images/contrail-dot.png" as="image">
+  <link rel="preload" href="assets/images/contrail-logo-transparent.png" as="image">
+
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- External Scripts -->
+  <style>
+    /* ローディングアニメーション用のスタイル */
+    #loading {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s;
+    }
+    #loading.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .logo-main {
+      display: block;
+      width: 100%;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .logo-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+      transition: opacity 0.2s, clip-path 1.2s cubic-bezier(.4,0,.2,1);
+    }
+    .logo-dot {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.3s, top 0.7s cubic-bezier(.4,1.6,.2,1);
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
+    }
+
+    .japanese-text {
+      font-family: 'Zen Old Mincho', serif;
+    }
+
+    /* ki-e-to.jp style video background */
+    .video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: drop-shadow(0px 0px rgba(0,0,0,0));
+      outline: none;
+      border: none;
+    }
+
+    /* 動画が利用できない場合は非表示 */
+    video.video-bg {
+      display: none;
+    }
+
+    /* スマホ対応の追加スタイル */
+    @media (max-width: 640px) {
+      /* スクロールのスムーズさを向上 */
+      html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* タップハイライトの色を設定 */
+      * {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+
+      /* 文字選択を無効化（UI要素） */
+      button, .calendar-day {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      /* Main content fade-in */
+      main {
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+    }
+  </style>
 </head>
-<body class="bg-white text-gray-900 font-sans">
-    <div id="loading">
-        <div class="w-[640px] max-w-[90vw] mx-auto flex items-center justify-center flex-col relative">
-            <img class="logo-line" src="assets/images/contrail-line.png" alt="contrailの上の線" />
-            <img class="logo-main" src="assets/images/contrail-main.png" alt="contrail本体" />
-            <img class="logo-dot" src="assets/images/contrail-dot.png" alt="iの点" />
-        </div>
+<body class="bg-white text-gray-900 font-zen">
+  <div id="loading">
+    <div class="w-[640px] max-w-[85vw] sm:max-w-[90vw] mx-auto flex items-center justify-center flex-col relative">
+      <img class="logo-line" src="assets/images/contrail-line.png" alt="contrailの上の線" />
+      <img class="logo-main" src="assets/images/contrail-main.png" alt="contrail本体" />
+      <img class="logo-dot" src="assets/images/contrail-dot.png" alt="iの点" />
     </div>
-    <main class="container mx-auto">
-        <section class="min-h-screen flex flex-col justify-center items-center">
-            <div class="w-[640px] max-w-[90vw] mx-auto">
-                <img src="assets/images/contrail-logo-transparent.png" alt="Contrail Coffee ロゴ" class="w-full" />
-            </div>
-        </section>
-        <section class="concept w-full bg-black py-24 md:py-32 mb-16">
-            <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col md:flex-col md:items-center md:gap-16">
-                <div class="max-w-[800px] px-2 mb-2 md:mb-0 md:px-0">
-                    <div class="mb-4 md:mb-2">
-                        <p class="text-2xl leading-1 text-white font-extralight text-justify">
-                            Enjoy a cup of coffee
-                        </p>
-                        <p class="text-4xl leading-1 text-white font-extralight text-justify">
-                            Have a good day
-                        </p>
-                        <p class="text-base leading-1 text-white font-extralight text-justify mt-4">
-                            Specialty Coffee from New Zealand,
-                        </p>
-                        <p class="text-xl leading-1 text-white font-extralight text-justify">
-                            delivered to Ohanabatake
-                        </p>
-                    </div>
-                </div>
-                <div class="writing-vertical text-[1rem] md:text-[1.2rem] leading-[2] text-white font-light tracking-tight p-6 md:p-8 italic md:writing-horizontal md:text-center md:w-full mb-8">
-                    御花畑に届いた<br>
-                    ニュージーランド発の<br>
-                    スペシャルティコーヒー
-                </div>
-                <div class="flex justify-center">
-                    <a href="#" class="about-btn inline-block px-8 md:px-12 py-3 md:py-4 border border-white text-white no-underline text-[0.9rem] md:text-[1.1rem] tracking-wider relative overflow-hidden md:w-auto md:text-center md:rounded md:mt-1 hover:text-black group transition-colors duration-300">
-                        <span class="relative z-10 group-hover:text-black transition-colors duration-300">About Us</span>
-                        <span class="absolute inset-0 bg-white transform -translate-x-full transition-transform duration-300 ease-in-out z-0 group-hover:translate-x-0"></span>
-                    </a>
-                </div>
-            </div>
-        </section>
-        <section class="section">
-            <div class="section-title">Menu</div>
-            <div class="menu-list">
-                <div class="menu-item-full">
-                    <h3 class="menu-name">Hand Drip Coffee</h3>
-                    <img src="assets/images/coffee-1.jpg" alt="Hand Drip Coffee" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;" loading="lazy">
-                    <p class="menu-description">Carefully brewed single-origin coffee using our signature hand drip method.</p>
-                </div>
-                <div class="menu-item-full">
-                    <h3 class="menu-name">Cafe Latte</h3>
-                    <img src="assets/images/coffee-2.jpg" alt="Cafe Latte" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;" loading="lazy">
-                    <p class="menu-description">Smooth and creamy latte made with our house blend espresso and steamed milk.</p>
-                </div>
-            </div>
-        </section>
-        <section class="section">
-            <div class="section-title">Our Coffee</div>
-            <div class="concept-container px-4 md:px-0">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center max-w-7xl mx-auto">
-                    <div class="relative">
-                        <div class="aspect-w-4 aspect-h-3 rounded-xl md:rounded-2xl overflow-hidden">
-                            <img src="assets/images/coffee-beans.jpg" alt="Single Origin Coffee Beans" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
-                        </div>
-                        <div class="absolute -bottom-4 -right-4 md:-bottom-8 md:-right-8 bg-white p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg">
-                            <p class="text-xs md:text-sm text-gray-500">Single Origin</p>
-                            <p class="text-base md:text-xl font-medium">ニュージーランド産</p>
-                        </div>
-                    </div>
-                    <div class="space-y-6 md:space-y-12">
-                        <div>
-                            <h3 class="text-xl md:text-3xl font-light mb-3 md:mb-6">スペシャルティコーヒーへのこだわり</h3>
-                            <p class="text-sm md:text-lg text-gray-600 leading-relaxed md:leading-loose">
-                                厳選されたシングルオリジンの豆を使用し、<br class="hidden md:block">
-                                丁寧なハンドドリップで一杯一杯を淹れています。<br class="hidden md:block">
-                                豆本来の個性と香りを最大限に引き出し、<br class="hidden md:block">
-                                あなたの特別なひとときをお届けします。
-                            </p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 md:gap-8">
-                            <div class="bg-gray-50 p-4 md:p-8 rounded-lg md:rounded-xl hover:bg-gray-100 transition-colors duration-300">
-                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">焙煎</h4>
-                                <p class="text-xs md:text-base text-gray-600">豆の個性を活かした独自の焙煎</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 md:p-8 rounded-lg md:rounded-xl hover:bg-gray-100 transition-colors duration-300">
-                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">抽出</h4>
-                                <p class="text-xs md:text-base text-gray-600">丁寧なハンドドリップ</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section bg-gray-50">
-            <div class="section-title">Our Craft Chocolate</div>
-            <div class="concept-container px-4 md:px-0">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center max-w-7xl mx-auto">
-                    <div class="space-y-6 md:space-y-12 order-2 md:order-1">
-                        <div>
-                            <h3 class="text-xl md:text-3xl font-light mb-3 md:mb-6">カカオ豆から作るクラフトチョコレート</h3>
-                            <p class="text-sm md:text-lg text-gray-600 leading-relaxed md:leading-loose">
-                                厳選されたカカオ豆を使用し、<br class="hidden md:block">
-                                一つ一つ丁寧に手作りしています。<br class="hidden md:block">
-                                素材の個性を活かした独自のレシピで、<br class="hidden md:block">
-                                あなただけの特別な味わいをお届けします。
-                            </p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 md:gap-8">
-                            <div class="bg-white p-4 md:p-8 rounded-lg md:rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
-                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">原料</h4>
-                                <p class="text-xs md:text-base text-gray-600">厳選されたカカオ豆</p>
-                            </div>
-                            <div class="bg-white p-4 md:p-8 rounded-lg md:rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
-                                <h4 class="text-base md:text-xl font-medium mb-1 md:mb-3">製法</h4>
-                                <p class="text-xs md:text-base text-gray-600">丁寧な手作り製法</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="relative order-1 md:order-2">
-                        <div class="aspect-w-4 aspect-h-3 rounded-xl md:rounded-2xl overflow-hidden">
-                            <img src="assets/images/pastry.jpg" alt="Craft Chocolate" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
-                        </div>
-                        <div class="absolute -bottom-4 -left-4 md:-bottom-8 md:-left-8 bg-white p-4 md:p-8 rounded-xl md:rounded-2xl shadow-lg">
-                            <p class="text-xs md:text-sm text-gray-500">Craft Chocolate</p>
-                            <p class="text-base md:text-xl font-medium">クラフトチョコレート</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section">
-            <div class="section-title">Business Hours</div>
-            <div class="concept-container">
-                <div class="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="space-y-6">
-                            <div>
-                                <h3 class="text-lg font-medium mb-3 text-gray-800">営業時間</h3>
-                                <ul class="space-y-3">
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">平日</span>
-                                        <span class="font-medium">8:00〜16:00</span>
-                                    </li>
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">土日祝</span>
-                                        <span class="font-medium">9:00〜17:00</span>
-                                    </li>
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">定休日</span>
-                                        <span class="font-medium text-red-500">火曜・水曜</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-medium mb-3 text-gray-800">ラストオーダー</h3>
-                                <ul class="space-y-3">
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">ドリンク</span>
-                                        <span class="font-medium">閉店30分前</span>
-                                    </li>
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">フード</span>
-                                        <span class="font-medium">閉店1時間前</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div>
-                                <h3 class="text-lg font-medium mb-3 text-gray-800">施設情報</h3>
-                                <ul class="space-y-3">
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">席数</span>
-                                        <span class="font-medium">20席</span>
-                                    </li>
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">Wi-Fi</span>
-                                        <span class="font-medium">無料</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-medium mb-3 text-gray-800">支払い方法</h3>
-                                <ul class="space-y-3">
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">現金</span>
-                                        <span class="font-medium">可</span>
-                                    </li>
-                                    <li class="flex items-center justify-between">
-                                        <span class="text-gray-600">電子マネー</span>
-                                        <span class="font-medium">可</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section">
-            <div class="section-title">Access</div>
-            <div class="concept-container">
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden max-w-4xl mx-auto">
-                    <div class="aspect-w-16 aspect-h-9">
-                        <iframe class="w-full h-[400px]" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3233.1234567890123!2d139.0836!3d35.9905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018c5c1c1c1c1c1%3A0x1c1c1c1c1c1c1c1!2z5a6u5Y2X5YyX5a6u5Y2X5YyX!5e0!3m2!1sja!2sjp!4v1234567890123!5m2!1sja!2sjp" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Contrail Coffeeの地図"></iframe>
-                    </div>
-                    <div class="p-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="space-y-4">
-                                <h3 class="text-xl font-medium text-gray-800">住所</h3>
-                                <p class="text-gray-600 leading-relaxed">
-                                    〒368-0000<br>
-                                    埼玉県秩父市御花畑駅前<br>
-                                    Contrail Coffee
-                                </p>
-                            </div>
-                            <div class="space-y-4">
-                                <h3 class="text-xl font-medium text-gray-800">アクセス</h3>
-                                <ul class="space-y-3 text-gray-600">
-                                    <li class="flex items-start">
-                                        <span>御花畑駅から徒歩0分</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <span>駐車場・駐輪場なし</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="mt-8 text-center">
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-50 transition-colors duration-200">
-                                Google Mapsで開く
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer class="bg-black text-white text-center py-8 mt-12">
-        <div class="text-sm">© 2024 Contrail Coffee</div>
-    </footer>
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            const main = document.querySelector('.logo-main');
-            const line = document.querySelector('.logo-line');
-            const dot = document.querySelector('.logo-dot');
+  </div>
 
-            setTimeout(() => {
-                main.style.opacity = 1;
-                main.style.transform = 'scale(1)';
-            }, 200);
+  <main>
+    <!-- メインロゴセクション -->
+    <section class="min-h-screen flex flex-col justify-center items-center bg-white px-4 sm:px-6">
+      <div class="w-[640px] max-w-[85vw] sm:max-w-[90vw] mx-auto">
+        <img src="assets/images/contrail-logo-transparent.png" alt="Contrail Coffee ロゴ" class="w-full" id="main-logo" />
+      </div>
+    </section>
 
-            setTimeout(() => {
-                line.style.opacity = 1;
-                line.style.clipPath = 'inset(0 0 0 0)';
-            }, 800);
+    <!-- コンセプトセクション -->
+    <section class="concept w-full bg-black relative overflow-hidden">
+      <!-- 背景画像 -->
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('assets/images/concept-image.png');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-gray-900/70"></div>
+      <div class="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12">
+        <div class="max-w-4xl mx-auto">
+          <!-- 詩的なメインメッセージ -->
+          <div class="text-center mb-12 sm:mb-16 md:mb-24 space-y-8 sm:space-y-12 md:space-y-16" id="concept-text">
+            <div class="space-y-6 sm:space-y-8 md:space-y-12">
+              <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white font-light leading-tight tracking-wide px-4">
+                Enjoy a cup of coffee<br>
+                Have a good day
+              </h1>
 
-            setTimeout(() => {
-                dot.style.opacity = 1;
-                dot.style.top = '0px';
-            }, 1800);
+              <div class="space-y-4 sm:space-y-6 md:space-y-8">
+                <p class="text-base sm:text-lg md:text-2xl lg:text-3xl text-white/90 font-light leading-relaxed tracking-wide px-4">
+                  Speciality coffee from New Zealand
+                </p>
+                <p class="text-base sm:text-lg md:text-2xl lg:text-3xl text-white/90 font-light leading-relaxed tracking-wide px-4">
+                  Delivered to Ohanabatake
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            setTimeout(() => {
-                document.getElementById('loading').classList.add('hide');
-                document.querySelector('main').classList.add('visible');
-            }, 2500);
-        });
-    </script>
+    <!-- メニュー - ki-e-to.jp風 -->
+    <section class="py-12 sm:py-16 md:py-20 lg:py-32 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12">
+        <div class="space-y-12 sm:space-y-16 lg:space-y-20" id="menu-text">
+          <h2 class="text-xl sm:text-2xl lg:text-3xl font-light text-gray-900 text-center">
+            Menu
+          </h2>
+
+          <!-- シンプルなメニューリスト -->
+          <div class="space-y-10 sm:space-y-12 lg:space-y-16">
+            <!-- ドリンク -->
+            <div class="space-y-6">
+              <h3 class="text-base sm:text-lg lg:text-xl font-light text-gray-600 tracking-wider text-left">Drink</h3>
+              <div class="space-y-3 sm:space-y-4 text-sm sm:text-base lg:text-lg font-light text-gray-900 max-w-md mx-auto">
+                <div class="flex justify-between items-center py-1">
+                  <span class="text-left">ドリップコーヒー</span>
+                  <span class="text-xs sm:text-sm text-gray-500 font-light ml-4 flex-shrink-0">Hot & Ice</span>
+                </div>
+                <div class="flex justify-between items-center py-1">
+                  <span class="text-left">フラットホワイト</span>
+                  <span class="text-xs sm:text-sm text-gray-500 font-light ml-4 flex-shrink-0">Hot & Ice</span>
+                </div>
+                <div class="flex justify-between items-center py-1">
+                  <span class="text-left">カフェ・オ・レ</span>
+                  <span class="text-xs sm:text-sm text-gray-500 font-light ml-4 flex-shrink-0">Hot & Ice</span>
+                </div>
+                <div class="flex justify-between items-center py-1">
+                  <span class="text-left">ブレックファーストティー</span>
+                  <span class="text-xs sm:text-sm text-gray-500 font-light ml-4 flex-shrink-0">Hot & Ice</span>
+                </div>
+                <div class="flex justify-between items-center py-1">
+                  <span class="text-left">ブレックファーストミルクティー</span>
+                  <span class="text-xs sm:text-sm text-gray-500 font-light ml-4 flex-shrink-0">Hot & Ice</span>
+                </div>
+                <div class="flex justify-between items-center py-1">
+                  <span class="text-left">アールグレイラテ</span>
+                  <span class="text-xs sm:text-sm text-gray-500 font-light ml-4 flex-shrink-0">Hot</span>
+                </div>
+                <div class="flex justify-between items-center py-1">
+                  <span class="text-left">チョコレートドリンク</span>
+                  <span class="text-xs sm:text-sm text-gray-500 font-light ml-4 flex-shrink-0">Hot & Ice</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- フード -->
+            <div class="space-y-6">
+              <h3 class="text-base sm:text-lg lg:text-xl font-light text-gray-600 tracking-wider text-left">Food</h3>
+              <div class="space-y-3 sm:space-y-4 text-sm sm:text-base lg:text-lg font-light text-gray-900 max-w-md mx-auto">
+                <p>チョコレートドーナツ</p>
+                <p>チョコチップスコーン</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News - ki-e-to.jp風 -->
+    <section class="py-12 sm:py-16 md:py-20 lg:py-32 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12">
+        <div class="space-y-12 sm:space-y-16 lg:space-y-20" id="news-text">
+          <h2 class="text-xl sm:text-2xl lg:text-3xl font-light text-gray-900 text-center">
+            News
+          </h2>
+
+          <!-- ニュース項目 -->
+          <div class="space-y-8 sm:space-y-10 lg:space-y-12">
+            <!-- プレオープン情報 -->
+            <article class="border-b border-gray-100 pb-6 sm:pb-8">
+              <div class="space-y-4">
+                <div class="flex items-start space-x-4">
+                  <time class="text-sm sm:text-base text-gray-500 font-light min-w-[100px] sm:min-w-[120px]">2025.7.27</time>
+                  <div class="flex-1">
+                    <h3 class="text-base sm:text-lg font-light text-gray-900 mb-3">プレオープンのお知らせ</h3>
+                    <div class="text-sm sm:text-base text-gray-700 font-light space-y-3">
+                      <p>現在、プレオープン期間中です。正式な営業開始に向けて準備を進めております。</p>
+                      <p>営業日は不定期となっておりますので、下記のカレンダーにてご確認のうえお越しください。</p>
+                      <p>皆さまのお越しを心よりお待ちしております。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- お知らせ -->
+            <article class="border-b border-gray-100 pb-6 sm:pb-8">
+              <div class="space-y-4">
+                <div class="flex items-start space-x-4">
+                  <time class="text-sm sm:text-base text-gray-500 font-light min-w-[100px] sm:min-w-[120px]">2025.5.5</time>
+                  <div class="flex-1">
+                    <h3 class="text-base sm:text-lg font-light text-gray-900 mb-3">ウェブサイト開設</h3>
+                    <div class="text-sm sm:text-base text-gray-700 font-light space-y-3">
+                      <p>Contrail Coffee & Chocolate の公式ウェブサイトを開設いたしました。</p>
+                      <p>最新情報はこちらのニュースページにてお知らせいたします。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 店舗準備情報 -->
+            <article>
+              <div class="space-y-4">
+                <div class="flex items-start space-x-4">
+                  <time class="text-sm sm:text-base text-gray-500 font-light min-w-[100px] sm:min-w-[120px]">2025.4.1</time>
+                  <div class="flex-1">
+                    <h3 class="text-base sm:text-lg font-light text-gray-900 mb-3">店舗準備中</h3>
+                    <div class="text-sm sm:text-base text-gray-700 font-light space-y-3">
+                      <p>埼玉県秩父市東町にて、コーヒーショップの開店準備を進めております。</p>
+                      <p>ニュージーランド発のスペシャルティコーヒーとクラフトチョコレートをお楽しみいただけるよう、準備に取り組んでおります。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- インフォメーション - ki-e-to.jp風 -->
+    <section class="py-12 sm:py-16 md:py-20 lg:py-32 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12 text-center">
+        <div class="space-y-12 sm:space-y-16 lg:space-y-20" id="info-text">
+          <div class="space-y-10 sm:space-y-12 lg:space-y-16 text-sm sm:text-base md:text-lg lg:text-xl font-light text-gray-700">
+            <div class="space-y-6 sm:space-y-8">
+              <p class="text-lg sm:text-xl lg:text-2xl font-light text-gray-900">Business Days</p>
+              <p class="px-2">
+                営業日は下記のカレンダーにて<br class="sm:hidden">
+                ご確認ください。
+              </p>
+            </div>
+
+            <!-- カレンダーセクション -->
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 shadow-sm border border-gray-100">
+              <div class="space-y-6 sm:space-y-8">
+                <div class="calendar-container">
+                  <div class="flex items-center justify-center mb-6 sm:mb-8">
+                    <div class="flex items-center space-x-3 sm:space-x-6">
+                      <button id="prevMonth" class="p-3 sm:p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 touch-manipulation">
+                        <svg class="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                      </button>
+                      <h3 id="monthYear" class="text-base sm:text-lg lg:text-xl font-light text-gray-900 min-w-[100px] sm:min-w-[120px] text-center"></h3>
+                      <button id="nextMonth" class="p-3 sm:p-2 rounded-full hover:bg-gray-200 transition-colors duration-300 touch-manipulation">
+                        <svg class="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-7 gap-1 sm:gap-1 mb-2">
+                    <div class="text-center text-xs sm:text-xs lg:text-sm font-light text-gray-500 py-2">日</div>
+                    <div class="text-center text-xs sm:text-xs lg:text-sm font-light text-gray-500 py-2">月</div>
+                    <div class="text-center text-xs sm:text-xs lg:text-sm font-light text-gray-500 py-2">火</div>
+                    <div class="text-center text-xs sm:text-xs lg:text-sm font-light text-gray-500 py-2">水</div>
+                    <div class="text-center text-xs sm:text-xs lg:text-sm font-light text-gray-500 py-2">木</div>
+                    <div class="text-center text-xs sm:text-xs lg:text-sm font-light text-gray-500 py-2">金</div>
+                    <div class="text-center text-xs sm:text-xs lg:text-sm font-light text-gray-500 py-2">土</div>
+                  </div>
+
+                  <div id="calendarDays" class="grid grid-cols-7 gap-1 sm:gap-1">
+                    <!-- カレンダーの日付がJavaScriptで動的に生成されます -->
+                  </div>
+
+                  <!-- カレンダー下部の凡例 -->
+                  <div class="flex justify-center mt-6 space-x-8 text-xs sm:text-sm font-light">
+                    <div class="flex items-center">
+                      <div class="w-4 h-4 bg-gray-800 rounded-sm mr-2 flex items-center justify-center text-white text-xs">●</div>
+                      <span class="text-gray-700">営業日</span>
+                    </div>
+                    <div class="flex items-center">
+                      <div class="w-4 h-4 bg-gray-100 border border-gray-200 rounded-sm mr-2 flex items-center justify-center text-gray-600 text-xs">-</div>
+                      <span class="text-gray-700">休業日</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-3 sm:space-y-4 text-sm sm:text-base lg:text-lg">
+                  <p class="text-gray-600">営業時間</p>
+                  <p>10:00〜17:00（営業日のみ）</p>
+                  <p class="text-xs sm:text-sm text-gray-500">※詳細はNewsをご確認ください</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- アクセス - ki-e-to.jp風 -->
+    <section class="py-12 sm:py-16 md:py-20 lg:py-32 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12 text-center">
+        <div class="space-y-12 sm:space-y-16 lg:space-y-20" id="access-text">
+          <div class="space-y-10 sm:space-y-12 lg:space-y-16 text-sm sm:text-base md:text-lg lg:text-xl font-light text-gray-700">
+            <p class="px-2">
+              御花畑で皆さまをお迎えできる日を、<br class="sm:hidden">
+              心よりお待ちしております。
+            </p>
+
+            <!-- 地図セクション -->
+            <div class="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg">
+              <div class="aspect-w-16 aspect-h-9 relative">
+                <iframe class="w-full h-[200px] sm:h-[250px] md:h-[300px] lg:h-[400px]"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3232.9!2d139.0864!3d35.9906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s21-2+Higashimachi%2C+Chichibu%2C+Saitama+368-0042%2C+Japan!5e0!3m2!1sja!2sjp!4v1671234567890!5m2!1sja!2sjp"
+                  allowfullscreen
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="Contrail Coffee - 21-2 Higashimachi, Chichibu">
+                </iframe>
+              </div>
+            </div>
+
+            <div class="space-y-6 sm:space-y-8">
+              <div class="space-y-3 sm:space-y-4 text-sm sm:text-base lg:text-lg">
+                <div class="w-48 sm:w-56 lg:w-64 mx-auto mb-4">
+                  <img src="assets/images/contrail-logo-transparent.png" alt="Contrail Coffee & Chocolate" class="w-full" />
+                </div>
+                <p>〒368-0042</p>
+                <p>埼玉県秩父市東町21-2</p>
+              </div>
+
+              <div class="space-y-3 sm:space-y-4 text-sm sm:text-base lg:text-lg">
+                <p>駐車場・駐輪場なし</p>
+              </div>
+            </div>
+
+            <!-- Google Maps リンク -->
+            <div class="text-center">
+              <a href="https://www.google.com/maps/place/21-2+Higashimachi,+Chichibu,+Saitama+368-0042,+Japan" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center space-x-2 px-6 py-4 sm:px-6 sm:py-3 bg-white border border-gray-300 rounded-full text-gray-700 hover:bg-gray-50 transition-all duration-300 font-light text-sm sm:text-sm lg:text-base shadow-sm hover:shadow touch-manipulation">
+                <svg class="w-4 h-4 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                </svg>
+                <span>Google Maps で開く</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- フッター - ki-e-to.jp風 -->
+  <footer class="py-12 sm:py-16 md:py-20 lg:py-32 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12 text-center">
+      <p class="text-xs text-gray-500 font-light">
+        copyright© 合同会社コントレイル All Right Reserved
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Service Worker 登録
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            // アップデートチェック
+            registration.addEventListener('updatefound', function() {
+              const newWorker = registration.installing;
+
+              newWorker.addEventListener('statechange', function() {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // 必要に応じてユーザーに更新を通知
+                }
+              });
+            });
+          })
+          .catch(function(error) {
+            // Service Worker登録失敗時は無視
+          });
+      });
+    }
+
+    // パフォーマンス監視
+    window.addEventListener('load', function() {
+      if ('performance' in window) {
+        setTimeout(function() {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          const loadTime = perfData.loadEventEnd - perfData.fetchStart;
+          const domComplete = perfData.domComplete - perfData.fetchStart;
+
+          // Core Web Vitals (LCP, FID, CLS) のための準備
+          if ('PerformanceObserver' in window) {
+            // Largest Contentful Paint (LCP)
+            new PerformanceObserver((entryList) => {
+              const entries = entryList.getEntries();
+              const lastEntry = entries[entries.length - 1];
+              // LCP計測のみ、ログ出力なし
+            }).observe({entryTypes: ['largest-contentful-paint']});
+
+            // First Input Delay (FID)
+            new PerformanceObserver((entryList) => {
+              const entries = entryList.getEntries();
+              entries.forEach((entry) => {
+                // FID計測のみ、ログ出力なし
+              });
+            }).observe({entryTypes: ['first-input']});
+          }
+        }, 0);
+      }
+    });
+
+    // ローディングアニメーション制御
+    (function() {
+      // DOMContentLoadedより早く実行
+      const loading = document.querySelector('#loading');
+      const mainContent = document.querySelector("main");
+      
+      // sessionStorageで初回ロードかチェック
+      const hasVisited = sessionStorage.getItem('contrail-visited');
+      console.log('Session check:', hasVisited); // デバッグ用
+      
+      if (hasVisited === 'true') {
+        // 2回目以降：即座にローディングをスキップ
+        console.log('Skip loading animation'); // デバッグ用
+        if (loading) loading.style.display = 'none';
+        if (mainContent) mainContent.style.opacity = "1";
+        return;
+      }
+      
+      // 初回ロード時：sessionStorageに記録
+      sessionStorage.setItem('contrail-visited', 'true');
+      console.log('First visit - show loading animation'); // デバッグ用
+    })();
+
+    // デバッグ用：sessionStorageリセット機能
+    // コンソールで sessionStorage.removeItem('contrail-visited') を実行してリセット可能
+
+    window.addEventListener('DOMContentLoaded', function() {
+      const main = document.querySelector('.logo-main');
+      const line = document.querySelector('.logo-line');
+      const dot = document.querySelector('.logo-dot');
+      const loading = document.querySelector('#loading');
+      const mainContent = document.querySelector("main");
+
+      // sessionStorageで初回ロードかチェック（念のため再確認）
+      const hasVisited = sessionStorage.getItem('contrail-visited');
+
+      if (hasVisited === 'true' && loading && loading.style.display === 'none') {
+        // 既にスキップ済みの場合は何もしない
+        return;
+      }
+
+      // ローディングアニメーション実行
+      // 純粋なJavaScriptアニメーション
+      setTimeout(() => {
+        main.style.opacity = '1';
+        main.style.transform = 'scale(1)';
+      }, 200);
+
+      setTimeout(() => {
+        line.style.opacity = '1';
+        line.style.clipPath = 'inset(0 0 0 0)';
+      }, 800);
+
+      setTimeout(() => {
+        dot.style.opacity = '1';
+        dot.style.top = '0px';
+      }, 1800);
+
+      setTimeout(() => {
+        loading.style.opacity = '0';
+        loading.style.pointerEvents = 'none';
+      }, 2500);
+
+      // メインコンテンツのフェードイン
+      setTimeout(() => {
+        mainContent.style.opacity = "1";
+      }, 3000);
+
+
+
+      // カレンダー機能
+      initializeCalendar();
+    });
+
+    function initializeCalendar() {
+      const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+      let currentDate = new Date();
+
+      // ==========================================
+      // 営業日設定エリア（後で編集してください）
+      // ==========================================
+      const businessSettings = {
+        // 通常営業曜日の設定
+        // 0=日曜日, 1=月曜日, 2=火曜日, 3=水曜日, 4=木曜日, 5=金曜日, 6=土曜日
+        // 例: [1, 2, 3, 4, 5] = 平日営業
+        // 例: [0, 6] = 土日営業
+        // 例: [0, 1, 2, 3, 4, 5, 6] = 毎日営業
+        openDays: [], // 現在未設定（全て休業日）
+
+        // 特定日の休業（年末年始、臨時休業など）
+        // 'YYYY-MM-DD' 形式で指定
+        closedDates: [
+          // 例: '2024-12-29', '2024-12-30', '2024-12-31',
+          // 例: '2025-01-01', '2025-01-02', '2025-01-03'
+        ],
+
+        // 特定日の営業（祝日営業、イベント営業など）
+        // 'YYYY-MM-DD' 形式で指定
+        specialOpenDates: [
+          // 例: '2024-12-23', // 祝日営業
+          // 例: '2025-01-13'  // 成人の日営業
+        ]
+      };
+      // ==========================================
+
+      // 指定日が営業日かどうかを判定
+      function isOpenDay(date) {
+        const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        const dayOfWeek = date.getDay();
+
+        // 定休日チェック
+        if (businessSettings.closedDates.includes(dateString)) {
+          return false;
+        }
+
+        // 臨時営業日チェック
+        if (businessSettings.specialOpenDates.includes(dateString)) {
+          return true;
+        }
+
+        // 通常の営業曜日チェック
+        return businessSettings.openDays.includes(dayOfWeek);
+      }
+
+      function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startDate = new Date(firstDay);
+        startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+        document.getElementById('monthYear').textContent = `${year}年${monthNames[month]}`;
+
+        const calendarDays = document.getElementById('calendarDays');
+        calendarDays.innerHTML = '';
+
+        for (let i = 0; i < 42; i++) {
+          const date = new Date(startDate);
+          date.setDate(startDate.getDate() + i);
+
+          const dayElement = document.createElement('div');
+          dayElement.className = 'calendar-day text-center py-2 sm:py-2 text-sm cursor-pointer rounded-lg transition-all duration-300 min-h-[48px] sm:min-h-[40px] flex flex-col items-center justify-center touch-manipulation';
+          dayElement.textContent = date.getDate();
+
+          const isCurrentMonth = date.getMonth() === month;
+          const isBusinessOpen = isCurrentMonth && isOpenDay(date);
+          const isToday = date.toDateString() === new Date().toDateString();
+
+          if (!isCurrentMonth) {
+            dayElement.className += ' text-gray-300';
+          } else if (isBusinessOpen) {
+            dayElement.className += ' bg-gray-800 text-white font-medium hover:bg-gray-700 shadow-sm hover:shadow hover:scale-105';
+            dayElement.title = '営業日';
+            dayElement.innerHTML = `${date.getDate()}<div class="text-xs leading-none">●</div>`;
+          } else {
+            dayElement.className += ' bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200 hover:scale-105';
+            dayElement.title = '休業日';
+            dayElement.innerHTML = `${date.getDate()}<div class="text-xs leading-none">-</div>`;
+          }
+
+          calendarDays.appendChild(dayElement);
+        }
+      }
+
+      document.getElementById('prevMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+      });
+
+      document.getElementById('nextMonth').addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+      });
+
+      renderCalendar();
+    }
+
+
+
+
+  </script>
 </body>
 </html>
