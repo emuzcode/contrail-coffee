@@ -193,6 +193,14 @@
       backface-visibility: hidden;
       /* パフォーマンス最適化 */
       contain: layout style paint;
+      /* スクロール安定化 */
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
       /* モバイル専用最適化 */
@@ -225,20 +233,41 @@
         }
       }
       
-            /* ビューポート変更による背景画像の再描画を軽減 */
+            /* モバイルでの背景画像安定化強化 */
       @media (max-width: 640px) {
         .concept-bg {
           /* 固定サイズでビューポート変更の影響を軽減 */
           background-size: cover;
           background-repeat: no-repeat;
           background-position: center center;
-          /* ハードウェアアクセラレーション */
+          /* ハードウェアアクセラレーション強化 */
           -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
-          /* リサイズ時の再描画を軽減 */
+          /* スクロール安定化 */
           will-change: transform;
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
+          /* モバイル最適化 */
+          -webkit-overflow-scrolling: touch;
+          overflow: hidden;
+          /* 完全固定 */
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          z-index: 0 !important;
+          pointer-events: none !important;
+        }
+        
+        /* コンセプトセクション全体の安定化 */
+        .concept {
+          /* スクロール中の再計算を最小化 */
+          will-change: transform;
+          transform: translateZ(0);
+          /* モバイル最適化 */
+          -webkit-overflow-scrolling: touch;
+          overflow: hidden;
         }
       }
   </style>
@@ -732,31 +761,50 @@
       renderCalendar();
     }
 
-        // ビューポート変更による背景画像の再描画を軽減
+        // スクロール時の背景画像安定化
     function stabilizeBackground() {
-      // リサイズイベントをデバウンスして軽減
-      let resizeTimeout;
-      window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-          // 背景画像の再描画を最小限に抑制
-          const conceptBg = document.querySelector('.concept-bg');
-          if (conceptBg) {
-            // GPUレイヤーを維持
-            conceptBg.style.transform = 'translate3d(0, 0, 0)';
-            conceptBg.style.willChange = 'transform';
-          }
-        }, 200);
-      });
-      
-      // 初期状態で背景画像を安定化
+      // 背景画像を完全に固定
       const conceptBg = document.querySelector('.concept-bg');
       if (conceptBg) {
+        // 初期状態でGPUレイヤーに完全固定
         conceptBg.style.transform = 'translate3d(0, 0, 0)';
         conceptBg.style.willChange = 'transform';
         conceptBg.style.backfaceVisibility = 'hidden';
         conceptBg.style.webkitBackfaceVisibility = 'hidden';
+        conceptBg.style.position = 'absolute';
+        conceptBg.style.top = '0';
+        conceptBg.style.left = '0';
+        conceptBg.style.right = '0';
+        conceptBg.style.bottom = '0';
+        conceptBg.style.zIndex = '0';
+        conceptBg.style.pointerEvents = 'none';
+        
+        // スクロールイベントを無効化
+        conceptBg.style.contain = 'layout style paint';
       }
+      
+      // スクロールイベントを軽減
+      let scrollTimeout;
+      window.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          // スクロール後の安定化
+          if (conceptBg) {
+            conceptBg.style.transform = 'translate3d(0, 0, 0)';
+          }
+        }, 50);
+      }, { passive: true });
+      
+      // リサイズイベントも軽減
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          if (conceptBg) {
+            conceptBg.style.transform = 'translate3d(0, 0, 0)';
+          }
+        }, 100);
+      });
     }
 
     // DOM準備完了後にカレンダーを初期化
