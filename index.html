@@ -225,18 +225,20 @@
         }
       }
       
-      /* LINEアプリ内でのビューポート安定化 */
+            /* ビューポート変更による背景画像の再描画を軽減 */
       @media (max-width: 640px) {
         .concept-bg {
-          /* 固定サイズでビューポート変更の影響を最小化 */
-          background-size: 100% auto;
+          /* 固定サイズでビューポート変更の影響を軽減 */
+          background-size: cover;
           background-repeat: no-repeat;
-          background-position: center top;
-          /* ハードウェアアクセラレーション強化 */
+          background-position: center center;
+          /* ハードウェアアクセラレーション */
           -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
-          -webkit-perspective: 1000px;
-          perspective: 1000px;
+          /* リサイズ時の再描画を軽減 */
+          will-change: transform;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
         }
       }
   </style>
@@ -730,39 +732,31 @@
       renderCalendar();
     }
 
-    // LINEアプリ内でのビューポート変更対策
-    function stabilizeViewport() {
-      let lastViewportHeight = window.innerHeight;
+        // ビューポート変更による背景画像の再描画を軽減
+    function stabilizeBackground() {
+      // リサイズイベントをデバウンスして軽減
       let resizeTimeout;
-      
-      function handleResize() {
-        const currentHeight = window.innerHeight;
-        const heightDiff = Math.abs(currentHeight - lastViewportHeight);
-        
-        // 小さな変更（LINE検索バーなど）は無視
-        if (heightDiff < 50) {
-          return;
-        }
-        
-        // 大きな変更の場合のみ背景を再描画
-        const conceptBg = document.querySelector('.concept-bg');
-        if (conceptBg) {
-          conceptBg.style.transform = 'translate3d(0, 0, 0)';
-          // 強制的にGPUレイヤーを更新
-          conceptBg.style.willChange = 'transform';
-          setTimeout(() => {
-            conceptBg.style.willChange = 'auto';
-          }, 100);
-        }
-        
-        lastViewportHeight = currentHeight;
-      }
-      
-      // リサイズイベントをデバウンス
       window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(handleResize, 100);
+        resizeTimeout = setTimeout(() => {
+          // 背景画像の再描画を最小限に抑制
+          const conceptBg = document.querySelector('.concept-bg');
+          if (conceptBg) {
+            // GPUレイヤーを維持
+            conceptBg.style.transform = 'translate3d(0, 0, 0)';
+            conceptBg.style.willChange = 'transform';
+          }
+        }, 200);
       });
+      
+      // 初期状態で背景画像を安定化
+      const conceptBg = document.querySelector('.concept-bg');
+      if (conceptBg) {
+        conceptBg.style.transform = 'translate3d(0, 0, 0)';
+        conceptBg.style.willChange = 'transform';
+        conceptBg.style.backfaceVisibility = 'hidden';
+        conceptBg.style.webkitBackfaceVisibility = 'hidden';
+      }
     }
 
     // DOM準備完了後にカレンダーを初期化
@@ -774,10 +768,10 @@
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', startCalendar);
-      document.addEventListener('DOMContentLoaded', stabilizeViewport);
+      document.addEventListener('DOMContentLoaded', stabilizeBackground);
     } else {
       startCalendar();
-      stabilizeViewport();
+      stabilizeBackground();
     }
 
 
