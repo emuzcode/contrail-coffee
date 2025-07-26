@@ -160,12 +160,61 @@
         user-select: none;
       }
 
-      /* Main content fade-in */
-      main {
-        opacity: 0;
-        transition: opacity 1s ease;
+      /* スクロール性能向上 */
+      html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+      }
+
+      body {
+        /* iOS Safari での bounce 効果最適化 */
+        -webkit-overflow-scrolling: touch;
+        /* スクロール時のレイアウト再計算を最小化 */
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
       }
     }
+
+    /* Main content fade-in */
+    main {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    /* コンセプト背景画像の最適化 */
+    .concept-bg {
+      background-image: url('assets/images/concept-image.png');
+      /* GPU アクセラレーション */
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      /* iOS Safari 最適化 */
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      /* パフォーマンス最適化 */
+      contain: layout style paint;
+    }
+
+      /* モバイル専用最適化 */
+      @media (max-width: 768px) {
+        .concept-bg {
+          /* モバイルでの背景画像最適化 */
+          background-attachment: scroll;
+          /* 固定サイズでリサイズ処理を軽減 */
+          background-size: cover;
+          /* スクロール最適化 */
+          -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+        }
+        
+        /* コンセプトセクション全体の最適化 */
+        .concept {
+          /* スクロール中の再計算を最小化 */
+          will-change: transform;
+          /* 合成レイヤーに移動 */
+          transform: translateZ(0);
+        }
+      }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-zen">
@@ -188,7 +237,7 @@
     <!-- コンセプトセクション -->
     <section class="concept w-full bg-black relative overflow-hidden">
       <!-- 背景画像 -->
-      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('assets/images/concept-image.png');"></div>
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat concept-bg"></div>
       <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-gray-900/70"></div>
       <div class="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-12">
         <div class="max-w-4xl mx-auto">
@@ -470,46 +519,26 @@
   </footer>
 
   <script>
-        // Service Worker 登録（プッシュ通知用）
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            // アップデートチェック
-            registration.addEventListener('updatefound', function() {
-              const newWorker = registration.installing;
-              
-              newWorker.addEventListener('statechange', function() {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // 必要に応じてユーザーに更新を通知
-                }
-              });
-            });
-          })
-          .catch(function(error) {
-            // Service Worker登録失敗時は無視
-          });
-      });
-    }
 
-    
+
+
 
     // ローディングアニメーション制御
     (function() {
       // DOMContentLoadedより早く実行
       const loading = document.querySelector('#loading');
       const mainContent = document.querySelector("main");
-      
+
       // sessionStorageで初回ロードかチェック
       const hasVisited = sessionStorage.getItem('contrail-visited');
-      
+
       if (hasVisited === 'true') {
         // 2回目以降：即座にローディングをスキップ
         if (loading) loading.style.display = 'none';
         if (mainContent) mainContent.style.opacity = "1";
         return;
       }
-      
+
       // 初回ロード時：sessionStorageに記録
       sessionStorage.setItem('contrail-visited', 'true');
     })();
