@@ -55,7 +55,7 @@
   <meta name="apple-mobile-web-app-title" content="Contrail">
 
 
-  <!-- Resource Preloading for Performance -->
+  <!-- Resource Preloading -->
   <link rel="preload" href="styles.css" as="style">
   <link rel="preload" href="assets/images/contrail-line.png" as="image">
   <link rel="preload" href="assets/images/contrail-main.png" as="image">
@@ -470,7 +470,7 @@
   </footer>
 
   <script>
-    // Service Worker 登録
+        // Service Worker 登録（プッシュ通知用）
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js')
@@ -478,7 +478,7 @@
             // アップデートチェック
             registration.addEventListener('updatefound', function() {
               const newWorker = registration.installing;
-
+              
               newWorker.addEventListener('statechange', function() {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   // 必要に応じてユーザーに更新を通知
@@ -492,34 +492,7 @@
       });
     }
 
-    // パフォーマンス監視
-    window.addEventListener('load', function() {
-      if ('performance' in window) {
-        setTimeout(function() {
-          const perfData = performance.getEntriesByType('navigation')[0];
-          const loadTime = perfData.loadEventEnd - perfData.fetchStart;
-          const domComplete = perfData.domComplete - perfData.fetchStart;
-
-          // Core Web Vitals (LCP, FID, CLS) のための準備
-          if ('PerformanceObserver' in window) {
-            // Largest Contentful Paint (LCP)
-            new PerformanceObserver((entryList) => {
-              const entries = entryList.getEntries();
-              const lastEntry = entries[entries.length - 1];
-              // LCP計測のみ、ログ出力なし
-            }).observe({entryTypes: ['largest-contentful-paint']});
-
-            // First Input Delay (FID)
-            new PerformanceObserver((entryList) => {
-              const entries = entryList.getEntries();
-              entries.forEach((entry) => {
-                // FID計測のみ、ログ出力なし
-              });
-            }).observe({entryTypes: ['first-input']});
-          }
-        }, 0);
-      }
-    });
+    
 
     // ローディングアニメーション制御
     (function() {
@@ -529,11 +502,9 @@
       
       // sessionStorageで初回ロードかチェック
       const hasVisited = sessionStorage.getItem('contrail-visited');
-      console.log('Session check:', hasVisited); // デバッグ用
       
       if (hasVisited === 'true') {
         // 2回目以降：即座にローディングをスキップ
-        console.log('Skip loading animation'); // デバッグ用
         if (loading) loading.style.display = 'none';
         if (mainContent) mainContent.style.opacity = "1";
         return;
@@ -541,11 +512,7 @@
       
       // 初回ロード時：sessionStorageに記録
       sessionStorage.setItem('contrail-visited', 'true');
-      console.log('First visit - show loading animation'); // デバッグ用
     })();
-
-    // デバッグ用：sessionStorageリセット機能
-    // コンソールで sessionStorage.removeItem('contrail-visited') を実行してリセット可能
 
     window.addEventListener('DOMContentLoaded', function() {
       const main = document.querySelector('.logo-main');
