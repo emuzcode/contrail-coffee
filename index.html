@@ -266,109 +266,68 @@
     <section class="py-12 sm:py-16 md:py-20 lg:py-32 bg-gray-50">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12">
         <div class="space-y-12 sm:space-y-16 lg:space-y-20" id="menu-text">
-          <h2 class="text-xl sm:text-2xl lg:text-3xl font-light text-gray-900 text-center">
-            Drink
-          </h2>
+          <!-- メニューヘッダー（ロゴ画像） -->
+          <div class="text-center space-y-3">
+            <div class="w-48 sm:w-56 lg:w-64 mx-auto">
+              <img src="assets/images/contrail-main.png" alt="Contrail Coffee & Chocolate ロゴ" class="w-full h-auto" />
+            </div>
+            <div class="text-sm sm:text-base text-gray-500 font-light">Menu</div>
+          </div>
 
+          <!-- メニュー本体（テキストのみ、右にブランドバッジ） -->
           <div class="space-y-8 sm:space-y-10 lg:space-y-12">
-            <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-6">
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/drip-coffee.png" alt="ドリップコーヒー" class="w-full h-full object-cover">
-                </div>
-                <div class="text-center">
-                  <span class="badge badge-hot text-2xs mr-2">HOT</span>
-                  <span class="badge badge-ice text-2xs">ICE</span>
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">ドリップコーヒー</p>
-              </div>
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/flat-white.png" alt="フラットホワイト" class="w-full h-full object-cover">
-                </div>
-                <div class="text-center">
-                  <span class="badge badge-hot text-2xs mr-2">HOT</span>
-                  <span class="badge badge-ice text-2xs">ICE</span>
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">フラットホワイト</p>
-              </div>
+            <!-- コーヒー / Allpress Espresso -->
+            <div class="space-y-2">
+              <h3 class="text-base sm:text-lg font-light text-gray-900">コーヒー / Allpress Espresso</h3>
+              <ul class="space-y-1 text-sm sm:text-base font-light text-gray-900">
+                <li>ドリップコーヒー ホット／アイス</li>
+                <li>フラットホワイト ホット／アイス</li>
+                <li>カプチーノ ホット／アイス</li>
+              </ul>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-6">
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/cappuccino.png" alt="カプチーノ" class="w-full h-full object-cover">
-                </div>
-                <div class="text-center">
-                  <span class="badge badge-hot text-2xs mr-2">HOT</span>
-                  <span class="badge badge-ice text-2xs">ICE</span>
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">カプチーノ</p>
-              </div>
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/karma-cola.png" alt="カーマコーラ" class="w-full h-full object-cover">
-                </div>
-                <div class="text-center">
-                  <span class="badge badge-ice text-2xs">ICE</span>
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">カーマコーラ</p>
-              </div>
+            <!-- チョコレートドリンク -->
+            <div class="space-y-2">
+              <h3 class="text-base sm:text-lg font-light text-gray-900">チョコレートドリンク</h3>
+              <ul class="space-y-1 text-sm sm:text-base font-light text-gray-900">
+                <li>エクアドル ホット／アイス</li>
+              </ul>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-6">
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/jinja-era.png" alt="ジンジャエーラ" class="w-full h-full object-cover">
-                </div>
-                <div class="text-center">
-                  <span class="badge badge-ice text-2xs">ICE</span>
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">ジンジャエーラ</p>
-              </div>
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/lemonade.png" alt="レモネード" class="w-full h-full object-cover">
-                </div>
-                <div class="text-center">
-                  <span class="badge badge-ice text-2xs">ICE</span>
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">レモネード</p>
-              </div>
+            <!-- オーガニックソーダ -->
+            <div class="space-y-2">
+              <h3 class="text-base sm:text-lg font-light text-gray-900">オーガニックソーダ</h3>
+              <ul class="space-y-1 text-sm sm:text-base font-light text-gray-900">
+                <li>カーマコーラ</li>
+                <li>ジンジャエーラ</li>
+                <li>レモネード</li>
+              </ul>
             </div>
 
-            <h2 class="text-xl sm:text-2xl lg:text-3xl font-light text-gray-900 text-center">
-              Food
-            </h2>
-
-            <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-6">
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/ecuador-70.png" alt="御花畑で待ち合わせ（エクアドル70%）" class="w-full h-full object-cover">
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">エクアドル70%<br>クラフトチョコレート</p>
-              </div>
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-rect bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/organic-chocolate-donut.png" alt="国産100%なたね油使用" class="w-full h-full object-cover">
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">国産100%なたね油使用<br>チョコレートドーナツ</p>
-              </div>
+            <!-- Cookie Time / クッキータイム -->
+            <div class="space-y-2">
+              <h3 class="text-base sm:text-lg font-light text-gray-900">Cookie Time / クッキータイム</h3>
+              <ul class="space-y-1 text-sm sm:text-base font-light text-gray-900">
+                <li>Salted caramel & milk chocolate</li>
+                <li>Plant based chocolate chunk</li>
+                <li>Halloween original chocolate chunk</li>
+              </ul>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-6">
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/salted-caramel-milk-chocolate.webp" alt="Salted caramel & milk chocolate" class="w-full h-full object-cover">
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">クランチー<br>塩キャラメルチョコ</p>
-              </div>
-              <div class="space-y-2 sm:space-y-3">
-                <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden max-w-[150px] mx-auto">
-                  <img src="assets/images/plant-based-chocolate.webp" alt="プラントベースチョコ" class="w-full h-full object-cover">
-                </div>
-                <p class="text-xs sm:text-sm md:text-base font-light text-gray-900 text-center">プラントベースチョコ</p>
-              </div>
+            <!-- クラフトチョコレート -->
+            <div class="space-y-2">
+              <h3 class="text-base sm:text-lg font-light text-gray-900">クラフトチョコレート</h3>
+              <ul class="space-y-1 text-sm sm:text-base font-light text-gray-900">
+                <li>御花畑で待ち合わせ エクアドル70%<br>(ひとくちサイズ4個入)</li>
+              </ul>
+            </div>
+
+            <!-- ドーナツ -->
+            <div class="space-y-2">
+              <h3 class="text-base sm:text-lg font-light text-gray-900">オリジナルドーナツ(不定期)</h3>
+              <ul class="space-y-1 text-sm sm:text-base font-light text-gray-900">
+                <li>国産100%なたね油使用チョコレートドーナツ<br>(オーガニック食パン三山)<br>(米澤製油)<br>(CHICHIBU CHOCOLATE FACTORY)</li>
+              </ul>
             </div>
           </div>
         </div>
