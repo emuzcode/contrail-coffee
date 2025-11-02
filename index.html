@@ -61,6 +61,8 @@
 
   <link rel="stylesheet" href="styles.css">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+
   <style>
     #loading {
       position: fixed;
@@ -594,15 +596,38 @@
 
     window.contrailCalendarVersion = "2.0";
 
+    let businessSettings = {
+      openDays: [],
+      closedDates: [],
+      specialOpenDates: []
+    };
+
+    async function loadBusinessSettings() {
+      try {
+        const response = await fetch('business_settings.yml');
+        if (!response.ok) {
+          throw new Error('営業日設定ファイルの読み込みに失敗しました');
+        }
+        const yamlText = await response.text();
+
+        if (typeof jsyaml !== 'undefined') {
+          const parsed = jsyaml.load(yamlText);
+          businessSettings = {
+            openDays: parsed.openDays || [],
+            closedDates: parsed.closedDates || [],
+            specialOpenDates: parsed.specialOpenDates || []
+          };
+        } else {
+          console.error('js-yaml ライブラリが読み込まれていません');
+        }
+      } catch (error) {
+        console.error('営業日設定の読み込みエラー:', error);
+      }
+    }
+
     function initializeCalendar() {
       const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
       let currentDate = new Date();
-
-      const businessSettings = {
-        openDays: [],
-        closedDates: [],
-        specialOpenDates: []
-      };
 
       function isOpenDay(date) {
         const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -718,7 +743,8 @@
       });
     }
 
-    function startCalendar() {
+    async function startCalendar() {
+      await loadBusinessSettings();
       setTimeout(() => {
         initializeCalendar();
       }, 200);
