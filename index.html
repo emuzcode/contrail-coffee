@@ -227,21 +227,6 @@
           overflow: hidden;
         }
       }
-
-    #sliderContainer {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    #sliderHandle {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
   </style>
 </head>
 <body class="bg-white text-gray-900 font-zen">
@@ -461,11 +446,11 @@
 
                   <div class="flex justify-center mt-6 space-x-8 text-xs sm:text-sm font-light">
                     <div class="flex items-center">
-                      <div class="w-5 h-5 bg-gray-800 rounded-sm mr-2 flex items-center justify-center text-white text-[10px] leading-none">●</div>
+                      <div class="w-6 h-6 bg-gray-800 rounded-sm mr-2 flex items-center justify-center text-white text-xs flex-shrink-0">●</div>
                       <span class="text-gray-700">営業日</span>
                     </div>
                     <div class="flex items-center">
-                      <div class="w-5 h-5 bg-gray-100 border border-gray-200 rounded-sm mr-2 flex items-center justify-center text-gray-600 text-[10px] leading-none">-</div>
+                      <div class="w-6 h-6 bg-gray-100 border border-gray-200 rounded-sm mr-2 flex items-center justify-center text-gray-600 text-xs">-</div>
                       <span class="text-gray-700">休業日</span>
                     </div>
                   </div>
@@ -473,19 +458,15 @@
 
                 <div class="space-y-3 sm:space-y-4 text-sm sm:text-base lg:text-lg">
                   <p class="text-gray-600">営業時間</p>
-                  <p>06:00〜10:00（営業日のみ）</p>
+                  <p>06:00〜10:00</p>
                   <p class="text-xs sm:text-sm text-gray-500">※詳細はNewsをご確認ください</p>
                 </div>
 
-                <div class="mt-6 flex justify-center">
+                <div class="mt-4 flex items-center space-x-3">
                   <canvas id="calendarCanvas" width="1080" height="1080" class="hidden"></canvas>
-                  <div class="relative w-full max-w-md" style="min-width: 280px;">
-                    <div id="sliderContainer" class="relative bg-red-500 rounded-lg overflow-hidden cursor-pointer select-none" style="width: 100%; height: 44px; min-height: 44px;">
-                      <div id="sliderTrack" class="absolute inset-0 bg-gray-800 transition-all duration-300 ease-out" style="width: 0%"></div>
-                      <div id="sliderHandle" class="absolute left-0 top-0 h-full w-16 bg-white border-r border-gray-300 flex items-center justify-center transition-all duration-300 ease-out shadow-sm z-10">
-                        <img src="assets/images/kuma.png" alt="kuma" class="h-full w-full object-contain p-2">
-                      </div>
-                    </div>
+                  <div id="downloadKuma" class="relative cursor-pointer select-none touch-manipulation">
+                    <img src="assets/images/kuma.png" alt="kuma" class="w-16 h-16 sm:w-20 sm:h-20 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                    <div id="downloadProgress" class="absolute inset-0 bg-black rounded-full pointer-events-none" style="opacity: 0; transition: opacity 0.1s;"></div>
                   </div>
                 </div>
               </div>
@@ -630,62 +611,73 @@
         const SHEET_NAME = "business_days";
         const encodedSheetName = encodeURIComponent(SHEET_NAME);
         let url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodedSheetName}`;
-        
+
         let response = await fetch(url);
-        
+
         if (!response.ok) {
           url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
           response = await fetch(url);
         }
-        
+
         if (!response.ok) {
           throw new Error(`営業日設定の読み込みに失敗しました: ${response.status} ${response.statusText}`);
         }
-        
+
         const text = await response.text();
         const jsonStart = text.indexOf("{");
         const jsonEnd = text.lastIndexOf("}") + 1;
-        
+
         if (jsonStart === -1 || jsonEnd === 0) {
           throw new Error('JSONデータが見つかりませんでした');
         }
-        
+
         const json = JSON.parse(text.substring(jsonStart, jsonEnd));
 
         function normalizeDate(dateValue) {
           if (!dateValue && dateValue !== 0) return "";
-          
-          function formatDate(date) {
+
+          if (typeof dateValue === 'string' && dateValue.startsWith('Date(')) {
+            const match = dateValue.match(/Date\((\d+),(\d+),(\d+)\)/);
+            if (match) {
+              const year = parseInt(match[1], 10);
+              const month = parseInt(match[2], 10);
+              const day = parseInt(match[3], 10);
+              const date = new Date(year, month, day);
+              const formattedYear = date.getFullYear();
+              const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+              const formattedDay = String(date.getDate()).padStart(2, '0');
+              return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+            }
+          }
+
+          if (typeof dateValue === 'number') {
+            const excelEpoch = new Date(1899, 11, 30);
+            const date = new Date(excelEpoch.getTime() + (dateValue - 1) * 86400 * 1000);
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
           }
-          
-          if (typeof dateValue === 'string' && dateValue.startsWith('Date(')) {
-            const match = dateValue.match(/Date\((\d+),(\d+),(\d+)\)/);
-            if (match) {
-              return formatDate(new Date(parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10)));
-            }
-          }
-          
-          if (typeof dateValue === 'number') {
-            return formatDate(new Date(new Date(1899, 11, 30).getTime() + (dateValue - 1) * 86400 * 1000));
-          }
-          
+
           if (typeof dateValue === 'string') {
             const normalized = dateValue.replace(/\//g, '-');
             const parts = normalized.split('-');
             if (parts.length === 3) {
-              return `${parts[0]}-${String(parseInt(parts[1], 10)).padStart(2, '0')}-${String(parseInt(parts[2], 10)).padStart(2, '0')}`;
+              const year = parts[0];
+              const month = String(parseInt(parts[1], 10)).padStart(2, '0');
+              const day = String(parseInt(parts[2], 10)).padStart(2, '0');
+              return `${year}-${month}-${day}`;
             }
             return normalized;
           }
-          
+
           if (dateValue instanceof Date) {
-            return formatDate(dateValue);
+            const year = dateValue.getFullYear();
+            const month = String(dateValue.getMonth() + 1).padStart(2, '0');
+            const day = String(dateValue.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
           }
-          
+
           return "";
         }
 
@@ -709,10 +701,9 @@
       }
     }
 
-    let currentDate = new Date();
-
     function initializeCalendar() {
       const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+      let currentDate = new Date();
 
       function isOpenDay(date) {
         const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -748,9 +739,11 @@
 
           const isCurrentMonth = date.getMonth() === month;
           const isBusinessOpen = isCurrentMonth && isOpenDay(date);
+          const isToday = date.toDateString() === new Date().toDateString();
 
           if (!isCurrentMonth) {
             dayElement.className += ' text-gray-300';
+            dayElement.textContent = date.getDate();
           } else if (isBusinessOpen) {
             dayElement.className += ' bg-gray-800 text-white font-medium hover:bg-gray-700 shadow-sm hover:shadow hover:scale-105';
             dayElement.title = '営業日';
@@ -774,38 +767,52 @@
         const ctx = canvas.getContext('2d');
         const width = 1080;
         const height = 1080;
-        const padding = 120;
-        const contentWidth = width - padding * 2;
-        const titleY = padding + 50;
-        const gridTop = titleY + 160;
-        const gridBottom = height - padding - 140;
-        const gridHeight = gridBottom - gridTop;
-        const cellWidth = contentWidth / 7;
-        const cellHeight = gridHeight / 6;
-        const gap = 8;
-        const cellSize = cellWidth - gap;
-        const firstDay = new Date(year, month, 1);
-        const startDate = new Date(firstDay);
-        startDate.setDate(startDate.getDate() - firstDay.getDay());
-        const gridStartX = padding;
-        const gridStartY = gridTop;
-        const weekDays = ['日', '月', '火', '水', '木', '金', '土'];
-        const headerY = gridTop - 10;
 
+        // 背景
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, width, height);
+
+        // パディング設定
+        const padding = 120;
+        const contentWidth = width - padding * 2;
+
+        // タイトルエリア
+        const titleY = padding + 50;
         ctx.fillStyle = '#111827';
         ctx.font = '300 52px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         ctx.fillText(`${year}年${monthNames[month]}`, width / 2, titleY);
 
+        // カレンダーグリッド設定（タイトルとの余白を広げる）
+        const gridTop = titleY + 160;
+        const gridBottom = height - padding - 140;
+        const gridHeight = gridBottom - gridTop;
+        const cellWidth = contentWidth / 7;
+        const cellHeight = gridHeight / 6;
+        const gap = 8;
+
+        // カレンダーグリッド
+        const firstDay = new Date(year, month, 1);
+        const startDate = new Date(firstDay);
+        startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+        const gridStartX = padding;
+        const gridStartY = gridTop;
+        const cellSize = cellWidth - gap;
+
+        // 曜日ヘッダー（日付セルの中央に合わせる）
+        const weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+        const headerY = gridTop - 10;
+
         ctx.font = '300 30px sans-serif';
         ctx.fillStyle = '#6b7280';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
         weekDays.forEach((day, index) => {
-          ctx.fillText(day, gridStartX + index * (cellWidth + gap) + cellSize / 2, headerY);
+          // 日付セルの中央位置に合わせる
+          const x = gridStartX + index * (cellWidth + gap) + cellSize / 2;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText(day, x, headerY);
         });
 
         for (let i = 0; i < 42; i++) {
@@ -821,86 +828,118 @@
           const cellHeightSize = cellHeight - gap;
           const cornerRadius = 8;
 
-          const centerX = x + cellSize / 2;
-          const centerY = y + cellHeightSize / 2;
-
           if (isCurrentMonth) {
             if (isOpen) {
+              // 営業日: bg-gray-800 (黒背景)
               ctx.fillStyle = '#1f2937';
               roundRect(ctx, x, y, cellSize, cellHeightSize, cornerRadius);
               ctx.fill();
+
+              // 日付テキスト（白）- 少し上に配置
               ctx.fillStyle = '#ffffff';
               ctx.font = '500 36px sans-serif';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
-              ctx.fillText(date.getDate().toString(), centerX, centerY - 14);
+              ctx.fillText(date.getDate().toString(), x + cellSize / 2, y + cellHeightSize / 2 - 14);
+
+              // 営業日マーク（●）- 日付との間隔を広げる
               ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
               ctx.font = '20px sans-serif';
-              ctx.fillText('●', centerX, centerY + 20);
+              ctx.fillText('●', x + cellSize / 2, y + cellHeightSize / 2 + 20);
             } else {
+              // 休業日: bg-gray-100 border border-gray-200
               ctx.fillStyle = '#f3f4f6';
               ctx.strokeStyle = '#e5e7eb';
               ctx.lineWidth = 1;
               roundRect(ctx, x, y, cellSize, cellHeightSize, cornerRadius);
               ctx.fill();
               ctx.stroke();
+
+              // 日付テキスト（グレー）
               ctx.fillStyle = '#4b5563';
               ctx.font = '500 36px sans-serif';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
-              ctx.fillText(date.getDate().toString(), centerX, centerY - 14);
+              ctx.fillText(date.getDate().toString(), x + cellSize / 2, y + cellHeightSize / 2 - 14);
+
+              // 休業日マーク（-）
               ctx.fillStyle = 'rgba(107, 114, 128, 0.6)';
               ctx.font = '20px sans-serif';
-              ctx.fillText('-', centerX, centerY + 20);
+              ctx.fillText('-', x + cellSize / 2, y + cellHeightSize / 2 + 20);
             }
           } else {
+            // 前月・次月の日付（text-gray-300）
             ctx.fillStyle = '#d1d5db';
             ctx.font = '400 32px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(date.getDate().toString(), centerX, centerY);
+            ctx.fillText(date.getDate().toString(), x + cellSize / 2, y + cellHeightSize / 2);
           }
         }
 
-        const legendY = gridBottom + 100;
+        // 凡例
+        const legendY = gridBottom + 80;
         const legendCenterX = width / 2;
-        const legendSpacing = 180;
-        const legendBoxSize = 20;
+        const legendSpacing = 200;
 
-        function drawLegend(x, bgColor, borderColor, mark, text) {
-          const boxX = x - 40;
-          const boxY = legendY - legendBoxSize / 2;
-          const centerX = boxX + legendBoxSize / 2;
-          const centerY = boxY + legendBoxSize / 2;
+        // 営業日凡例（四角を大きく、テキストを大きく、丸を小さく）
+        const legend1X = legendCenterX - legendSpacing;
+        const legendBoxSize = 28;
+        const legendBoxX = legend1X - 50;
+        const legendBoxY = legendY - legendBoxSize / 2;
 
-          if (borderColor) {
-            ctx.fillStyle = bgColor;
-            ctx.strokeStyle = borderColor;
-            ctx.lineWidth = 1;
-            roundRect(ctx, boxX, boxY, legendBoxSize, legendBoxSize, 2);
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = '#6b7280';
-          } else {
-            ctx.fillStyle = bgColor;
-            roundRect(ctx, boxX, boxY, legendBoxSize, legendBoxSize, 2);
-            ctx.fill();
-            ctx.fillStyle = '#ffffff';
-          }
-          ctx.font = '10px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(mark, centerX, centerY);
-          ctx.fillStyle = '#374151';
-          ctx.font = '300 26px sans-serif';
-          ctx.textAlign = 'left';
-          ctx.fillText(text, x, legendY);
-        }
+        ctx.fillStyle = '#1f2937';
+        roundRect(ctx, legendBoxX, legendBoxY, legendBoxSize, legendBoxSize, 3);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('●', legendBoxX + legendBoxSize / 2, legendBoxY + legendBoxSize / 2);
+        ctx.fillStyle = '#374151';
+        ctx.font = '300 36px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('営業日', legend1X, legendY);
 
-        drawLegend(legendCenterX - legendSpacing, '#1f2937', null, '●', '営業日');
-        drawLegend(legendCenterX + legendSpacing, '#f3f4f6', '#e5e7eb', '-', '休業日');
+        // 休業日凡例（四角を大きく、テキストを大きく、丸を小さく）
+        const legend2X = legendCenterX + legendSpacing;
+        const legendBox2X = legend2X - 50;
+        const legendBox2Y = legendY - legendBoxSize / 2;
+
+        ctx.fillStyle = '#f3f4f6';
+        ctx.strokeStyle = '#e5e7eb';
+        ctx.lineWidth = 1;
+        roundRect(ctx, legendBox2X, legendBox2Y, legendBoxSize, legendBoxSize, 3);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('-', legendBox2X + legendBoxSize / 2, legendBox2Y + legendBoxSize / 2);
+        ctx.fillStyle = '#374151';
+        ctx.font = '300 36px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('休業日', legend2X, legendY);
+
+        // 営業時間
+        const businessHoursY = legendY + 60;
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '300 28px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('営業時間', width / 2, businessHoursY);
+
+        ctx.fillStyle = '#111827';
+        ctx.font = '300 32px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('06:00〜10:00', width / 2, businessHoursY + 40);
       }
 
+      // 角丸四角形を描画するヘルパー関数
       function roundRect(ctx, x, y, width, height, radius) {
         ctx.beginPath();
         ctx.moveTo(x + radius, y);
@@ -914,7 +953,6 @@
         ctx.quadraticCurveTo(x, y, x + radius, y);
         ctx.closePath();
       }
-
 
       document.getElementById('prevMonth').addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
@@ -933,8 +971,20 @@
       const canvas = document.getElementById('calendarCanvas');
       if (!canvas) return;
 
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth() + 1;
+      // 現在表示されている月を取得
+      const monthYearElement = document.getElementById('monthYear');
+      let year = new Date().getFullYear();
+      let month = new Date().getMonth() + 1;
+
+      if (monthYearElement) {
+        const text = monthYearElement.textContent;
+        const match = text.match(/(\d+)年(\d+)月/);
+        if (match) {
+          year = parseInt(match[1], 10);
+          month = parseInt(match[2], 10);
+        }
+      }
+
       const filename = `business_days_${year}_${String(month).padStart(2, '0')}.png`;
 
       const link = document.createElement('a');
@@ -943,77 +993,83 @@
       link.click();
     }
 
-    function initializeSlider() {
-      const sliderContainer = document.getElementById('sliderContainer');
-      const sliderTrack = document.getElementById('sliderTrack');
-      const sliderHandle = document.getElementById('sliderHandle');
-      
-      if (!sliderContainer || !sliderTrack || !sliderHandle) return;
+    function initializeKumaDownload() {
+      const kumaButton = document.getElementById('downloadKuma');
+      const kumaImage = kumaButton ? kumaButton.querySelector('img') : null;
+      if (!kumaButton || !kumaImage) return;
 
-      let isDragging = false;
-      let currentX = 0;
       let hasDownloaded = false;
+      let animationFrameId = null;
+      let pressStartTime = 0;
+      const PRESS_DURATION = 3000; // 3秒
 
-      function getContainerWidth() {
-        return sliderContainer.offsetWidth || sliderContainer.getBoundingClientRect().width;
+      // 初期状態
+      kumaImage.style.transformOrigin = '50% 50%';
+      kumaImage.style.transform = 'rotate(0deg)';
+
+      function startDownload() {
+        if (hasDownloaded) return;
+        hasDownloaded = true;
+        downloadCalendar();
+
+        // ダウンロード後に少し待ってから元の角度に戻す
+        setTimeout(() => {
+          hasDownloaded = false;
+          kumaImage.style.transform = 'rotate(0deg)';
+        }, 500);
       }
 
-      function getHandleWidth() {
-        return sliderHandle.offsetWidth || sliderHandle.getBoundingClientRect().width;
+      function animate(now) {
+        if (!pressStartTime) {
+          pressStartTime = now;
+        }
+        const elapsed = now - pressStartTime;
+        const progress = Math.min(elapsed / PRESS_DURATION, 1);
+        const angle = 360 * progress;
+
+        kumaImage.style.transform = `rotate(${angle}deg)`;
+
+        if (progress >= 1) {
+          animationFrameId = null;
+          startDownload();
+          return;
+        }
+
+        animationFrameId = requestAnimationFrame(animate);
       }
 
-      function updateSlider(percentage) {
-        const containerWidth = getContainerWidth();
-        const handleWidth = getHandleWidth();
-        const maxSlide = containerWidth - handleWidth;
-        const clampedPercentage = Math.max(0, Math.min(100, percentage));
-        
-        sliderTrack.style.width = clampedPercentage + '%';
-        sliderHandle.style.left = (clampedPercentage / 100) * maxSlide + 'px';
+      function startPress(e) {
+        // イベントがキャンセル可能な場合のみpreventDefaultを呼ぶ
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+        if (hasDownloaded) return;
 
-        if (clampedPercentage >= 95 && !hasDownloaded) {
-          hasDownloaded = true;
-          downloadCalendar();
-          setTimeout(resetSlider, 500);
+        // すでにアニメーション中ならリセット
+        if (animationFrameId !== null) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+
+        pressStartTime = 0;
+        animationFrameId = requestAnimationFrame(animate);
+      }
+
+      function cancelPress() {
+        if (animationFrameId !== null) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+        if (!hasDownloaded) {
+          kumaImage.style.transform = 'rotate(0deg)';
         }
       }
 
-      function resetSlider() {
-        sliderTrack.style.width = '0%';
-        sliderHandle.style.left = '0px';
-        hasDownloaded = false;
-      }
-
-      function handleStart(e) {
-        isDragging = true;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        currentX = clientX - sliderContainer.getBoundingClientRect().left;
-        sliderContainer.style.cursor = 'grabbing';
-        e.preventDefault();
-      }
-
-      function handleMove(e) {
-        if (!isDragging) return;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        currentX = clientX - sliderContainer.getBoundingClientRect().left;
-        updateSlider((currentX / getContainerWidth()) * 100);
-      }
-
-      function handleEnd() {
-        if (!isDragging) return;
-        isDragging = false;
-        sliderContainer.style.cursor = 'pointer';
-        if ((currentX / getContainerWidth()) * 100 < 95) {
-          resetSlider();
-        }
-      }
-
-      sliderContainer.addEventListener('mousedown', handleStart);
-      document.addEventListener('mousemove', handleMove);
-      document.addEventListener('mouseup', handleEnd);
-      sliderContainer.addEventListener('touchstart', handleStart, { passive: false });
-      document.addEventListener('touchmove', handleMove, { passive: false });
-      document.addEventListener('touchend', handleEnd);
+      kumaButton.addEventListener('mousedown', startPress);
+      kumaButton.addEventListener('touchstart', startPress, { passive: false });
+      document.addEventListener('mouseup', cancelPress);
+      document.addEventListener('touchend', cancelPress);
+      document.addEventListener('touchcancel', cancelPress);
     }
 
     function stabilizeBackground() {
@@ -1059,7 +1115,7 @@
       await loadBusinessSettings();
       setTimeout(() => {
         initializeCalendar();
-        setTimeout(initializeSlider, 300);
+        initializeKumaDownload();
       }, 200);
     }
 
