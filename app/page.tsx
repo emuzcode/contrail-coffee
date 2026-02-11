@@ -1,12 +1,11 @@
 export default function Home() {
+  console.log("[v0] Home page rendered on server");
   return (
-    <main>
-      <h1 style={{ padding: "2rem", fontSize: "2rem" }}>
+    <main style={{ padding: "2rem" }}>
+      <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
         Contrail Coffee - Test
       </h1>
-      <p style={{ padding: "0 2rem" }}>
-        {"ページが表示されるかテスト中です。"}
-      </p>
+      <p>This page should be visible at /</p>
     </main>
   );
 }
