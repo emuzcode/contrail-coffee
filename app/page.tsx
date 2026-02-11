@@ -1,10 +1,8 @@
 export default function Home() {
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-        Contrail Coffee
-      </h1>
-      <p>Hello World</p>
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-4">Contrail Coffee</h1>
+      <p className="text-lg">Hello World</p>
     </main>
   );
 }
