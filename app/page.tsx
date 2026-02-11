@@ -13,6 +13,7 @@ import SiteFooter from "@/components/site-footer";
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);
 
+
   const handleIntroComplete = useCallback(() => {
     setIntroComplete(true);
   }, []);
