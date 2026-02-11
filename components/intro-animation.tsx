@@ -11,19 +11,32 @@ export default function IntroAnimation({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const visited = sessionStorage.getItem("contrail-visited");
-    if (visited === "true") {
+    console.log("[v0] IntroAnimation mounted");
+    let visited = false;
+    try {
+      visited = sessionStorage.getItem("contrail-visited") === "true";
+    } catch {
+      // sessionStorage unavailable
+    }
+
+    if (visited) {
+      console.log("[v0] Already visited, skipping intro");
       onComplete();
       return;
     }
 
-    sessionStorage.setItem("contrail-visited", "true");
+    try {
+      sessionStorage.setItem("contrail-visited", "true");
+    } catch {
+      // ignore
+    }
 
     const t1 = setTimeout(() => setPhase(1), 200);
     const t2 = setTimeout(() => setPhase(2), 800);
     const t3 = setTimeout(() => setPhase(3), 1800);
     const t4 = setTimeout(() => setPhase(4), 2500);
     const t5 = setTimeout(() => {
+      console.log("[v0] Intro animation finished, calling onComplete");
       onComplete();
     }, 3200);
 

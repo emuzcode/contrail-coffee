@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import IntroAnimation from "@/components/intro-animation";
 import HeroSection from "@/components/hero-section";
 import ConceptSection from "@/components/concept-section";
@@ -12,11 +12,21 @@ import SiteFooter from "@/components/site-footer";
 
 export default function Home() {
   const [introComplete, setIntroComplete] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+    console.log("[v0] Home mounted");
+  }, []);
 
   const handleIntroComplete = useCallback(() => {
+    console.log("[v0] Intro complete called");
     setIntroComplete(true);
   }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>
