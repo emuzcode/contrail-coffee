@@ -586,13 +586,7 @@
   </footer>
 
   <script>
-    (function() {
-      // sessionStorageにマークを付ける（初回訪問の場合のみ）
-      const hasVisited = sessionStorage.getItem('contrail-visited');
-      if (hasVisited !== 'true') {
-        sessionStorage.setItem('contrail-visited', 'true');
-      }
-    })();
+    // sessionStorageの設定はアニメーション完了後に行う
 
     // 画像プリロード処理
     function preloadImages(imageUrls) {
@@ -641,35 +635,41 @@
             mainContent.style.opacity = "1";
           } else {
             // 初回訪問: アニメーションを実行
-            // ロゴコンテナを表示
+            // スピナーが完全に消えるまで待つ（300ms）+ 余裕を持たせる（200ms）
             setTimeout(() => {
               logoContainer.classList.add('show');
-            }, 300);
+            }, 500);
 
-            // アニメーション開始
+            // mainロゴのアニメーション開始（scale + opacity）
             setTimeout(() => {
               main.style.opacity = '1';
               main.style.transform = 'scale(1)';
-            }, 500);
+            }, 700);
 
+            // lineのアニメーション（左から右にクリップパス）
             setTimeout(() => {
               line.style.opacity = '1';
               line.style.clipPath = 'inset(0 0 0 0)';
-            }, 1100);
+            }, 1500);
 
+            // dotのアニメーション（上から下にバウンス）
             setTimeout(() => {
               dot.style.opacity = '1';
               dot.style.top = '0px';
-            }, 2100);
+            }, 2700);
 
+            // ローディング画面を非表示
             setTimeout(() => {
               loading.style.opacity = '0';
               loading.style.pointerEvents = 'none';
-            }, 2800);
+            }, 3500);
 
+            // メインコンテンツ表示
             setTimeout(() => {
               mainContent.style.opacity = "1";
-            }, 3300);
+              // アニメーション完了後にsessionStorageを設定
+              sessionStorage.setItem('contrail-visited', 'true');
+            }, 4000);
           }
         })
         .catch((error) => {
@@ -680,6 +680,8 @@
           loading.style.opacity = '0';
           loading.style.pointerEvents = 'none';
           mainContent.style.opacity = "1";
+          // エラー時もsessionStorageを設定して次回はスキップ
+          sessionStorage.setItem('contrail-visited', 'true');
         });
     });
 
