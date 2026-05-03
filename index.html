@@ -257,25 +257,22 @@
         }
       }
 
-
-    /* News: compact list + accordion */
     .news-list {
-      max-width: 640px;
+      max-width: 42rem;
       margin: 0 auto;
     }
 
     .news-item {
-      padding: 44px 0 52px;
-      border-bottom: 1px solid #dedede;
+      padding: 48px 0 56px;
+      border-bottom: 1px solid #dcdcdc;
     }
 
     .news-item:first-child {
       padding-top: 0;
     }
 
-    .news-item:last-child {
+    .news-item:last-of-type {
       border-bottom: none;
-      padding-bottom: 0;
     }
 
     .news-item.is-hidden {
@@ -284,111 +281,95 @@
 
     .news-date {
       display: block;
-      margin-bottom: 14px;
-      font-size: 14px;
-      line-height: 1;
-      color: #6b7280;
+      margin-bottom: 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #9ca3af;
       letter-spacing: 0.04em;
       font-weight: 300;
     }
 
     .news-title {
-      margin-bottom: 22px;
-      font-size: 24px;
-      line-height: 1.55;
-      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.7;
       color: #111827;
-      letter-spacing: 0.02em;
+      font-weight: 600;
     }
 
-    .news-preview,
-    .news-full {
-      max-width: 580px;
-      font-size: 16px;
+    .news-content {
+      max-width: 36rem;
+      margin-top: 20px;
+      font-size: 15px;
       line-height: 2;
       color: #374151;
       font-weight: 300;
-      letter-spacing: 0.03em;
     }
 
-    .news-preview {
+    .news-content p {
+      margin-bottom: 1rem;
+    }
+
+    .news-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .news-info-block {
+      margin-top: 20px;
+      padding: 12px 0 12px 16px;
+      border-left: 2px solid #d1d5db;
+      color: #4b5563;
+      line-height: 1.9;
+    }
+
+    .line-clamp-3 {
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .news-info-block {
-      margin-top: 24px;
-      padding: 14px 0 14px 16px;
-      border-left: 2px solid #d1d5db;
-      color: #4b5563;
-      line-height: 1.9;
-    }
-
-    .news-toggle {
-      display: inline-flex;
-      align-items: center;
+    .news-toggle,
+    .news-more-button {
       margin-top: 18px;
-      padding: 8px 0;
-      border: none;
-      background: transparent;
       color: #6b7280;
       font-size: 14px;
-      line-height: 1;
-      letter-spacing: 0.04em;
+      line-height: 1.6;
+      font-weight: 300;
+      background: transparent;
+      border: none;
       cursor: pointer;
+      padding: 8px 0;
       transition: color 0.2s ease;
     }
 
     .news-toggle:hover,
-    .news-toggle:focus-visible {
+    .news-more-button:hover {
       color: #111827;
     }
 
     .news-more-wrap {
-      margin-top: 40px;
       text-align: center;
+      margin-top: 8px;
     }
 
     .news-more-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 160px;
-      padding: 12px 22px;
+      padding: 10px 18px;
       border: 1px solid #d1d5db;
       border-radius: 9999px;
       background: #fff;
-      color: #374151;
-      font-size: 14px;
-      font-weight: 300;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
-    .news-more-button:hover,
-    .news-more-button:focus-visible {
-      background: #f9fafb;
-      border-color: #9ca3af;
-      color: #111827;
-    }
-
-    @media (max-width: 640px) {
+    @media (min-width: 640px) {
       .news-item {
-        padding: 36px 0 44px;
+        padding: 56px 0 64px;
       }
 
       .news-title {
-        font-size: 21px;
-        line-height: 1.6;
+        font-size: 24px;
       }
 
-      .news-preview,
-      .news-full {
-        font-size: 15px;
-        line-height: 1.95;
+      .news-content {
+        font-size: 16px;
       }
     }
 
@@ -1008,12 +989,14 @@
       }
 
       function formatParagraphs(text) {
-        const paragraphs = String(text || '').split(/\n\s*\n+/);
-        return paragraphs.map(paragraph => {
-          const trimmed = paragraph.trim();
-          if (!trimmed) return '';
-          return `<p class="mb-4 last:mb-0">${escapeHtml(trimmed).replace(/\n/g, '<br>')}</p>`;
-        }).join('');
+        return String(text || '')
+          .split(/\n\s*\n+/)
+          .map(paragraph => {
+            const trimmed = paragraph.trim();
+            if (!trimmed) return '';
+            return `<p>${escapeHtml(trimmed).replace(/\n/g, '<br>')}</p>`;
+          })
+          .join('');
       }
 
       function formatContents(contents) {
@@ -1039,16 +1022,15 @@
         return html;
       }
 
-      function getPreviewText(contents) {
+      function isLongContent(contents) {
         const plainText = String(contents || '').replace(/\s+/g, ' ').trim();
-        return escapeHtml(plainText);
+        return plainText.length > 110 || String(contents || '').includes('\n');
       }
 
       const itemsHtml = newsData.map((news, index) => {
         const hiddenClass = index >= INITIAL_NEWS_COUNT ? ' is-hidden' : '';
         const formattedContents = formatContents(news.contents);
-        const previewText = getPreviewText(news.contents);
-        const hasLongContent = previewText.length > 80 || String(news.contents || '').includes('\n');
+        const hasToggle = isLongContent(news.contents);
 
         return `
           <article class="news-item${hiddenClass}" data-news-index="${index}">
@@ -1057,20 +1039,16 @@
               <h3 class="news-title">${escapeHtml(news.title)}</h3>
             </header>
 
-            <div class="news-preview" id="news-preview-${index}">
-              ${previewText}
-            </div>
-
-            <div class="news-full" id="news-full-${index}" hidden>
+            <div class="news-content ${hasToggle ? 'line-clamp-3' : ''}" id="news-content-${index}">
               ${formattedContents}
             </div>
 
-            ${hasLongContent ? `
+            ${hasToggle ? `
               <button
                 type="button"
                 class="news-toggle"
                 aria-expanded="false"
-                aria-controls="news-full-${index}"
+                aria-controls="news-content-${index}"
                 onclick="toggleNews(${index})"
               >
                 Read more
@@ -1093,29 +1071,26 @@
       container.className = 'news-list';
       container.innerHTML = itemsHtml + showAllButton;
     }
-
+    // ニュースの展開/折りたたみ
     function toggleNews(index) {
-      const article = document.querySelector(`article[data-news-index="${index}"]`);
+      const article = document.querySelector(`[data-news-index="${index}"]`);
       if (!article) return;
 
-      const preview = article.querySelector('.news-preview');
-      const full = article.querySelector('.news-full');
-      const toggle = article.querySelector('.news-toggle');
-      if (!preview || !full || !toggle) return;
+      const content = article.querySelector('.news-content');
+      const button = article.querySelector('.news-toggle');
+      if (!content || !button) return;
 
-      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      const isCollapsed = content.classList.contains('line-clamp-3');
 
-      if (isExpanded) {
-        preview.hidden = false;
-        full.hidden = true;
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.textContent = 'Read more';
-        article.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (isCollapsed) {
+        content.classList.remove('line-clamp-3');
+        button.textContent = 'Read less';
+        button.setAttribute('aria-expanded', 'true');
       } else {
-        preview.hidden = true;
-        full.hidden = false;
-        toggle.setAttribute('aria-expanded', 'true');
-        toggle.textContent = 'Read less';
+        content.classList.add('line-clamp-3');
+        button.textContent = 'Read more';
+        button.setAttribute('aria-expanded', 'false');
+        article.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
 
@@ -1124,12 +1099,11 @@
         item.classList.remove('is-hidden');
       });
 
-      const buttonWrap = document.querySelector('.news-more-wrap');
-      if (buttonWrap) {
-        buttonWrap.remove();
+      const showAllButton = document.getElementById('news-show-all');
+      if (showAllButton) {
+        showAllButton.parentElement.remove();
       }
     }
-
     function initializeCalendar() {
       const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
       let currentDate = new Date();
