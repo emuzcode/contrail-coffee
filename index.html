@@ -107,6 +107,35 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
     }
 
+    .loading-spinner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-top-color: #333;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    .loading-spinner.hide {
+      opacity: 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .logo-container {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .logo-container.show {
+      opacity: 1;
+    }
+
     .japanese-text {
       font-family: 'Zen Old Mincho', serif;
     }
@@ -232,9 +261,12 @@
 <body class="bg-white text-gray-900 font-zen">
   <div id="loading">
     <div class="w-[640px] max-w-[85vw] sm:max-w-[90vw] mx-auto flex items-center justify-center flex-col relative">
-      <img class="logo-line" src="assets/images/contrail-line.png" alt="contrailの上の線" />
-      <img class="logo-main" src="assets/images/contrail-main.png" alt="contrail本体" />
-      <img class="logo-dot" src="assets/images/contrail-dot.png" alt="iの点" />
+      <div class="loading-spinner"></div>
+      <div class="logo-container">
+        <img class="logo-line" src="assets/images/contrail-line.png" alt="contrailの上の線" />
+        <img class="logo-main" src="assets/images/contrail-main.png" alt="contrail本体" />
+        <img class="logo-dot" src="assets/images/contrail-dot.png" alt="iの点" />
+      </div>
     </div>
   </div>
 
@@ -555,19 +587,26 @@
 
   <script>
     (function() {
-      const loading = document.querySelector('#loading');
-      const mainContent = document.querySelector("main");
-
+      // sessionStorageにマークを付ける（初回訪問の場合のみ）
       const hasVisited = sessionStorage.getItem('contrail-visited');
-
-      if (hasVisited === 'true') {
-        if (loading) loading.style.display = 'none';
-        if (mainContent) mainContent.style.opacity = "1";
-        return;
+      if (hasVisited !== 'true') {
+        sessionStorage.setItem('contrail-visited', 'true');
       }
-
-      sessionStorage.setItem('contrail-visited', 'true');
     })();
+
+    // 画像プリロード処理
+    function preloadImages(imageUrls) {
+      return Promise.all(
+        imageUrls.map(url => {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(url);
+            img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
+            img.src = url;
+          });
+        })
+      );
+    }
 
     window.addEventListener('DOMContentLoaded', function() {
       const main = document.querySelector('.logo-main');
@@ -575,36 +614,73 @@
       const dot = document.querySelector('.logo-dot');
       const loading = document.querySelector('#loading');
       const mainContent = document.querySelector("main");
+      const spinner = document.querySelector('.loading-spinner');
+      const logoContainer = document.querySelector('.logo-container');
 
       const hasVisited = sessionStorage.getItem('contrail-visited');
 
-      if (hasVisited === 'true' && loading && loading.style.display === 'none') {
-        return;
-      }
+      // アニメーションに使用する画像をプリロード
+      const imagesToPreload = [
+        'assets/images/contrail-line.png',
+        'assets/images/contrail-main.png',
+        'assets/images/contrail-dot.png',
+        'assets/images/contrail-logo-transparent.png'
+      ];
 
-      setTimeout(() => {
-        main.style.opacity = '1';
-        main.style.transform = 'scale(1)';
-      }, 200);
+      // 画像の読み込みを待つ
+      preloadImages(imagesToPreload)
+        .then(() => {
+          // スピナーを非表示
+          spinner.classList.add('hide');
 
-      setTimeout(() => {
-        line.style.opacity = '1';
-        line.style.clipPath = 'inset(0 0 0 0)';
-      }, 800);
+          if (hasVisited === 'true') {
+            // 2回目以降の訪問: アニメーションなしで即座に表示
+            logoContainer.classList.add('show');
+            loading.style.opacity = '0';
+            loading.style.pointerEvents = 'none';
+            mainContent.style.opacity = "1";
+          } else {
+            // 初回訪問: アニメーションを実行
+            // ロゴコンテナを表示
+            setTimeout(() => {
+              logoContainer.classList.add('show');
+            }, 300);
 
-      setTimeout(() => {
-        dot.style.opacity = '1';
-        dot.style.top = '0px';
-      }, 1800);
+            // アニメーション開始
+            setTimeout(() => {
+              main.style.opacity = '1';
+              main.style.transform = 'scale(1)';
+            }, 500);
 
-      setTimeout(() => {
-        loading.style.opacity = '0';
-        loading.style.pointerEvents = 'none';
-      }, 2500);
+            setTimeout(() => {
+              line.style.opacity = '1';
+              line.style.clipPath = 'inset(0 0 0 0)';
+            }, 1100);
 
-      setTimeout(() => {
-        mainContent.style.opacity = "1";
-      }, 3000);
+            setTimeout(() => {
+              dot.style.opacity = '1';
+              dot.style.top = '0px';
+            }, 2100);
+
+            setTimeout(() => {
+              loading.style.opacity = '0';
+              loading.style.pointerEvents = 'none';
+            }, 2800);
+
+            setTimeout(() => {
+              mainContent.style.opacity = "1";
+            }, 3300);
+          }
+        })
+        .catch((error) => {
+          console.error('Image preload failed:', error);
+          // エラー時も通常通りコンテンツを表示
+          spinner.classList.add('hide');
+          logoContainer.classList.add('show');
+          loading.style.opacity = '0';
+          loading.style.pointerEvents = 'none';
+          mainContent.style.opacity = "1";
+        });
     });
 
     window.contrailCalendarVersion = "2.0";
