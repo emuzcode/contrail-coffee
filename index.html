@@ -256,6 +256,142 @@
           overflow: hidden;
         }
       }
+
+
+    /* News: compact list + accordion */
+    .news-list {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .news-item {
+      padding: 44px 0 52px;
+      border-bottom: 1px solid #dedede;
+    }
+
+    .news-item:first-child {
+      padding-top: 0;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .news-item.is-hidden {
+      display: none;
+    }
+
+    .news-date {
+      display: block;
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1;
+      color: #6b7280;
+      letter-spacing: 0.04em;
+      font-weight: 300;
+    }
+
+    .news-title {
+      margin-bottom: 22px;
+      font-size: 24px;
+      line-height: 1.55;
+      font-weight: 700;
+      color: #111827;
+      letter-spacing: 0.02em;
+    }
+
+    .news-preview,
+    .news-full {
+      max-width: 580px;
+      font-size: 16px;
+      line-height: 2;
+      color: #374151;
+      font-weight: 300;
+      letter-spacing: 0.03em;
+    }
+
+    .news-preview {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .news-info-block {
+      margin-top: 24px;
+      padding: 14px 0 14px 16px;
+      border-left: 2px solid #d1d5db;
+      color: #4b5563;
+      line-height: 1.9;
+    }
+
+    .news-toggle {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 18px;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .news-toggle:hover,
+    .news-toggle:focus-visible {
+      color: #111827;
+    }
+
+    .news-more-wrap {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .news-more-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 160px;
+      padding: 12px 22px;
+      border: 1px solid #d1d5db;
+      border-radius: 9999px;
+      background: #fff;
+      color: #374151;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .news-more-button:hover,
+    .news-more-button:focus-visible {
+      background: #f9fafb;
+      border-color: #9ca3af;
+      color: #111827;
+    }
+
+    @media (max-width: 640px) {
+      .news-item {
+        padding: 36px 0 44px;
+      }
+
+      .news-title {
+        font-size: 21px;
+        line-height: 1.6;
+      }
+
+      .news-preview,
+      .news-full {
+        font-size: 15px;
+        line-height: 1.95;
+      }
+    }
+
   </style>
 </head>
 <body class="bg-white text-gray-900 font-zen">
@@ -371,68 +507,10 @@
             News
           </h2>
 
-          <div class="space-y-8 sm:space-y-10 lg:space-y-12">
-            <article class="border-b border-gray-100 pb-6 sm:pb-8">
-              <div class="space-y-4">
-                <div class="flex items-start space-x-4">
-                  <time class="text-sm sm:text-base text-gray-500 font-light min-w-[100px] sm:min-w-[120px]">2026.4.20</time>
-                  <div class="flex-1">
-                    <h3 class="text-base sm:text-lg font-light text-gray-900 mb-3">2026年5月2日グランドオープン</h3>
-                    <div class="text-sm sm:text-base text-gray-700 font-light space-y-3">
-                      <p>2025年10月より不定期でスタートした coffee and chocolate take out cafe "contrail" が、皆さまから温かく見守られて運営ができましたこと、改めて深く感謝申し上げます。</p>
-                      <p>2026年5月からは、以下のスケジュールにて営業いたします。引き続き、どうぞよろしくお願いします。</p>
-                      <p>【営業時間】<br>平日 06:00〜11:00<br>土日祝日 06:00〜10:00 / 13:00〜17:00<br>※木曜日定休</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <article class="border-b border-gray-100 pb-6 sm:pb-8">
-              <div class="space-y-4">
-                <div class="flex items-start space-x-4">
-                  <time class="text-sm sm:text-base text-gray-500 font-light min-w-[100px] sm:min-w-[120px]">2025.7.27</time>
-                  <div class="flex-1">
-                    <h3 class="text-base sm:text-lg font-light text-gray-900 mb-3">プレオープンのお知らせ</h3>
-                    <div class="text-sm sm:text-base text-gray-700 font-light space-y-3">
-                      <p>現在、10月のプレオープンのために準備中です。</p>
-                      <p>営業日は不定期となっておりますので、下記のカレンダーにてご確認のうえお越しください。</p>
-                      <p>皆さまのお越しを心よりお待ちしております。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <article class="border-b border-gray-100 pb-6 sm:pb-8">
-              <div class="space-y-4">
-                <div class="flex items-start space-x-4">
-                  <time class="text-sm sm:text-base text-gray-500 font-light min-w-[100px] sm:min-w-[120px]">2025.5.5</time>
-                  <div class="flex-1">
-                    <h3 class="text-base sm:text-lg font-light text-gray-900 mb-3">ウェブサイト開設</h3>
-                    <div class="text-sm sm:text-base text-gray-700 font-light space-y-3">
-                      <p>Contrail Coffee & Chocolate の公式ウェブサイトを開設いたしました。</p>
-                      <p>最新情報はこちらのニュースページにてお知らせいたします。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <article>
-              <div class="space-y-4">
-                <div class="flex items-start space-x-4">
-                  <time class="text-sm sm:text-base text-gray-500 font-light min-w-[100px] sm:min-w-[120px]">2025.4.1</time>
-                  <div class="flex-1">
-                    <h3 class="text-base sm:text-lg font-light text-gray-900 mb-3">店舗準備中</h3>
-                    <div class="text-sm sm:text-base text-gray-700 font-light space-y-3">
-                      <p>埼玉県秩父市東町にて、コーヒーショップの開店準備を進めております。</p>
-                      <p>ニュージーランド発のスペシャルティコーヒーとクラフトチョコレートをお楽しみいただけるよう、準備に取り組んでおります。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
+          <!-- ニュース記事はJavaScriptで動的に生成 -->
+          <div id="news-container" class="max-w-2xl mx-auto">
+            <!-- 読み込み中のメッセージ -->
+            <p class="text-center text-gray-500 text-sm">読み込み中...</p>
           </div>
         </div>
       </div>
@@ -782,6 +860,273 @@
       } catch (error) {
         console.error('営業日設定の読み込みエラー:', error);
         businessDaysData = [];
+      }
+    }
+
+    // ニュースデータをGoogle Sheetsから取得
+    async function loadNews() {
+      try {
+        const SPREADSHEET_ID = "1BRHncUHIE9c4YZrq6Sa6oyaFULAd5uPE5GDNMIIc7Kg";
+        const SHEET_NAME = "news";
+        const encodedSheetName = encodeURIComponent(SHEET_NAME);
+        let url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodedSheetName}`;
+
+        let response = await fetch(url);
+
+        if (!response.ok) {
+          url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
+          response = await fetch(url);
+        }
+
+        if (!response.ok) {
+          throw new Error(`ニュースの読み込みに失敗しました: ${response.status} ${response.statusText}`);
+        }
+
+        const text = await response.text();
+        const jsonStart = text.indexOf("{");
+        const jsonEnd = text.lastIndexOf("}") + 1;
+
+        if (jsonStart === -1 || jsonEnd === 0) {
+          throw new Error('JSONデータが見つかりませんでした');
+        }
+
+        const json = JSON.parse(text.substring(jsonStart, jsonEnd));
+
+        // 日付を表示形式に変換（Date(2025,4,5) → 2025.5.5）
+        function formatDateForDisplay(dateValue) {
+          if (!dateValue) return "";
+
+          // Google SheetsのDate()形式をパース
+          if (typeof dateValue === 'string' && dateValue.startsWith('Date(')) {
+            const match = dateValue.match(/Date\((\d+),(\d+),(\d+)\)/);
+            if (match) {
+              const year = parseInt(match[1], 10);
+              const month = parseInt(match[2], 10) + 1; // 月は0ベースなので+1
+              const day = parseInt(match[3], 10);
+              return `${year}.${month}.${day}`;
+            }
+          }
+
+          // 数値（Excelシリアル値）の場合
+          if (typeof dateValue === 'number') {
+            const excelEpoch = new Date(1899, 11, 30);
+            const date = new Date(excelEpoch.getTime() + (dateValue - 1) * 86400 * 1000);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            return `${year}.${month}.${day}`;
+          }
+
+          // 文字列の場合はそのまま返す
+          if (typeof dateValue === 'string') {
+            return dateValue;
+          }
+
+          // Dateオブジェクトの場合
+          if (dateValue instanceof Date) {
+            const year = dateValue.getFullYear();
+            const month = dateValue.getMonth() + 1;
+            const day = dateValue.getDate();
+            return `${year}.${month}.${day}`;
+          }
+
+          return dateValue.toString();
+        }
+
+        // 全ての行を取得（Google Sheets APIは自動的にヘッダー行を除外）
+        const newsData = json.table.rows
+          .map(row => {
+            const dateValue = row.c[0]?.v || "";
+            const titleValue = row.c[1]?.v || "";
+            const contentsValue = row.c[2]?.v || "";
+
+            return {
+              dateRaw: dateValue, // ソート用に元の日付値を保持
+              date: formatDateForDisplay(dateValue),
+              title: titleValue,
+              contents: contentsValue
+            };
+          })
+          .filter(item => item.date && item.title) // dateとtitleが空でないもののみ
+          .sort((a, b) => {
+            // 日付の降順（新しい順）にソート
+            // Date()形式やシリアル値を比較可能な形式に変換
+            const getComparableDate = (dateValue) => {
+              if (typeof dateValue === 'string' && dateValue.startsWith('Date(')) {
+                const match = dateValue.match(/Date\((\d+),(\d+),(\d+)\)/);
+                if (match) {
+                  return new Date(parseInt(match[1]), parseInt(match[2]), parseInt(match[3]));
+                }
+              }
+              if (typeof dateValue === 'number') {
+                const excelEpoch = new Date(1899, 11, 30);
+                return new Date(excelEpoch.getTime() + (dateValue - 1) * 86400 * 1000);
+              }
+              if (dateValue instanceof Date) {
+                return dateValue;
+              }
+              // 文字列の場合は変換を試みる
+              return new Date(dateValue);
+            };
+
+            const dateA = getComparableDate(a.dateRaw);
+            const dateB = getComparableDate(b.dateRaw);
+            return dateB - dateA; // 降順（新しい順）
+          })
+          .map(item => {
+            // ソート後、dateRawプロパティを削除
+            const { dateRaw, ...rest } = item;
+            return rest;
+          });
+
+        renderNews(newsData);
+      } catch (error) {
+        console.error('ニュースの読み込みエラー:', error);
+        renderNews([]); // エラー時は空配列を渡す
+      }
+    }
+
+    // ニュースをHTMLに表示
+    function renderNews(newsData) {
+      const container = document.getElementById('news-container');
+      if (!container) return;
+
+      if (!newsData || newsData.length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-500 text-sm">現在、お知らせはありません。</p>';
+        return;
+      }
+
+      const INITIAL_NEWS_COUNT = 3;
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function formatParagraphs(text) {
+        const paragraphs = String(text || '').split(/\n\s*\n+/);
+        return paragraphs.map(paragraph => {
+          const trimmed = paragraph.trim();
+          if (!trimmed) return '';
+          return `<p class="mb-4 last:mb-0">${escapeHtml(trimmed).replace(/\n/g, '<br>')}</p>`;
+        }).join('');
+      }
+
+      function formatContents(contents) {
+        if (!contents) return '';
+
+        const lines = String(contents).split('\n');
+        const infoBlockStartIndex = lines.findIndex(line => line.trim().startsWith('【'));
+
+        if (infoBlockStartIndex === -1) {
+          return formatParagraphs(contents);
+        }
+
+        const beforeInfo = lines.slice(0, infoBlockStartIndex).join('\n').trim();
+        const infoBlock = lines.slice(infoBlockStartIndex).join('\n').trim();
+
+        let html = '';
+        if (beforeInfo) {
+          html += formatParagraphs(beforeInfo);
+        }
+        if (infoBlock) {
+          html += `<div class="news-info-block">${escapeHtml(infoBlock).replace(/\n/g, '<br>')}</div>`;
+        }
+        return html;
+      }
+
+      function getPreviewText(contents) {
+        const plainText = String(contents || '').replace(/\s+/g, ' ').trim();
+        return escapeHtml(plainText);
+      }
+
+      const itemsHtml = newsData.map((news, index) => {
+        const hiddenClass = index >= INITIAL_NEWS_COUNT ? ' is-hidden' : '';
+        const formattedContents = formatContents(news.contents);
+        const previewText = getPreviewText(news.contents);
+        const hasLongContent = previewText.length > 80 || String(news.contents || '').includes('\n');
+
+        return `
+          <article class="news-item${hiddenClass}" data-news-index="${index}">
+            <header>
+              <time class="news-date" datetime="${escapeHtml(news.date)}">${escapeHtml(news.date)}</time>
+              <h3 class="news-title">${escapeHtml(news.title)}</h3>
+            </header>
+
+            <div class="news-preview" id="news-preview-${index}">
+              ${previewText}
+            </div>
+
+            <div class="news-full" id="news-full-${index}" hidden>
+              ${formattedContents}
+            </div>
+
+            ${hasLongContent ? `
+              <button
+                type="button"
+                class="news-toggle"
+                aria-expanded="false"
+                aria-controls="news-full-${index}"
+                onclick="toggleNews(${index})"
+              >
+                Read more
+              </button>
+            ` : ''}
+          </article>
+        `;
+      }).join('');
+
+      const showAllButton = newsData.length > INITIAL_NEWS_COUNT
+        ? `
+          <div class="news-more-wrap">
+            <button type="button" class="news-more-button" id="news-show-all" onclick="showAllNews()">
+              View all news
+            </button>
+          </div>
+        `
+        : '';
+
+      container.className = 'news-list';
+      container.innerHTML = itemsHtml + showAllButton;
+    }
+
+    function toggleNews(index) {
+      const article = document.querySelector(`article[data-news-index="${index}"]`);
+      if (!article) return;
+
+      const preview = article.querySelector('.news-preview');
+      const full = article.querySelector('.news-full');
+      const toggle = article.querySelector('.news-toggle');
+      if (!preview || !full || !toggle) return;
+
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        preview.hidden = false;
+        full.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = 'Read more';
+        article.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        preview.hidden = true;
+        full.hidden = false;
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.textContent = 'Read less';
+      }
+    }
+
+    function showAllNews() {
+      document.querySelectorAll('.news-item.is-hidden').forEach(item => {
+        item.classList.remove('is-hidden');
+      });
+
+      const buttonWrap = document.querySelector('.news-more-wrap');
+      if (buttonWrap) {
+        buttonWrap.remove();
       }
     }
 
@@ -1196,7 +1541,10 @@
     }
 
     async function startCalendar() {
-      await loadBusinessSettings();
+      await Promise.all([
+        loadBusinessSettings(),
+        loadNews()
+      ]);
       setTimeout(() => {
         initializeCalendar();
         initializeKumaDownload();
