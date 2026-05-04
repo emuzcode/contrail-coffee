@@ -211,6 +211,8 @@
   @media (min-width: 640px) {
     .menu-row .temp { order: 0; flex-basis: auto; margin-top: 0; }
   }
+  .temp.temp-hot, .temp-hot { color: #b05858; }
+  .temp.temp-ice, .temp-ice { color: #4a7fa5; }
   .menu-row .leader {
     flex: 1;
     min-width: 16px;
@@ -1154,10 +1156,10 @@
 
     function tempLabel(temp) {
       switch ((temp || '').toLowerCase()) {
-        case 'both': return 'Hot · Ice';
-        case 'hot':  return 'Hot';
-        case 'cold': return 'Ice';
-        default:     return '';
+        case 'both': return { label: '<span class="temp-hot">Hot</span> · <span class="temp-ice">Ice</span>', cls: '', raw: true };
+        case 'hot':  return { label: 'Hot', cls: 'temp-hot' };
+        case 'cold': return { label: 'Ice', cls: 'temp-ice' };
+        default:     return null;
       }
     }
 
@@ -1169,13 +1171,13 @@
       const config = categoryConfig[cat] || { en: cat, ja: '' };
       const marginClass = i === 0 ? '' : 'mt-24 sm:mt-32';
       const rowsHtml = grouped[cat].map(item => {
-        const temp = tempLabel(item.temperature);
+        const tempInfo = tempLabel(item.temperature);
         const price = item.price !== '' ? `¥${Number(item.price).toLocaleString()}` : '';
         return `<div class="menu-row">
           <div class="name-line">
             <span class="name">${escapeHtml(item.name)}</span>
             <span class="leader" aria-hidden="true"></span>
-            ${temp ? `<span class="temp">${escapeHtml(temp)}</span>` : ''}
+            ${tempInfo ? `<span class="temp ${tempInfo.cls}">${tempInfo.raw ? tempInfo.label : escapeHtml(tempInfo.label)}</span>` : ''}
           </div>
           <span class="price">${escapeHtml(price)}</span>
         </div>`;
