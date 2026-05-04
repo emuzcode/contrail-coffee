@@ -116,19 +116,17 @@ git push origin main
 ## Content Sections (in order)
 
 1. Hero section with animated logo
-2. Concept section with parallax background image and tagline
-3. Menu section (Coffee, Chocolate drinks, Organic soda, Craft chocolate, Donuts)
-4. News section (chronological updates)
-5. Business calendar with Google Sheets integration
-6. Access/Location section with Google Maps embed
-7. Footer with Instagram link
+2. Menu section (Coffee, Chocolate drinks, Organic soda, Craft chocolate, Donuts)
+3. News section (chronological updates)
+4. Business calendar with Google Sheets integration
+5. Access/Location section with Google Maps embed
+6. Footer with Instagram link
 
 ## Testing Checklist
 
 When making changes, verify:
 - [ ] Logo loading animation works on first visit
 - [ ] Logo animation skips on subsequent visits (same session)
-- [ ] Mobile scrolling is smooth (no jank on concept background)
 - [ ] Calendar loads business days from Google Sheets
 - [ ] Calendar month navigation works
 - [ ] Kuma download button creates and downloads PNG
