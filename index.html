@@ -50,10 +50,10 @@
 <meta name="apple-mobile-web-app-title" content="Contrail" />
 
 <link rel="preload" href="styles.css" as="style" />
-<link rel="preload" href="assets/images/contrail-line.png" as="image" />
-<link rel="preload" href="assets/images/contrail-main.png" as="image" />
-<link rel="preload" href="assets/images/contrail-dot.png" as="image" />
-<link rel="preload" href="assets/images/contrail-logo-transparent.png" as="image" />
+<link rel="preload" href="assets/images/contrail-line-1600.png" as="image" />
+<link rel="preload" href="assets/images/contrail-main-1600.png" as="image" />
+<link rel="preload" href="assets/images/contrail-dot-1600.png" as="image" />
+<link rel="preload" href="assets/images/contrail-logo-1600.png" as="image" />
 
 <!-- Tailwind via CDN (no build step). -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -77,6 +77,7 @@
     --serif: 'Zen Old Mincho','Hiragino Mincho ProN','Yu Mincho',serif;
     --sans:  'Noto Sans JP', ui-sans-serif, system-ui, -apple-system, sans-serif;
     --open:  #cfc0ac;   /* open-day calendar swatch */
+    --line-strong: #d6d2c8;   /* hairline that stays visible on both paper tones */
   }
   html, body {
     background: var(--paper);
@@ -101,29 +102,147 @@
   .border-line      { border-color: var(--line); }
   .border-line-soft { border-color: var(--line-soft); }
 
-  /* Hero — logo-first, mobile-first */
+  /* Hero — the logo sits exactly where the loading animation leaves it:
+     same width as the loading logo (85vw, or min(640px, 90vw) from 640px up)
+     and vertically centred on 50vh, so the hand-off is seamless. */
+  .hero {
+    --logo-w: 85vw;
+    padding-top: calc(50vh - var(--logo-w) * 0.20875);   /* (668 / 1600) / 2 */
+    padding-bottom: 44px;
+  }
+  @media (min-width: 640px) {
+    .hero { --logo-w: min(640px, 90vw); padding-bottom: 72px; }
+  }
   .hero-logo {
-    width: min(88vw, 540px);
-    height: auto;
     display: block;
-    margin: 0 auto;
-    opacity: 0.92;
+    width: var(--logo-w);
+    height: auto;
+    margin-left: calc(50vw - var(--logo-w) / 2);
   }
-  .hero-secondary {
+  /* Staged in once the loading overlay has gone (body.hero-in) and data is ready */
+  .hero-stage {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+    transition: opacity 900ms ease, transform 900ms ease;
+  }
+  body.hero-in .hero-stage.is-ready { opacity: 1; transform: none; }
+
+  /* Today — the second thing the top screen says, after the name */
+  .today {
+    width: calc(100% - 48px);
+    max-width: 420px;
+    margin: 32px auto 0;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    display: flex;
+    flex-direction: column;
+  }
+  .today-head {
+    padding: 18px 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .today-date {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
     font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(14px, 3.8vw, 17px);
-    line-height: 2.2;
-    letter-spacing: 0.18em;
-    color: var(--ink-faint);
+    font-size: 16px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
   }
+  .today-label {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+  }
+  .today-pill {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    padding: 4px 11px;
+    border-radius: 9999px;
+    color: var(--paper);
+    background: var(--ink);
+    white-space: nowrap;
+  }
+  .today-pill.is-closed {
+    color: var(--ink);
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  .today-hours {
+    padding: 8px 4px 16px;
+    min-height: 56px;
+    font-family: var(--sans);
+    font-size: 21px;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 18px;
+  }
+  .today-hours.is-note {
+    font-family: var(--serif);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    align-items: center;
+  }
+  .today-news {
+    border-top: 1px solid var(--line);
+    min-height: 48px;
+    padding: 0 0 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--ink-soft);
+  }
+  .today-news svg { flex-shrink: 0; }
+  .today-news-text { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+  .today-news-label {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    white-space: nowrap;
+  }
+  .today-news-title {
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .today-pill[hidden], .today-news[hidden], .today-tag[hidden] { display: none; }
+
   .section-eyebrow {
     font-family: var(--sans);
-    font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.42em;
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 0.36em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--ink-mute);
+  }
+  .section-lead {
+    font-family: var(--serif);
+    font-size: 14px;
+    line-height: 2;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+  .section-lead-en {
+    display: block;
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    color: var(--ink-mute);
   }
   .section-title {
     font-family: var(--serif);
@@ -145,10 +264,12 @@
 
   /* Header — almost invisible until scroll */
   #site-header {
-    transition: background-color 600ms ease, border-color 600ms ease, backdrop-filter 600ms ease;
+    transition: background-color 600ms ease, border-color 600ms ease, backdrop-filter 600ms ease, opacity 700ms ease;
     background-color: rgba(251,250,247,0);
     border-bottom: 1px solid transparent;
+    opacity: 0;   /* arrives with the hero stage, after the loading overlay */
   }
+  body.hero-in #site-header { opacity: 1; }
   #site-header.is-scrolled {
     background-color: rgba(251,250,247,0.86);
     backdrop-filter: saturate(140%) blur(8px);
@@ -157,9 +278,9 @@
   }
   .nav-link {
     font-family: var(--sans);
-    font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.36em;
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--ink-mute);
     transition: color 200ms ease;
@@ -174,81 +295,172 @@
     color: var(--ink);
   }
 
-  /* Menu rows — ledger with dot-leader. */
-  .menu-row {
+  /* Menu — category tabs + compact ledger rows */
+  .menu-tabs {
     display: grid;
-    grid-template-columns: 1fr auto;
-    column-gap: 16px;
-    align-items: baseline;
-    padding: 20px 0;
-    border-top: 1px solid var(--line-soft);
+    gap: 1px;
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 6px;
+    overflow: hidden;
   }
-  .menu-row:last-child { border-bottom: 1px solid var(--line-soft); }
-  .menu-row .name-line {
+  .menu-tab {
+    height: 52px;
+    padding: 0 2px;
+    background: var(--paper-soft);
+    color: var(--ink);
+    font-family: var(--sans);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    transition: background-color 180ms ease, color 180ms ease;
+  }
+  .menu-tab .label { font-size: 12.5px; letter-spacing: 0.04em; }
+  .menu-tab .count { font-size: 11px; font-variant-numeric: tabular-nums; }
+  .menu-tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+  .menu-tab:focus-visible { outline: 2px solid var(--ink-quiet); outline-offset: -5px; }
+  .menu-panel { margin-top: 36px; }
+  .menu-panel[hidden] { display: none; }
+  .menu-panel.is-entering .menu-row { animation: menuRowIn 320ms ease both; }
+  @keyframes menuRowIn {
+    from { opacity: 0; transform: translate3d(0, 6px, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+  .menu-cat-head {
     display: flex;
     align-items: baseline;
-    gap: 10px;
-    min-width: 0;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .menu-cat-head h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.36em;
+    color: var(--ink);
+  }
+  .menu-cat-head span {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+  }
+  .menu-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #dcd8cf;
+  }
+  .menu-row .name-line {
+    display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    min-width: 0;
   }
   .menu-row .name {
     font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
     font-weight: 500;
-    font-size: clamp(15px, 4vw, 16px);
-    letter-spacing: 0.06em;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
     color: var(--ink);
   }
-  .menu-row .temp {
+  .menu-row .temp-tag {
     font-family: var(--sans);
-    font-weight: 300;
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    border: 1px solid var(--ink-faint);
+    border-radius: 3px;
+    padding: 1px 6px;
     white-space: nowrap;
-    order: 3;
-    flex-basis: 100%;
-    margin-top: 4px;
-  }
-  @media (min-width: 640px) {
-    .menu-row .temp { order: 0; flex-basis: auto; margin-top: 0; }
-  }
-  .temp.temp-hot, .temp-hot { color: #b05858; }
-  .temp.temp-ice, .temp-ice { color: #4a7fa5; }
-  .menu-row .leader {
-    flex: 1;
-    min-width: 16px;
-    border-bottom: 1px dotted var(--line);
-    transform: translateY(-4px);
   }
   .menu-row .price {
     font-family: var(--sans);
-    font-weight: 300;
-    font-size: 13px;
-    letter-spacing: 0.06em;
-    color: var(--ink-mute);
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
-  .menu-row .desc {
-    grid-column: 1 / -1;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 12.5px;
-    line-height: 1.95;
-    letter-spacing: 0.03em;
-    color: var(--ink-quiet);
-    margin-top: 8px;
-    max-width: 56ch;
-  }
 
-  /* Calendar — quiet grid */
+  /* Calendar — hours table, month nav, quiet grid */
+  .open-bear {
+    display: block;
+    width: 168px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    animation: bearFloat 7s ease-in-out infinite;
+  }
+  @keyframes bearFloat {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50%      { transform: translate3d(0, -5px, 0); }
+  }
+  .hours-table { border-top: 1px solid var(--line-strong); }
+  .hours-row {
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .hours-row dt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--serif);
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+  }
+  .hours-row dd {
+    font-family: var(--sans);
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .hours-row dd.is-off { letter-spacing: 0.08em; color: var(--ink-mute); }
+  .today-tag {
+    font-family: var(--sans);
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    color: var(--paper);
+    background: var(--ink);
+    border-radius: 3px;
+    padding: 1px 6px;
+  }
+  .cal-nav-btn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--ink-quiet);
+    border-radius: 9999px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 160ms ease, transform 160ms ease;
+  }
+  .cal-nav-btn:active { background: var(--line); transform: scale(0.94); }
   .cal-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
-    background: var(--line-soft);
-    border: 1px solid var(--line-soft);
+    background: var(--line-strong);
+    border: 1px solid var(--line-strong);
   }
   .cal-cell {
     background: var(--paper);
@@ -258,31 +470,86 @@
     justify-content: flex-end;
     padding: 6px 7px;
     font-family: var(--sans);
-    font-weight: 300;
-    font-size: 11.5px;
-    color: var(--ink-soft);
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--ink-quiet);
     font-variant-numeric: tabular-nums;
     position: relative;
+    transition: opacity 220ms ease;
   }
   @media (min-width: 640px) {
-    .cal-cell { padding: 8px 10px; font-size: 12px; }
+    .cal-cell { padding: 8px 10px; font-size: 14px; }
   }
   .cal-cell.is-head {
     aspect-ratio: auto;
-    padding: 8px 6px;
-    background: var(--paper);
-    color: var(--ink-faint);
-    font-size: 9.5px;
-    letter-spacing: 0.18em;
+    height: 28px;
+    padding: 0;
+    color: var(--ink-mute);
+    font-size: 12px;
+    align-items: center;
     justify-content: center;
-    text-transform: uppercase;
   }
-  @media (min-width: 640px) {
-    .cal-cell.is-head { padding: 10px; font-size: 10.5px; letter-spacing: 0.24em; }
+  .cal-cell.is-out    { background: var(--paper-soft); color: var(--ink-faint); font-weight: 300; }
+  .cal-cell.is-open   { background: var(--open); color: var(--ink); font-weight: 500; }
+  .cal-cell.is-closed { color: var(--ink-quiet); }
+  .cal-cell.is-today  { box-shadow: inset 0 0 0 2px var(--ink); }
+  /* Month change: cells are inserted transparent, then fade in */
+  .cal-grid.is-swapping .cal-cell:not(.is-head) { opacity: 0; transition: none; }
+  .cal-legend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
   }
-  .cal-cell.is-out    { background: var(--paper); color: var(--ink-faint); opacity: 0.3; }
-  .cal-cell.is-open   { background: var(--open); color: var(--ink); font-weight: 400; }
-  .cal-cell.is-closed { color: var(--ink-faint); }
+  .cal-legend .item { display: flex; align-items: center; gap: 6px; }
+  .cal-legend .sw { width: 12px; height: 12px; display: block; }
+  .cal-legend .sw-open   { background: var(--open); }
+  .cal-legend .sw-closed { background: var(--paper); border: 1px solid var(--ink-faint); }
+  .cal-legend .sw-today  { background: var(--open); box-shadow: inset 0 0 0 2px var(--ink); }
+  /* Save — only the bear is the press target (it blocks scrolling while held) */
+  .kuma-save {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px 10px 10px;
+    border: 1px solid var(--ink);
+    border-radius: 6px;
+    background: var(--paper);
+  }
+  .kuma-press {
+    width: 88px;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--paper-soft);
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    transition: background-color 160ms ease;
+  }
+  .kuma-press:active { background: var(--line); }
+  .kuma-press img { width: 72px; height: 44px; object-fit: contain; display: block; pointer-events: none; }
+  .kuma-save .title {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .kuma-save .note {
+    font-family: var(--sans);
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+  }
 
   /* Specialty rows */
   .specialty-row {
@@ -405,21 +672,22 @@
   }
 
   /* News list styles using CSS variables */
-  .news-item { padding: 32px 0 40px; border-bottom: 1px solid var(--line-soft); }
+  .news-item { padding: 28px 0 28px; border-bottom: 1px solid var(--line); }
   .news-item:first-child { padding-top: 0; }
   .news-item:last-of-type { border-bottom: none; }
   .news-item.is-hidden { display: none; }
-  .news-date { display: block; margin-bottom: 8px; font-family: var(--sans); font-size: 11px; letter-spacing: 0.22em; color: var(--ink-faint); font-weight: 300; }
-  .news-title { font-family: var(--serif); font-size: clamp(16px, 4vw, 20px); line-height: 1.7; color: var(--ink); font-weight: 500; letter-spacing: 0.06em; }
-  .news-content { margin-top: 16px; font-family: var(--serif); font-size: 13.5px; line-height: 2.1; color: var(--ink-soft); font-weight: 400; letter-spacing: 0.04em; }
+  .news-date { display: block; margin-bottom: 6px; font-family: var(--sans); font-size: 12px; letter-spacing: 0.16em; color: var(--ink-mute); font-weight: 400; }
+  .news-title { font-family: var(--serif); font-size: clamp(17px, 4.4vw, 20px); line-height: 1.7; color: var(--ink); font-weight: 500; letter-spacing: 0.06em; }
+  .news-content { margin-top: 12px; font-family: var(--serif); font-size: 14px; line-height: 2; color: var(--ink-soft); font-weight: 400; letter-spacing: 0.04em; }
   .news-content p { margin-bottom: 1rem; }
   .news-content p:last-child { margin-bottom: 0; }
-  .news-info-block { margin-top: 16px; padding: 10px 0 10px 14px; border-left: 1px solid var(--line); color: var(--ink-mute); line-height: 1.9; font-family: var(--serif); font-size: 13px; }
+  .news-info-block { margin-top: 16px; padding: 10px 0 10px 14px; border-left: 1px solid var(--line-strong); color: var(--ink-mute); line-height: 1.9; font-family: var(--serif); font-size: 13px; }
   .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .news-toggle, .news-more-button { margin-top: 14px; color: var(--ink-faint); font-family: var(--sans); font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; background: transparent; border: none; cursor: pointer; padding: 6px 0; transition: color 200ms ease; }
-  .news-toggle:hover, .news-more-button:hover { color: var(--ink-mute); }
-  .news-more-wrap { text-align: center; margin-top: 8px; }
-  .news-more-button { padding: 10px 24px; border: 1px solid var(--line); border-radius: 9999px; background: var(--paper); }
+  .news-toggle { margin-top: 4px; min-height: 44px; padding: 0; color: var(--ink); font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-decoration: underline; text-underline-offset: 5px; background: transparent; border: none; cursor: pointer; }
+  .news-more-wrap { margin-top: 28px; }
+  .news-more-button { width: 100%; max-width: 360px; min-height: 48px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--ink); border-radius: 6px; background: transparent; color: var(--ink); font-family: var(--sans); font-size: 14px; letter-spacing: 0.1em; cursor: pointer; transition: background-color 160ms ease; }
+  .news-more-button:active { background: var(--line); }
+  .news-more-button .rest { font-size: 12px; letter-spacing: 0.04em; color: var(--ink-mute); }
 
   /* Subtle hairline rule */
   .rule {
@@ -430,8 +698,8 @@
   }
   .rule-h { width: 32px; height: 1px; background: var(--ink-faint); }
 
-  /* Reveal on scroll — 16px upward, slow fade */
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 1400ms ease, transform 1400ms ease; }
+  /* Reveal on scroll — 12px upward, unhurried fade */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity 700ms ease, transform 700ms ease; }
   .reveal.in { opacity: 1; transform: none; }
 
   /* Loading animation */
@@ -615,6 +883,123 @@
     opacity: 1;
     pointer-events: auto;
   }
+  #nav-drawer .nav-link { display: block; padding: 14px 0; font-size: 13px; }
+
+  /* Anchor targets clear the fixed header */
+  section[id] { scroll-margin-top: 56px; }
+
+  /* Access */
+  .btn-primary {
+    min-height: 52px;
+    border-radius: 6px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--sans);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    transition: background-color 160ms ease, transform 160ms ease;
+  }
+  .btn-primary:hover  { background: #1f2937; }
+  .btn-primary:active { transform: scale(0.985); }
+  .info-list { display: flex; flex-direction: column; gap: 24px; }
+  .info-list dt {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .info-list dd {
+    margin-top: 6px;
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.9;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+  .info-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+  .footer-link { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+
+  /* Concept — vertical text; the columns arrive one by one, then the trail is drawn */
+  .cc-concept { overflow: hidden; }
+  .cc-concept-inner {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 40px 32px 0;
+  }
+  .cc-concept-inner.reveal { opacity: 1; transform: none; transition: none; }
+  .cc-concept-text {
+    margin-top: 38px;
+    margin-left: auto;   /* columns start from the right edge */
+    height: 340px;
+    -webkit-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+  }
+  .cc-concept-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.8;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+  }
+  .cc-concept-body {
+    margin-block-start: 28px;
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 2.2;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+  }
+  .cc-concept-body + .cc-concept-body { margin-block-start: 20px; }
+  .cc-concept-closing { color: var(--ink); }
+  .cc-col {
+    display: block;
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+    transition: opacity 800ms ease, transform 800ms ease;
+    transition-delay: calc(var(--i, 0) * 160ms + 150ms);
+  }
+  .cc-concept-inner.in .cc-col { opacity: 1; transform: none; }
+  /* The trail runs edge to edge and is wiped in left to right — the same
+     clip-path move as the line in the loading logo. The wrapper is what the
+     reveal observer watches: a fully clipped element never reports as visible. */
+  .cc-concept-trail { margin: 24px 0 56px; }
+  .cc-concept-trail.reveal { opacity: 1; transform: none; transition: none; }
+  .cc-concept-line {
+    display: block;
+    width: 100%;
+    height: clamp(150px, 15vw, 220px);
+    -webkit-clip-path: inset(0 100% 0 0);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 2400ms cubic-bezier(0.4, 0, 0.2, 1) 400ms, -webkit-clip-path 2400ms cubic-bezier(0.4, 0, 0.2, 1) 400ms;
+  }
+  .cc-concept-trail.in .cc-concept-line { -webkit-clip-path: inset(0 0 0 0); clip-path: inset(0 0 0 0); }
+  .cc-concept-line path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-opacity: 0.8;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-stage, .cc-col { transition: none; }
+    .cc-concept-line { transition: none; -webkit-clip-path: none; clip-path: none; }
+    .open-bear { animation: none; }
+    .menu-panel.is-entering .menu-row { animation: none; }
+    .cal-cell { transition: none; }
+  }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
@@ -631,9 +1016,9 @@
   <div class="w-[640px] max-w-[85vw] sm:max-w-[90vw] mx-auto flex items-center justify-center flex-col relative">
     <div class="loading-spinner"></div>
     <div class="logo-container">
-      <img class="logo-line" src="assets/images/contrail-line.png" alt="contrailの上の線" />
-      <img class="logo-main" src="assets/images/contrail-main.png" alt="contrail本体" />
-      <img class="logo-dot" src="assets/images/contrail-dot.png" alt="iの点" />
+      <img class="logo-line" src="assets/images/contrail-line-1600.png" alt="contrailの上の線" />
+      <img class="logo-main" src="assets/images/contrail-main-1600.png" alt="contrail本体" />
+      <img class="logo-dot" src="assets/images/contrail-dot-1600.png" alt="iの点" />
     </div>
   </div>
 </div>
@@ -651,17 +1036,17 @@
       <a href="https://www.instagram.com/chichibu.chocolate.factory/" target="_blank" rel="noopener" class="nav-link">Instagram</a>
     </nav>
 
-    <button id="nav-toggle" class="md:hidden -mr-2 p-2" aria-label="Open navigation">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2">
-        <line x1="3" y1="6"  x2="17" y2="6" />
-        <line x1="3" y1="14" x2="17" y2="14" />
+    <button id="nav-toggle" type="button" class="md:hidden -mr-3 flex items-center justify-center" style="width:44px; height:44px;" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav-drawer">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true">
+        <line x1="3" y1="8"  x2="19" y2="8" />
+        <line x1="3" y1="14" x2="19" y2="14" />
       </svg>
     </button>
   </div>
 
   <!-- Mobile drawer -->
   <div id="nav-drawer" class="md:hidden border-t border-line bg-paper">
-    <nav class="px-6 py-6 flex flex-col gap-y-5">
+    <nav class="px-6 py-3 flex flex-col">
       <a href="#menu"     class="nav-link">Menu</a>
       <a href="#news"     class="nav-link">News</a>
       <a href="#calendar" class="nav-link">Calendar</a>
@@ -674,146 +1059,151 @@
 <main id="top">
 
 <!-- ─────────────── HERO ─────────────── -->
-<section class="min-h-[100svh] flex items-center justify-center px-6 sm:px-10">
-  <div class="max-w-[820px] w-full text-center pt-20 pb-20 sm:pb-24">
-    <div class="reveal" style="transition-delay: 200ms;">
-      <p class="hero-secondary">
-        コーヒーの香りと共に<br />
-        心はずむ１日がはじまる<br />
-        Have a good day
-      </p>
-    </div>
+<!-- The logo matches the loading logo's size and position, so it stays put when the overlay fades. -->
+<section class="hero">
+  <img
+    src="assets/images/contrail-logo-1600.png"
+    alt="Contrail — coffee and chocolate"
+    class="hero-logo"
+    width="1600" height="668"
+  />
 
-    <div class="reveal mt-12 sm:mt-16" style="transition-delay: 800ms;">
-      <img
-        src="assets/images/contrail-logo-transparent.png"
-        alt="Contrail — coffee and chocolate"
-        class="hero-logo"
-      />
+  <!-- Today's opening status — filled by renderTodayCard() / renderTodayNews() -->
+  <section id="today-card" class="today hero-stage" aria-label="本日の営業" aria-busy="true">
+    <div class="today-head">
+      <p class="today-date"><span class="today-label">本日</span><span id="today-date"></span></p>
+      <span id="today-status" class="today-pill" hidden></span>
     </div>
-
-    <div class="reveal mt-10 sm:mt-12" style="transition-delay: 1300ms;">
-      <img
-        src="assets/images/ひこーきぐまOpen.png"
-        alt=""
-        style="width: min(62vw, 260px); height: auto; display: block; margin: 0 auto;"
-      />
-    </div>
-
-    <div class="reveal mt-14 sm:mt-20" style="transition-delay: 1700ms;">
-      <div class="rule" aria-hidden="true"></div>
-    </div>
-  </div>
+    <p id="today-hours" class="today-hours"></p>
+    <a id="today-news" class="today-news" href="#news" hidden>
+      <span class="today-news-text">
+        <span class="today-news-label">お知らせ</span>
+        <span id="today-news-title" class="today-news-title"></span>
+      </span>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><polyline points="7,4 12,9 7,14" /></svg>
+    </a>
+  </section>
 </section>
 
 
 <!-- ─────────────── MENU ─────────────── -->
-<section id="menu" class="px-6 sm:px-10 py-20 sm:py-32 bg-paper-soft">
+<section id="menu" class="px-6 sm:px-10 py-16 sm:py-32 bg-paper-soft">
   <div class="max-w-[760px] mx-auto">
 
     <div class="reveal text-center">
       <p class="section-eyebrow">Menu</p>
-      <h2 class="section-title mt-5">メニュー</h2>
+      <h2 class="section-title mt-4">メニュー</h2>
+      <p class="section-lead mt-6">
+        コーヒーの香りと共に、心はずむ１日がはじまる
+        <span class="section-lead-en">Have a good day</span>
+      </p>
     </div>
 
-    <!-- Menu items rendered by JavaScript from Google Spreadsheet. -->
-    <div id="menu-container" class="mt-20 sm:mt-28">
-      <p style="text-align:center; font-family:var(--sans); font-size:12px; color:var(--ink-faint); letter-spacing:0.18em;">読み込み中...</p>
+    <!-- Category tabs + rows rendered by JavaScript from Google Spreadsheet. -->
+    <div id="menu-container" class="mt-8">
+      <p style="text-align:center; font-family:var(--sans); font-size:12px; color:var(--ink-mute); letter-spacing:0.18em;">読み込み中...</p>
     </div>
 
-    <p class="reveal mt-16 text-center font-sans text-ink-faint" style="font-weight:300; font-size:11.5px; letter-spacing:0.24em;">
-      価格は税込み表示です。 季節により内容が変わることがあります。
+    <p class="reveal mt-7 text-center font-sans text-ink-mute" style="font-size:12px; line-height:1.9; letter-spacing:0.08em;">
+      価格は税込み表示です。<br class="sm:hidden" />季節により内容が変わることがあります。
     </p>
   </div>
 </section>
 
 <!-- ─────────────── NEWS ─────────────── -->
-<section id="news" class="px-6 sm:px-10 py-20 sm:py-32">
+<section id="news" class="px-6 sm:px-10 py-16 sm:py-32">
   <div class="max-w-[760px] mx-auto">
     <div class="reveal text-center">
       <p class="section-eyebrow">News</p>
-      <h2 class="section-title mt-5">お知らせ</h2>
+      <h2 class="section-title mt-4">お知らせ</h2>
     </div>
 
     <!-- Items rendered by JavaScript from Google Spreadsheet. -->
-    <div id="news-container" class="reveal mt-16">
-      <p style="text-align:center; font-family:var(--sans); font-size:12px; color:var(--ink-faint); letter-spacing:0.18em;">読み込み中...</p>
+    <div id="news-container" class="reveal mt-10">
+      <p style="text-align:center; font-family:var(--sans); font-size:12px; color:var(--ink-mute); letter-spacing:0.18em;">読み込み中...</p>
     </div>
   </div>
 </section>
 
 <!-- ─────────────── CALENDAR ─────────────── -->
-<section id="calendar" class="px-6 sm:px-10 py-20 sm:py-32 bg-paper-soft">
+<section id="calendar" class="px-6 sm:px-10 py-16 sm:py-32 bg-paper-soft">
   <div class="max-w-[760px] mx-auto">
 
     <div class="reveal text-center">
       <p class="section-eyebrow">Calendar</p>
-      <h2 class="section-title mt-5">営業日</h2>
+      <h2 class="section-title mt-4">営業日</h2>
+      <img src="assets/images/ひこーきぐまOpen.png" alt="Open" class="open-bear mt-7" width="411" height="273" />
     </div>
 
-    <div class="reveal mt-8 text-center font-sans text-ink-quiet" style="font-weight:300; font-size:11.5px; letter-spacing:0.2em; line-height:2.4;">
-      <p>月・火・水・金　&nbsp;6:00 – 11:00</p>
-      <p>土・日　&nbsp;6:00 – 10:00　/　13:00 – 17:00</p>
-      <p class="text-ink-faint">木　&nbsp;定休</p>
-    </div>
+    <!-- Regular hours. renderTodayCard() shows the 今日 tag on the matching row. -->
+    <dl class="reveal hours-table mt-7">
+      <div class="hours-row" data-days="weekday">
+        <dt><span>月・火・水・金</span><span class="today-tag" hidden>今日</span></dt>
+        <dd>6:00–11:00</dd>
+      </div>
+      <div class="hours-row" data-days="weekend">
+        <dt><span>土・日</span><span class="today-tag" hidden>今日</span></dt>
+        <dd>6:00–10:00 / 13:00–17:00</dd>
+      </div>
+      <div class="hours-row" data-days="thu">
+        <dt><span>木</span><span class="today-tag" hidden>今日</span></dt>
+        <dd class="is-off">定休</dd>
+      </div>
+    </dl>
 
-    <div class="reveal mt-12 sm:mt-16 flex items-center justify-between">
-      <button id="cal-prev" class="font-sans text-ink-mute hover:text-ink" style="font-weight:300; font-size:11.5px; letter-spacing:0.32em;" aria-label="Previous month">
-        ← PREV
+    <div class="reveal mt-10 flex items-center justify-between">
+      <button id="cal-prev" type="button" class="cal-nav-btn" aria-label="前の月">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><polyline points="11,4 6,9 11,14" /></svg>
       </button>
       <div class="text-center">
-        <p class="font-sans text-ink-faint" style="font-weight:300; font-size:10.5px; letter-spacing:0.42em; text-transform:uppercase;" id="cal-year">2025</p>
-        <p class="font-serif text-ink mt-1" style="font-weight:500; font-size:24px; letter-spacing:0.2em;" id="cal-month">May</p>
+        <!-- #cal-year / #cal-month keep the year and the English month name: downloadCalendar() reads them. -->
+        <p class="font-sans text-ink-mute" style="font-size:12px; letter-spacing:0.3em;"><span id="cal-year">2025</span> · <span id="cal-month" style="text-transform:uppercase;">May</span></p>
+        <p class="font-serif text-ink" style="font-weight:500; font-size:26px; line-height:1.3; letter-spacing:0.12em;" id="cal-month-ja">5月</p>
       </div>
-      <button id="cal-next" class="font-sans text-ink-mute hover:text-ink" style="font-weight:300; font-size:11.5px; letter-spacing:0.32em;" aria-label="Next month">
-        NEXT →
+      <button id="cal-next" type="button" class="cal-nav-btn" aria-label="次の月">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><polyline points="7,4 12,9 7,14" /></svg>
       </button>
     </div>
 
     <!-- Calendar grid populated by JS -->
-    <div id="calendar-grid" class="reveal mt-10 cal-grid">
+    <div id="calendar-grid" class="reveal mt-5 cal-grid">
     </div>
 
     <!-- Legend -->
-    <div class="reveal mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-4 font-sans text-ink-faint" style="font-weight:300; font-size:11px; letter-spacing:0.18em;">
-      <div class="flex items-center gap-x-6">
-        <span class="flex items-center gap-x-2">
-          <span style="width:10px; height:10px; background:var(--line); display:inline-block; flex-shrink:0;"></span>
-          営業日
-        </span>
-        <span class="flex items-center gap-x-2">
-          <span style="width:10px; height:10px; background:var(--paper); border:1px solid var(--line); display:inline-block; flex-shrink:0;"></span>
-          定休日
-        </span>
-      </div>
-      <p>
-        長押しで月のカレンダーを保存できます。
-      </p>
+    <div class="reveal mt-4 cal-legend">
+      <span class="item"><span class="sw sw-open" aria-hidden="true"></span>営業日</span>
+      <span class="item"><span class="sw sw-closed" aria-hidden="true"></span>定休日</span>
+      <span class="item"><span class="sw sw-today" aria-hidden="true"></span>今日</span>
     </div>
 
-    <!-- Canvas + Kuma download button -->
-    <div class="reveal mt-6 flex items-center justify-end gap-x-4">
+    <!-- Canvas + Kuma long-press download -->
+    <div class="reveal mt-7 kuma-save">
       <canvas id="calendarCanvas" width="1080" height="1080" class="hidden"></canvas>
-      <div id="downloadKuma" class="relative cursor-pointer select-none" style="touch-action: manipulation;" title="長押しでカレンダーをダウンロード">
-        <img src="assets/images/kuma.png" alt="長押しでカレンダーをダウンロード" style="width:80px; height:64px; opacity:0.75; display:block;">
+      <div id="downloadKuma" class="kuma-press" style="touch-action: manipulation;" title="長押しでカレンダーをダウンロード">
+        <img src="assets/images/kuma.png" alt="長押しでカレンダーをダウンロード">
+      </div>
+      <div>
+        <p class="title">くまを長押しで保存</p>
+        <p class="note">一回転すると、表示中の月のカレンダーを画像で保存します。</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ─────────────── ACCESS ─────────────── -->
-<section id="access" class="px-6 sm:px-10 py-20 sm:py-32">
+<section id="access" class="px-6 sm:px-10 py-16 sm:py-32">
   <div class="max-w-[1080px] mx-auto">
 
     <div class="reveal text-center">
       <p class="section-eyebrow">Access</p>
-      <h2 class="section-title mt-5">場所</h2>
+      <h2 class="section-title mt-4">場所</h2>
+      <p class="font-serif text-ink mt-7" style="font-size:17px; line-height:1.9; letter-spacing:0.08em;">御花畑駅、改札を出てすぐ。</p>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-x-16 gap-y-12 mt-16 sm:mt-24 items-start">
+    <div class="grid md:grid-cols-2 gap-x-16 gap-y-9 mt-6 sm:mt-16 items-start">
 
       <div class="reveal">
-        <div class="map-frame" style="aspect-ratio: 16/9;">
+        <div class="map-frame" style="aspect-ratio: 16/10;">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3232.9!2d139.0834687!3d35.9923457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601ecb0ddc1fbf29%3A0x21706920b5176ae6!2scontrail%20coffee%20and%20chocolate!5e0!3m2!1sja!2sjp!4v1789171200000!5m2!1sja!2sjp"
             width="100%" height="100%"
@@ -824,84 +1214,86 @@
             title="Contrail Coffee - 秩父市東町21-15">
           </iframe>
         </div>
-        <p class="mt-4 font-sans text-ink-faint" style="font-weight:300; font-size:11px; letter-spacing:0.24em; text-transform:uppercase;">
-          Ohanabatake Station — north exit, 0 min
-        </p>
+        <a href="https://maps.app.goo.gl/ZNXKBvpWqj9fain28" target="_blank" rel="noopener noreferrer" class="btn-primary mt-4">
+          <span>Google マップで開く</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><polyline points="6,3 13,3 13,10" /><line x1="13" y1="3" x2="4" y2="12" /></svg>
+        </a>
       </div>
 
-      <div class="reveal" style="transition-delay: 200ms;">
-        <p class="font-serif text-ink-soft" style="font-weight:400; font-size:14px; line-height:2.2; letter-spacing:0.06em;">
-          御花畑駅、改札を出てすぐ。
-        </p>
-
-        <dl class="mt-10 space-y-7">
+      <div class="reveal" style="transition-delay: 120ms;">
+        <dl class="info-list">
           <div>
-            <dt class="font-sans text-ink-faint" style="font-weight:300; font-size:10.5px; letter-spacing:0.32em; text-transform:uppercase;">Address</dt>
-            <dd class="font-serif text-ink mt-2" style="font-weight:400; font-size:14.5px; line-height:1.9; letter-spacing:0.06em;">
-              〒368-0042<br />
-              埼玉県秩父市東町21-15
-            </dd>
+            <dt>Address</dt>
+            <dd>〒368-0042<br />埼玉県秩父市東町21-15</dd>
           </div>
-
           <div>
-            <dt class="font-sans text-ink-faint" style="font-weight:300; font-size:10.5px; letter-spacing:0.32em; text-transform:uppercase;">Hours</dt>
-            <dd class="font-serif text-ink mt-2" style="font-weight:400; font-size:14.5px; line-height:1.9; letter-spacing:0.06em;">
-              月・火・水・金　06:00〜11:00<br>
-              土・日　06:00〜10:00 / 13:00〜17:00<br>
-              <span class="font-sans text-ink-faint" style="font-size:11px; letter-spacing:0.18em; font-weight:300;">木　定休</span>
-            </dd>
+            <dt>Hours</dt>
+            <dd>月・火・水・金　6:00–11:00<br />土・日　6:00–10:00 / 13:00–17:00<br />木　定休</dd>
           </div>
-
           <div>
-            <dt class="font-sans text-ink-faint" style="font-weight:300; font-size:10.5px; letter-spacing:0.32em; text-transform:uppercase;">Parking</dt>
-            <dd class="font-serif text-ink-soft mt-2" style="font-weight:400; font-size:13.5px; line-height:1.9; letter-spacing:0.04em;">
-              駐車場・駐輪場なし
-            </dd>
+            <dt>Parking</dt>
+            <dd>駐車場・駐輪場なし</dd>
           </div>
-
           <div>
-            <dt class="font-sans text-ink-faint" style="font-weight:300; font-size:10.5px; letter-spacing:0.32em; text-transform:uppercase;">Contact</dt>
-            <dd class="font-serif text-ink-soft mt-2" style="font-weight:400; font-size:13.5px; line-height:1.9; letter-spacing:0.04em;">
-              <a href="https://forms.gle/kF61sn29fz9bPXgG9" target="_blank" rel="noopener noreferrer" style="text-decoration:none; color:inherit; border-bottom:1px solid currentColor; padding-bottom:1px;">
-                お問い合わせフォーム
-              </a>
+            <dt>Contact</dt>
+            <dd>
+              <a href="https://forms.gle/kF61sn29fz9bPXgG9" target="_blank" rel="noopener noreferrer" class="info-link">お問い合わせフォーム</a>
             </dd>
           </div>
         </dl>
-
-        <div class="mt-10">
-          <a href="https://maps.app.goo.gl/ZNXKBvpWqj9fain28" target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center gap-x-2 font-sans text-ink-faint hover:text-ink-mute" style="font-weight:300; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; transition: color 200ms ease;">
-            Google Maps で開く →
-          </a>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ─────────────── CONCEPT — below the contact, for those who read to the end ─────────────── -->
+<section id="concept" class="cc-concept" aria-labelledby="concept-title">
+  <div class="cc-concept-inner reveal">
+    <p class="section-eyebrow">Concept</p>
+    <div class="cc-concept-text">
+      <h2 id="concept-title" class="cc-concept-title">
+        <span class="cc-col" style="--i:0">見上げた空に、</span>
+        <span class="cc-col" style="--i:1">白い航跡。</span>
+      </h2>
+      <p class="cc-concept-body">
+        <span class="cc-col" style="--i:2">秩父・御花畑駅の改札を出てすぐ。</span>
+        <span class="cc-col" style="--i:3">テイクアウト専門のコーヒースタンドです。</span>
+      </p>
+      <p class="cc-concept-body cc-concept-closing">
+        <span class="cc-col" style="--i:4">朝の出発に、一杯のコーヒーと</span>
+        <span class="cc-col" style="--i:5">「いってらっしゃい」を。</span>
+      </p>
+    </div>
+  </div>
+  <!-- The trail: wiped in left to right when it scrolls into view -->
+  <div class="cc-concept-trail reveal" aria-hidden="true">
+    <svg class="cc-concept-line" viewBox="0 0 390 150" preserveAspectRatio="none">
+      <path d="M-10,140 C120,128 260,80 400,10" />
+    </svg>
+  </div>
+</section>
+
 <!-- ─────────────── FOOTER ─────────────── -->
-<footer class="px-6 sm:px-10 pt-20 pb-12 border-t border-line-soft">
+<footer class="px-6 sm:px-10 pt-14 pb-10 border-t border-line-soft">
   <div class="max-w-[1080px] mx-auto">
-    <div class="flex flex-col items-center text-center gap-y-8">
+    <div class="flex flex-col items-center text-center gap-y-7">
 
       <div class="brand-mark">contrail</div>
 
-      <p class="font-serif text-ink-quiet" style="font-weight:400; font-size:13px; line-height:2; letter-spacing:0.16em;">
+      <p class="font-serif text-ink-soft" style="font-weight:400; font-size:14px; line-height:2; letter-spacing:0.16em;">
         いってらっしゃい<br>
         おかえりなさい
       </p>
 
-      <div class="flex items-center gap-x-8 font-sans text-ink-mute" style="font-weight:300; font-size:11px; letter-spacing:0.32em; text-transform:uppercase;">
-        <a href="https://www.instagram.com/chichibu.chocolate.factory/" target="_blank" rel="noopener" class="hover:text-ink" style="display:inline-flex; align-items:center; gap:5px;">
-            <img src="assets/icons/Instagram_Glyph_Gradient.png" alt="Instagram" style="width:14px; height:14px; object-fit:contain; flex-shrink:0;">
-            Instagram
-          </a>
-        <span class="text-ink-faint">·</span>
-        <a href="#top" class="hover:text-ink">Top</a>
+      <div class="flex items-center gap-x-7 font-sans text-ink" style="font-size:12px; letter-spacing:0.28em; text-transform:uppercase;">
+        <a href="https://www.instagram.com/chichibu.chocolate.factory/" target="_blank" rel="noopener" class="footer-link">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="2.5" y="2.5" width="13" height="13" rx="3.5" /><circle cx="9" cy="9" r="3.2" /><circle cx="13" cy="5" r="0.5" fill="currentColor" /></svg>
+          Instagram
+        </a>
+        <a href="#top" class="footer-link">Top</a>
       </div>
 
-      <p class="font-sans text-ink-faint mt-6" style="font-weight:300; font-size:10.5px; letter-spacing:0.32em;">
+      <p class="font-sans text-ink-mute" style="font-size:12px; line-height:1.8; letter-spacing:0.12em;">
         copyright© 合同会社コントレイル All Right Reserved
       </p>
     </div>
@@ -934,10 +1326,10 @@
     const hasVisited = sessionStorage.getItem('contrail-visited');
 
     const imagesToPreload = [
-      'assets/images/contrail-line.png',
-      'assets/images/contrail-main.png',
-      'assets/images/contrail-dot.png',
-      'assets/images/contrail-logo-transparent.png'
+      'assets/images/contrail-line-1600.png',
+      'assets/images/contrail-main-1600.png',
+      'assets/images/contrail-dot-1600.png',
+      'assets/images/contrail-logo-1600.png'
     ];
 
     preloadImages(imagesToPreload)
@@ -948,16 +1340,20 @@
           loading.style.opacity = '0';
           loading.style.pointerEvents = 'none';
           mainContent.style.opacity = '1';
+          document.body.classList.add('hero-in');
         } else {
+          // The hero logo sits exactly under the loading logo, so the page is shown early
+          // (still covered by the overlay) and the logo stays put when the overlay fades.
+          mainContent.style.transition = 'none';
+          mainContent.style.opacity = '1';
           setTimeout(() => { logoContainer.classList.add('show'); }, 500);
           setTimeout(() => { logoMain.style.opacity = '1'; logoMain.style.transform = 'scale(1)'; }, 700);
           setTimeout(() => { logoLine.style.opacity = '1'; logoLine.style.clipPath = 'inset(0 0 0 0)'; }, 1500);
           setTimeout(() => { logoDot.style.opacity = '1'; logoDot.style.top = '0px'; }, 2700);
           setTimeout(() => { loading.style.opacity = '0'; loading.style.pointerEvents = 'none'; }, 3500);
-          setTimeout(() => {
-            mainContent.style.opacity = '1';
-            sessionStorage.setItem('contrail-visited', 'true');
-          }, 4000);
+          setTimeout(() => { sessionStorage.setItem('contrail-visited', 'true'); }, 4000);
+          // Header and today's status follow once the overlay has faded (3500 + 800ms)
+          setTimeout(() => { document.body.classList.add('hero-in'); }, 4400);
         }
       })
       .catch(() => {
@@ -967,6 +1363,7 @@
         loading.style.pointerEvents = 'none';
         mainContent.style.opacity = '1';
         sessionStorage.setItem('contrail-visited', 'true');
+        document.body.classList.add('hero-in');
       });
   });
 
@@ -987,9 +1384,15 @@
     var btn = document.getElementById('nav-toggle');
     var drawer = document.getElementById('nav-drawer');
     if (!btn || !drawer) return;
-    btn.addEventListener('click', function() { drawer.classList.toggle('is-open'); });
+    btn.addEventListener('click', function() {
+      var open = drawer.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
     drawer.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() { drawer.classList.remove('is-open'); });
+      a.addEventListener('click', function() {
+        drawer.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
     });
   })();
 
@@ -1036,6 +1439,77 @@
   // ─── Google Sheets: business days ─────────────────────
   window.contrailCalendarVersion = '3.0';
   let businessDaysData = [];
+
+  // ─── Opening rule + hours: one source for the today card and the calendar ───
+  const CONTRAIL_HOURS = {
+    weekday: ['6:00–11:00'],                  // Mon, Tue, Wed, Fri
+    weekend: ['6:00–10:00', '13:00–17:00']    // Sat, Sun
+  };
+
+  function contrailIsOpen(date) {
+    const ds = date.getFullYear() + '-' +
+               String(date.getMonth()+1).padStart(2,'0') + '-' +
+               String(date.getDate()).padStart(2,'0');
+    const d = businessDaysData.find(item => item.date === ds);
+    if (d) return d.status === 'open';
+    // Default rule: closed on Thursday (4), open all other days
+    return date.getDay() !== 4;
+  }
+
+  // ─── Today card (hero) ────────────────────────────────
+  function renderTodayDate() {
+    const el = document.getElementById('today-date');
+    if (!el) return;
+    const now = new Date();
+    el.textContent = (now.getMonth() + 1) + '月' + now.getDate() + '日（' + '日月火水木金土'[now.getDay()] + '）';
+  }
+
+  function renderTodayCard() {
+    const card = document.getElementById('today-card');
+    if (!card) return;
+    const now = new Date();
+    const day = now.getDay();
+    const group = (day === 0 || day === 6) ? 'weekend' : (day === 4 ? 'thu' : 'weekday');
+    const open = contrailIsOpen(now);
+    const hours = CONTRAIL_HOURS[group] || [];
+
+    renderTodayDate();
+    const status = document.getElementById('today-status');
+    if (status) {
+      status.textContent = open ? '営業日' : (group === 'thu' ? '定休日' : '休業日');
+      status.classList.toggle('is-closed', !open);
+      status.hidden = false;
+    }
+    const hoursEl = document.getElementById('today-hours');
+    if (hoursEl) {
+      const showHours = open && hours.length > 0;
+      hoursEl.classList.toggle('is-note', !showHours);
+      if (showHours) hoursEl.innerHTML = hours.map(h => '<span>' + h + '</span>').join('');
+      else hoursEl.textContent = open ? '営業時間はお知らせをご確認ください。' : '本日はお休みです。';
+    }
+
+    // 今日 tag on the regular-hours row, only when today follows the regular pattern
+    const regular = group === 'thu' ? !open : open;
+    document.querySelectorAll('.hours-row').forEach(row => {
+      const tag = row.querySelector('.today-tag');
+      if (tag) tag.hidden = !(regular && row.dataset.days === group);
+    });
+
+    card.setAttribute('aria-busy', 'false');
+    card.classList.add('is-ready');
+  }
+
+  function renderTodayNews(latest) {
+    try {
+      const link = document.getElementById('today-news');
+      const title = document.getElementById('today-news-title');
+      if (!link || !title) return;
+      if (latest && latest.title) title.textContent = latest.title;
+      link.hidden = !(latest && latest.title);
+    } catch (error) {
+      console.error('お知らせ見出しの表示エラー:', error);
+    }
+  }
 
   async function loadBusinessSettings() {
     try {
@@ -1191,12 +1665,13 @@
       grouped[item.category].push(item);
     }
 
-    function tempLabel(temp) {
+    function tempTags(temp) {
+      const tag = label => `<span class="temp-tag">${label}</span>`;
       switch ((temp || '').toLowerCase()) {
-        case 'both': return { label: '<span class="temp-hot">Hot</span> · <span class="temp-ice">Ice</span>', cls: '', raw: true };
-        case 'hot':  return { label: 'Hot', cls: 'temp-hot' };
-        case 'cold': return { label: 'Ice', cls: 'temp-ice' };
-        default:     return null;
+        case 'both': return tag('HOT') + tag('ICE');
+        case 'hot':  return tag('HOT');
+        case 'cold': return tag('ICE');
+        default:     return '';
       }
     }
 
@@ -1204,32 +1679,70 @@
       return String(v || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    const html = categoryOrder.map((cat, i) => {
+    const hasTabs = categoryOrder.length > 1;
+
+    const tabsHtml = hasTabs
+      ? `<div class="menu-tabs reveal" role="tablist" aria-label="メニューの分類" style="grid-template-columns: repeat(${categoryOrder.length}, minmax(0, 1fr));">` +
+        categoryOrder.map((cat, i) => {
+          const config = categoryConfig[cat] || { en: cat, ja: cat };
+          return `<button type="button" class="menu-tab" role="tab" id="menu-tab-${i}" aria-controls="menu-panel-${i}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">
+            <span class="label">${escapeHtml(config.ja || config.en)}</span>
+            <span class="count">${grouped[cat].length}品</span>
+          </button>`;
+        }).join('') +
+        `</div>`
+      : '';
+
+    const panelsHtml = categoryOrder.map((cat, i) => {
       const config = categoryConfig[cat] || { en: cat, ja: '' };
-      const marginClass = i === 0 ? '' : 'mt-24 sm:mt-32';
       const rowsHtml = grouped[cat].map(item => {
-        const tempInfo = tempLabel(item.temperature);
         const price = item.price !== '' ? `¥${Number(item.price).toLocaleString()}` : '';
         return `<div class="menu-row">
           <div class="name-line">
             <span class="name">${escapeHtml(item.name)}</span>
-            <span class="leader" aria-hidden="true"></span>
-            ${tempInfo ? `<span class="temp ${tempInfo.cls}">${tempInfo.raw ? tempInfo.label : escapeHtml(tempInfo.label)}</span>` : ''}
+            ${tempTags(item.temperature)}
           </div>
           <span class="price">${escapeHtml(price)}</span>
         </div>`;
       }).join('');
 
-      return `<div class="reveal ${marginClass}">
-        <div class="flex items-baseline justify-between border-b border-line pb-3 mb-2">
-          <h3 class="font-serif text-ink" style="font-weight:500; font-size:13px; letter-spacing:0.36em;">${escapeHtml(config.en)}</h3>
-          ${config.ja ? `<span class="font-sans text-ink-faint" style="font-weight:300; font-size:10.5px; letter-spacing:0.24em;">${escapeHtml(config.ja)}</span>` : ''}
+      return `<div class="menu-panel"${hasTabs ? ` role="tabpanel" id="menu-panel-${i}" aria-labelledby="menu-tab-${i}"` : ''}${i === 0 ? '' : ' hidden'}>
+        <div class="menu-cat-head">
+          <h3>${escapeHtml(config.en)}</h3>
+          ${config.ja ? `<span>${escapeHtml(config.ja)}</span>` : ''}
         </div>
         ${rowsHtml}
       </div>`;
     }).join('');
 
-    container.innerHTML = html;
+    container.innerHTML = tabsHtml + panelsHtml;
+
+    // Category switching: one panel at a time, arrow keys move between tabs
+    const tabs = Array.from(container.querySelectorAll('.menu-tab'));
+    const panels = Array.from(container.querySelectorAll('.menu-panel'));
+    function selectTab(index) {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', i === index ? 'true' : 'false');
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach((panel, i) => {
+        panel.hidden = i !== index;
+        panel.classList.remove('is-entering');
+      });
+      void panels[index].offsetWidth;            // restart the row animation
+      panels[index].classList.add('is-entering');
+    }
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => selectTab(i));
+      tab.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const next = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+        selectTab(next);
+        tabs[next].focus();
+      });
+    });
+
     observeReveal(container);
   }
 
@@ -1360,7 +1873,8 @@
     if (!container) return;
 
     if (!newsData || newsData.length === 0) {
-      container.innerHTML = '<p style="text-align:center; font-family:var(--sans); font-size:12px; color:var(--ink-faint); letter-spacing:0.18em;">現在、お知らせはありません。</p>';
+      container.innerHTML = '<p style="text-align:center; font-family:var(--sans); font-size:12px; color:var(--ink-mute); letter-spacing:0.18em;">現在、お知らせはありません。</p>';
+      renderTodayNews(null);
       return;
     }
 
@@ -1407,15 +1921,16 @@
           <div class="news-content ${hasToggle ? 'line-clamp-3' : ''}" id="news-content-${index}">
             ${formattedContents}
           </div>
-          ${hasToggle ? `<button type="button" class="news-toggle" aria-expanded="false" aria-controls="news-content-${index}" onclick="toggleNews(${index})">Read more</button>` : ''}
+          ${hasToggle ? `<button type="button" class="news-toggle" aria-expanded="false" aria-controls="news-content-${index}" onclick="toggleNews(${index})">続きを読む</button>` : ''}
         </article>`;
     }).join('');
 
     const showAllButton = newsData.length > INITIAL_NEWS_COUNT
-      ? `<div class="news-more-wrap"><button type="button" class="news-more-button" id="news-show-all" onclick="showAllNews()">View all news</button></div>`
+      ? `<div class="news-more-wrap"><button type="button" class="news-more-button" id="news-show-all" onclick="showAllNews()"><span>すべてのお知らせを見る</span><span class="rest">ほか${newsData.length - INITIAL_NEWS_COUNT}件</span></button></div>`
       : '';
 
     container.innerHTML = itemsHtml + showAllButton;
+    renderTodayNews(newsData[0]);
   }
 
   function toggleNews(index) {
@@ -1427,11 +1942,11 @@
     const isCollapsed = content.classList.contains('line-clamp-3');
     if (isCollapsed) {
       content.classList.remove('line-clamp-3');
-      button.textContent = 'Read less';
+      button.textContent = '閉じる';
       button.setAttribute('aria-expanded', 'true');
     } else {
       content.classList.add('line-clamp-3');
-      button.textContent = 'Read more';
+      button.textContent = '続きを読む';
       button.setAttribute('aria-expanded', 'false');
       article.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -1450,13 +1965,7 @@
     let currentDate = new Date();
 
     function isOpenDay(date) {
-      const ds = date.getFullYear() + '-' +
-                 String(date.getMonth()+1).padStart(2,'0') + '-' +
-                 String(date.getDate()).padStart(2,'0');
-      const d = businessDaysData.find(item => item.date === ds);
-      if (d) return d.status === 'open';
-      // Default rule: closed on Thursday (4), open all other days
-      return date.getDay() !== 4;
+      return contrailIsOpen(date);
     }
 
     function renderCalendar() {
@@ -1465,8 +1974,10 @@
 
       const calYear  = document.getElementById('cal-year');
       const calMonth = document.getElementById('cal-month');
+      const calMonthJa = document.getElementById('cal-month-ja');
       if (calYear)  calYear.textContent  = year;
-      if (calMonth) calMonth.textContent = MONTH_NAMES_EN[month];
+      if (calMonth) calMonth.textContent = MONTH_NAMES_EN[month];   // downloadCalendar() reads this
+      if (calMonthJa) calMonthJa.textContent = MONTH_NAMES_JA[month];
 
       const grid = document.getElementById('calendar-grid');
       if (!grid) return;
@@ -1480,11 +1991,15 @@
       today.setHours(0, 0, 0, 0);
 
       let html = '';
-      ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(h => {
+      ['月','火','水','木','金','土','日'].forEach(h => {
         html += `<div class="cal-cell is-head">${h}</div>`;
       });
 
-      for (let i = 0; i < 42; i++) {
+      // Only as many weeks as the month needs (the saved image keeps its fixed 6 rows)
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const cellCount = Math.ceil((dayOffset + daysInMonth) / 7) * 7;
+
+      for (let i = 0; i < cellCount; i++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
         const isCurrent = date.getMonth() === month;
@@ -1495,11 +2010,15 @@
         if (!isCurrent)  cls += ' is-out';
         else if (isOpen) cls += ' is-open';
         else             cls += ' is-closed';
+        if (isCurrent && isToday) cls += ' is-today';
 
-        html += `<div class="${cls}">${date.getDate()}</div>`;
+        html += `<div class="${cls}"${isCurrent && isToday ? ' aria-current="date"' : ''}>${date.getDate()}</div>`;
       }
 
+      // Cells are inserted transparent and fade in right after
+      grid.classList.add('is-swapping');
       grid.innerHTML = html;
+      setTimeout(() => grid.classList.remove('is-swapping'), 40);
       renderCalendarCanvas(year, month, MONTH_NAMES_JA);
     }
 
@@ -1746,7 +2265,12 @@
 
   // ─── Start ────────────────────────────────────────────
   async function startCalendar() {
-    await Promise.all([loadBusinessSettings(), loadNews(), loadMenu()]);
+    renderTodayDate();
+    // The today card only needs the business days, and must never block the calendar
+    const business = loadBusinessSettings().then(() => {
+      try { renderTodayCard(); } catch (error) { console.error('本日の営業の表示エラー:', error); }
+    });
+    await Promise.all([business, loadNews(), loadMenu()]);
     setTimeout(() => { initializeCalendar(); initializeKumaDownload(); }, 200);
   }
 

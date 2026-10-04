@@ -16,18 +16,28 @@ Contrail Coffee & Chocolate is a static website for a coffee and chocolate shop 
 
 ### Key Technical Components
 
-#### 1. Loading Animation System (index.html:66-608)
+#### 1. Loading Animation System (`#loading` + "Image preload + loading animation" script)
 - Three-part logo animation using opacity, transform, and clip-path transitions
 - Session-based skip logic (`sessionStorage.getItem('contrail-visited')`)
-- Staged reveal: main logo → line → dot → content fade-in
+- Staged reveal: main logo → line → dot → overlay fades → header and today's status arrive (`body.hero-in`)
+- **Hand-off contract**: the hero logo (`.hero-logo`) must sit exactly under the loading logo, so it stays put when the overlay fades. Both are `85vw` wide (`min(640px, 90vw)` from 640px up) and centred on `50vh`. If you change the loading logo's size or position, change `.hero` / `.hero-logo` to match (and the `0.20875` factor if the image aspect changes).
+- The animation uses the lightweight `contrail-{line,main,dot}-1600.png` layers; the hero uses `contrail-logo-1600.png` (same 1600×668 canvas). The 4868px originals remain for OG / icons.
 
-#### 2. Dynamic Business Calendar (index.html:610-1134)
+#### 2. Dynamic Business Calendar (`#calendar` + `initializeCalendar()`)
 - Fetches business days from Google Sheets API (SPREADSHEET_ID: `1BRHncUHIE9c4YZrq6Sa6oyaFULAd5uPE5GDNMIIc7Kg`)
+- `contrailIsOpen(date)` is the single opening rule (sheet row, else closed on Thursdays); the calendar, the saved image and the today status all use it
+- `#cal-year` / `#cal-month` must keep the year and the **English** month name: `downloadCalendar()` reads them for the file name. The Japanese month is shown separately in `#cal-month-ja`
+- Only the bear (`#downloadKuma`) is the long-press target: it calls `preventDefault()` on touchstart, so a larger target would block scrolling
 - Sheet format: columns for date, status (open/closed), and notes
 - Handles multiple date formats (Google Sheets Date() format, Excel serial dates, ISO strings)
 - Client-side calendar rendering with prev/next month navigation
 - Canvas-based calendar image generator for download (1080x1080px PNG)
 - "Kuma" download button with 3-second press-and-hold animation (360° rotation)
+
+#### 2b. Today's status, menu tabs, concept
+- **Today** (`#today-card`, in the hero): date, 営業日 / 定休日 / 休業日, today's hours (`CONTRAIL_HOURS`) and the latest news title. Rendered by `renderTodayCard()` / `renderTodayNews()`; both are wrapped so a failure can never block the calendar start-up
+- **Menu**: `renderMenu()` builds category tabs (one panel visible at a time) from the sheet's categories; rows keep the `.menu-row .name .price` structure
+- **Concept** (`#concept`, after Access): vertical text whose columns arrive one by one, then a trail wiped in with `clip-path`. The reveal observer watches the `.cc-concept-trail` wrapper, because a fully clipped element never reports as intersecting
 
 #### 3. Mobile Optimization Strategies
 - `transform: translate3d(0, 0, 0)` for GPU acceleration
@@ -68,10 +78,12 @@ git push origin main
 ├── CNAME              # Custom domain: www.contrail.life
 ├── assets/
 │   ├── images/        # Logo components, photos, icons
-│   │   ├── contrail-logo-transparent.png  # Main logo
-│   │   ├── contrail-main.png             # Loading animation: main text
-│   │   ├── contrail-line.png             # Loading animation: line above
-│   │   ├── contrail-dot.png              # Loading animation: dot on 'i'
+│   │   ├── contrail-logo-transparent.png  # Main logo, full size (OG image, icons)
+│   │   ├── contrail-logo-1600.png        # Hero logo (lightweight)
+│   │   ├── contrail-main-1600.png        # Loading animation: main text
+│   │   ├── contrail-line-1600.png        # Loading animation: line above
+│   │   ├── contrail-dot-1600.png         # Loading animation: dot on 'i'
+│   │   ├── contrail-{main,line,dot}.png  # 4868px originals of the three layers
 │   │   ├── concept-image.png             # Parallax background
 │   │   └── kuma.png                      # Calendar download button
 │   └── icons/
@@ -115,18 +127,23 @@ git push origin main
 
 ## Content Sections (in order)
 
-1. Hero section with animated logo
-2. Menu section (Coffee, Chocolate drinks, Organic soda, Craft chocolate, Donuts)
-3. News section (chronological updates)
-4. Business calendar with Google Sheets integration
+1. Hero: logo (same position as the loading logo) + today's opening status
+2. Menu section with category tabs (お飲み物 / お菓子 / お酒 / コラボ商品)
+3. News section (chronological updates, latest three shown first)
+4. Business calendar with Google Sheets integration (regular hours, month grid, long-press save)
 5. Access/Location section with Google Maps embed
-6. Footer with Instagram link
+6. Concept (vertical text + trail) — deliberately near the end; do not name the owner's former career in public copy
+7. Footer with Instagram link
+
+The site is designed smartphone-first.
 
 ## Testing Checklist
 
 When making changes, verify:
 - [ ] Logo loading animation works on first visit
+- [ ] The logo does not move or blink when the loading overlay fades; today's status appears shortly after
 - [ ] Logo animation skips on subsequent visits (same session)
+- [ ] Menu tabs switch categories; news "続きを読む" and "すべてのお知らせを見る" work
 - [ ] Calendar loads business days from Google Sheets
 - [ ] Calendar month navigation works
 - [ ] Kuma download button creates and downloads PNG
